@@ -115,46 +115,48 @@ class GameBoard {
       String rowString = "";
       for (int col = 0; col < GameBoard.columns; col++) {
         Position currentPosition = Position(col, row);
-        if (isRiver(currentPosition)) {
-          rowString += "0 ";
-        } else {
-          Piece? piece = getPiece(currentPosition);
-          if (piece == null) {
-            rowString += "- ";
-          } else {
-            String pieceChar;
-            switch (piece.animalType) {
-              case AnimalType.elephant:
-                pieceChar = "E";
-                break;
-              case AnimalType.lion:
-                pieceChar = "L";
-                break;
-              case AnimalType.tiger:
-                pieceChar = "T";
-                break;
-              case AnimalType.leopard:
-                pieceChar = "P"; // Using P for Leopard to avoid conflict with Lion
-                break;
-              case AnimalType.wolf:
-                pieceChar = "W";
-                break;
-              case AnimalType.dog:
-                pieceChar = "D";
-                break;
-              case AnimalType.cat:
-                pieceChar = "C";
-                break;
-              case AnimalType.rat:
-                pieceChar = "R";
-                break;
-            }
-            if (piece.playerColor == PlayerColor.red) {
-              rowString += "${pieceChar.toUpperCase()} ";
-            } else {
-              rowString += "${pieceChar.toLowerCase()} ";
-            }
+        Piece? piece = getPiece(currentPosition);
+        if (piece != null) {
+          String pieceChar;
+          switch (piece.animalType) {
+            case AnimalType.elephant:
+              pieceChar = "E";
+              break;
+            case AnimalType.lion:
+              pieceChar = "L";
+              break;
+            case AnimalType.tiger:
+              pieceChar = "T";
+              break;
+            case AnimalType.leopard:
+              pieceChar = "P"; // Using P for Leopard to avoid conflict with Lion
+              break;
+            case AnimalType.wolf:
+              pieceChar = "W";
+              break;
+            case AnimalType.dog:
+              pieceChar = "D";
+              break;
+            case AnimalType.cat:
+              pieceChar = "C";
+              break;
+            case AnimalType.rat:
+              pieceChar = "R";
+              break;
           }
+          if (piece.playerColor == PlayerColor.red) {
+            rowString += "${pieceChar.toUpperCase()} ";
+          } else {
+            rowString += "${pieceChar.toLowerCase()} ";
+          }
+        } else if (isRiver(currentPosition)) {
+          rowString += "0 ";
+        } else if (isTrap(currentPosition)) {
+          rowString += "X "; // 'X' for trap
+        } else if (isDen(currentPosition)) {
+          rowString += "H "; // 'H' for den (home)
+        } else {
+          rowString += "- ";
         }
       }
       print(rowString);
