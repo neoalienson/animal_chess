@@ -107,6 +107,7 @@ void main() {
         Position(4, 2),
         Piece(AnimalType.tiger, PlayerColor.red),
       );
+      gameController.board.dumpBoardAndChessPieces();
       gameController.currentPlayer = PlayerColor.red;
 
       gameController.selectPiece(Position(4, 2));
