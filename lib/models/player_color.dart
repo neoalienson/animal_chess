@@ -1,0 +1,1 @@
+enum PlayerColor { green, red }
