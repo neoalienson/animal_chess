@@ -63,6 +63,7 @@ void main() {
         GameConfig config = GameConfig(extendedLionTigerJumps: true);
         GameController gameController = GameController(gameConfig: config);
         gameController.resetGame();
+        gameController.board.clearBoard();
 
         // Leopard at (0,4), river at (1,4) and (2,4), target (3,4)
         gameController.board.setPiece(
@@ -83,7 +84,7 @@ void main() {
       },
     );
 
-    test('Dog River Variant: Dog can enter river and capture from river', () {
+    test('Dog can enter river', () {
       GameConfig config = GameConfig(dogRiverVariant: true);
       GameController gameController = GameController(gameConfig: config);
       gameController.resetGame();
@@ -95,6 +96,7 @@ void main() {
         Piece(AnimalType.dog, PlayerColor.red),
       );
       gameController.currentPlayer = PlayerColor.red;
+      gameController.board.dumpBoardAndChessPieces();
 
       gameController.selectPiece(Position(1, 2));
       expect(
@@ -105,21 +107,34 @@ void main() {
         gameController.board.getPiece(Position(1, 3))?.animalType,
         AnimalType.dog,
       );
+    });
+
+    test('Dog River Variant: Dog can enter river and capture from river', () {
+      GameConfig config = GameConfig(extendedLionTigerJumps: true);
+      GameController gameController = GameController(gameConfig: config);
+      gameController.resetGame();
+      gameController.board.clearBoard();
+
+      gameController.board.setPiece(
+        Position(1, 3),
+        Piece(AnimalType.dog, PlayerColor.red),
+      );
 
       // Place a Cat on the shore next to the dog in the river
       gameController.board.setPiece(
-        Position(1, 4),
+        Position(0, 3),
         Piece(AnimalType.cat, PlayerColor.green),
       );
       gameController.currentPlayer = PlayerColor.red; // Still red's turn
+      gameController.board.dumpBoardAndChessPieces();
 
       gameController.selectPiece(Position(1, 3)); // Select dog in river
       expect(
-        gameController.movePiece(Position(1, 4)),
+        gameController.movePiece(Position(0, 3)),
         isTrue,
       ); // Dog captures Cat from river
       expect(
-        gameController.board.getPiece(Position(1, 4))?.animalType,
+        gameController.board.getPiece(Position(0, 3))?.animalType,
         AnimalType.dog,
       );
       expect(
