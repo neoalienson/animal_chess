@@ -56,6 +56,7 @@ void main() {
       // 6 _ _ _ _ _ _ _
       // 7 _ _ _ _ _ _ _
       // 8 _ _ _ _ _ _ _
+      gameController.board.clearBoard();
       gameController.board.setPiece(
         Position(0, 0),
         Piece(AnimalType.rat, PlayerColor.red),
