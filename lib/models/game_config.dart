@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+
 
 class GameConfig {
   bool ratOnlyDenEntry;

@@ -17,8 +17,8 @@ void main() {
     // Verify that the app title is displayed.
     expect(find.text('Animal Chess'), findsOneWidget);
 
-    // Verify that player indicators are displayed.
-    expect(find.text('Green Player'), findsOneWidget);
-    expect(find.text('Red Player'), findsOneWidget);
+    // Verify that the main menu elements are displayed.
+    expect(find.text('New Game'), findsOneWidget);
+    expect(find.text('Game Instructions'), findsOneWidget);
   });
 }

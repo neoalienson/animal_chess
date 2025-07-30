@@ -21,7 +21,7 @@ class GameController {
 
   /// Select a piece to move
   bool selectPiece(Position position) {
-    if (this.gameEnded) return false;
+    if (gameEnded) return false;
 
     Piece? piece = board.getPiece(position);
 
@@ -193,7 +193,7 @@ class GameController {
 
   /// Move a piece
   bool movePiece(Position to) {
-    if (this.gameEnded || this.selectedPosition == null) return false;
+    if (gameEnded || selectedPosition == null) return false;
 
     Position from = selectedPosition!;
     if (!isValidMove(from, to)) {
