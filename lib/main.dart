@@ -7,6 +7,7 @@ import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/widgets/game_board_widget.dart';
 import 'package:animal_chess/widgets/piece_widget.dart';
+import 'package:animal_chess/widgets/pieces_rank_list_widget.dart';
 import 'dart:math';
 
 void main() {
@@ -1626,27 +1627,6 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
 
   /// Build pieces rank list
   Widget _buildPiecesRankList() {
-    // Create a list of all animal types sorted by rank (strongest to weakest)
-    final animalTypes = List<AnimalType>.from(AnimalType.values);
-    animalTypes.sort((a, b) => a.rank.compareTo(b.rank));
-
-    return ListView.builder(
-      itemCount: animalTypes.length,
-      itemBuilder: (context, index) {
-        final animalType = animalTypes[index];
-        return ListTile(
-          leading: PieceWidget(
-            piece: Piece(
-              animalType,
-              PlayerColor.red,
-            ), // Show red pieces as example
-            isSelected: false,
-            size: 30,
-            isRankDisplay: true,
-          ),
-          title: Text(animalType.name, style: const TextStyle(fontSize: 12)),
-        );
-      },
-    );
+    return PiecesRankListWidget();
   }
 }
