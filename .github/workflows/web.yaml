@@ -5,6 +5,11 @@ on:
     branches:
       - main # or your default branch
 
+permissions:
+  contents: write # Required for checkout
+  pages: write # Required for deploying to GitHub Pages
+  id-token: write # Required for OpenID Connect (if you use it, good practice to include)
+
 jobs:
   build:
     runs-on: ubuntu-latest
