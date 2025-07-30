@@ -22,30 +22,37 @@ class GameBoardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 7 / 9, // 7 columns × 9 rows
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.brown, width: 2),
-          color: Colors.amber[50],
-        ),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 7, // 7 columns
-          ),
-          itemCount: GameBoard.columns * GameBoard.rows,
-          itemBuilder: (context, index) {
-            int row = index ~/ GameBoard.columns;
-            int col = index % GameBoard.columns;
-            Position position = Position(col, row);
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Calculate the size of each cell
+          final cellSize = constraints.maxWidth / GameBoard.columns;
 
-            return _buildBoardCell(position);
-          },
-        ),
+          return Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.brown, width: 2),
+              color: Colors.amber[50],
+            ),
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 7, // 7 columns
+              ),
+              itemCount: GameBoard.columns * GameBoard.rows,
+              itemBuilder: (context, index) {
+                int row = index ~/ GameBoard.columns;
+                int col = index % GameBoard.columns;
+                Position position = Position(col, row);
+
+                return _buildBoardCell(position, cellSize);
+              },
+            ),
+          );
+        },
       ),
     );
   }
 
   /// Build a single cell of the board
-  Widget _buildBoardCell(Position position) {
+  Widget _buildBoardCell(Position position, double cellSize) {
     GameBoard board = gameController.board;
     Piece? piece = board.getPiece(position);
     bool isSelected = gameController.selectedPosition == position;
@@ -62,7 +69,7 @@ class GameBoardWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: cellColor,
-        border: Border.all(color: Colors.brown.withOpacity(0.3)),
+        border: Border.all(color: Colors.brown.withValues(alpha: 0.3)),
       ),
       child: Stack(
         alignment: Alignment.center,
@@ -81,6 +88,7 @@ class GameBoardWidget extends StatelessWidget {
               piece: piece,
               isSelected: isSelected,
               onTap: () => onPositionTap(position),
+              size: cellSize, // Pass the cell size to the PieceWidget
             )
           // Empty cell tap handler
           else
@@ -92,8 +100,8 @@ class GameBoardWidget extends StatelessWidget {
           // Valid move indicator
           if (isValidMove && piece == null)
             Container(
-              width: 20,
-              height: 20,
+              width: cellSize * 0.3,
+              height: cellSize * 0.3,
               decoration: const BoxDecoration(
                 color: Colors.green,
                 shape: BoxShape.circle,
