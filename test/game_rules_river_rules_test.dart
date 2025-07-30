@@ -17,6 +17,17 @@ void main() {
     });
 
     test('Only Rat can enter the river', () {
+      // Test Setup:
+      //   0 1 2 3 4 5 6
+      // 0 _ _ _ _ _ _ _
+      // 1 _ _ _ _ _ _ _
+      // 2 _ R _ _ _ _ _  (Red Rat at (1,2))
+      // 3 D 0 0 _ 0 0 _  (Red Dog at (0,3), River at (1,3), (2,3), (4,3), (5,3))
+      // 4 _ 0 0 _ 0 0 _
+      // 5 _ 0 0 _ 0 0 _
+      // 6 _ _ _ _ _ _ _
+      // 7 _ _ _ _ _ _ _
+      // 8 _ _ _ _ _ _ _
       // River position (1,3)
       gameController.board.setPiece(
         Position(1, 2),
@@ -50,7 +61,19 @@ void main() {
     });
 
     test('Lion can jump over river horizontally', () {
+      // Test Setup:
+      //   0 1 2 3 4 5 6
+      // 0 _ _ _ _ _ _ _
+      // 1 _ _ _ _ _ _ _
+      // 2 _ _ _ _ _ _ _
+      // 3 _ 0 0 _ 0 0 _
+      // 4 L 0 0 _ 0 0 _  (Red Lion at (0,4), River at (1,4), (2,4), (4,4), (5,4))
+      // 5 _ 0 0 _ 0 0 _
+      // 6 _ _ _ _ _ _ _
+      // 7 _ _ _ _ _ _ _
+      // 8 _ _ _ _ _ _ _
       // Lion at (0,4), river at (1,4) and (2,4), target (3,4)
+      gameController.board.clearBoard();
       gameController.board.setPiece(
         Position(0, 4),
         Piece(AnimalType.lion, PlayerColor.red),
@@ -67,7 +90,19 @@ void main() {
     });
 
     test('Tiger can jump over river vertically', () {
+      // Test Setup:
+      //   0 1 2 3 4 5 6
+      // 0 _ _ _ _ _ _ _
+      // 1 _ _ _ _ _ _ _
+      // 2 _ _ _ _ T _ _  (Red Tiger at (4,2))
+      // 3 _ 0 0 _ 0 0 _  (River at (4,3))
+      // 4 _ 0 0 _ 0 0 _  (River at (4,4))
+      // 5 _ 0 0 _ 0 0 _  (River at (4,5))
+      // 6 _ _ _ _ _ _ _
+      // 7 _ _ _ _ _ _ _
+      // 8 _ _ _ _ _ _ _
       // Tiger at (4,2), river at (4,3), (4,4), (4,5), target (4,6)
+      gameController.board.clearBoard();
       gameController.board.setPiece(
         Position(4, 2),
         Piece(AnimalType.tiger, PlayerColor.red),
@@ -84,6 +119,17 @@ void main() {
     });
 
     test('Lion/Tiger cannot jump if Rat is in the river', () {
+      // Test Setup:
+      //   0 1 2 3 4 5 6
+      // 0 _ _ _ _ _ _ _
+      // 1 _ _ _ _ _ _ _
+      // 2 _ _ _ _ _ _ _
+      // 3 _ 0 0 _ 0 0 _
+      // 4 L r 0 _ 0 0 _  (Red Lion at (0,4), green rat at (1,4), River at (1,4), (2,4), (4,4), (5,4))
+      // 5 _ 0 0 _ 0 0 _
+      // 6 _ _ _ _ _ _ _
+      // 7 _ _ _ _ _ _ _
+      // 8 _ _ _ _ _ _ _
       // Lion at (0,4), Rat at (1,4) (in river), target (3,4)
       gameController.board.setPiece(
         Position(0, 4),

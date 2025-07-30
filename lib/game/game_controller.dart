@@ -18,10 +18,9 @@ class GameController {
   late GameRules _gameRules;
   late GameActions _gameActions;
 
-  GameController({required this.gameConfig}) 
-      : board = GameBoard(),
-        currentPlayer = PlayerColor.red {
-    
+  GameController({required this.gameConfig})
+    : board = GameBoard(),
+      currentPlayer = PlayerColor.red {
     _gameRules = GameRules(board: board, gameConfig: gameConfig);
     _gameActions = GameActions(
       board: board,
@@ -54,7 +53,7 @@ class GameController {
   void resetGame() {
     _gameActions.resetGame();
     // Update GameController's state from GameActions after reset
-    
+
     currentPlayer = _gameActions.currentPlayer;
     selectedPosition = null;
     gameEnded = _gameActions.gameEnded;

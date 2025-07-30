@@ -14,9 +14,19 @@ void main() {
       () {
         GameConfig config = GameConfig(ratOnlyDenEntry: true);
         GameController gameController = GameController(gameConfig: config);
-      gameController.resetGame();
+        gameController.resetGame();
 
-        // Red Rat at (3,7), Green's den at (3,0)
+        // Test Setup:
+        //   0 1 2 3 4 5 6
+        // 0 _ _ _ d _ _ _  (Green Den at (3,0))
+        // 1 _ _ _ R _ _ _  (Red Rat at (3,1))
+        // 2 _ _ _ _ _ _ _
+        // 3 _ _ _ _ _ _ _
+        // 4 _ _ _ _ _ _ _
+        // 5 _ _ _ _ _ _ _
+        // 6 _ _ _ _ _ _ _
+        // 7 _ _ _ _ _ _ _
+        // 8 _ _ _ _ _ _ _
         gameController.board.setPiece(
           Position(3, 1),
           Piece(AnimalType.rat, PlayerColor.red),
@@ -30,7 +40,7 @@ void main() {
 
         // Reset and test with a non-rat piece
         gameController = GameController(gameConfig: config);
-      gameController.resetGame();
+        gameController.resetGame();
         gameController.board.setPiece(
           Position(3, 1),
           Piece(AnimalType.dog, PlayerColor.red),
@@ -52,7 +62,7 @@ void main() {
       () {
         GameConfig config = GameConfig(extendedLionTigerJumps: true);
         GameController gameController = GameController(gameConfig: config);
-      gameController.resetGame();
+        gameController.resetGame();
 
         // Leopard at (0,4), river at (1,4) and (2,4), target (3,4)
         gameController.board.setPiece(
@@ -77,6 +87,7 @@ void main() {
       GameConfig config = GameConfig(dogRiverVariant: true);
       GameController gameController = GameController(gameConfig: config);
       gameController.resetGame();
+      gameController.board.clearBoard();
 
       // Dog at (1,2), river at (1,3)
       gameController.board.setPiece(

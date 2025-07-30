@@ -104,6 +104,63 @@ class GameBoard {
     _board[position] = null;
   }
 
+  /// Clear all pieces from the board
+  void clearBoard() {
+    _board.clear();
+  }
+
+  void dumpBoardAndChessPieces() {
+    print("""Board State (R=Red, G=Green, 0=River):""");
+    for (int row = 0; row < GameBoard.rows; row++) {
+      String rowString = "";
+      for (int col = 0; col < GameBoard.columns; col++) {
+        Position currentPosition = Position(col, row);
+        if (isRiver(currentPosition)) {
+          rowString += "0 ";
+        } else {
+          Piece? piece = getPiece(currentPosition);
+          if (piece == null) {
+            rowString += "- ";
+          } else {
+            String pieceChar;
+            switch (piece.animalType) {
+              case AnimalType.elephant:
+                pieceChar = "E";
+                break;
+              case AnimalType.lion:
+                pieceChar = "L";
+                break;
+              case AnimalType.tiger:
+                pieceChar = "T";
+                break;
+              case AnimalType.leopard:
+                pieceChar = "P"; // Using P for Leopard to avoid conflict with Lion
+                break;
+              case AnimalType.wolf:
+                pieceChar = "W";
+                break;
+              case AnimalType.dog:
+                pieceChar = "D";
+                break;
+              case AnimalType.cat:
+                pieceChar = "C";
+                break;
+              case AnimalType.rat:
+                pieceChar = "R";
+                break;
+            }
+            if (piece.playerColor == PlayerColor.red) {
+              rowString += "${pieceChar.toUpperCase()} ";
+            } else {
+              rowString += "${pieceChar.toLowerCase()} ";
+            }
+          }
+        }
+      }
+      print(rowString);
+    }
+  }
+
   /// Check if a position is a den
   bool isDen(Position position) {
     return dens.values.contains(position);
