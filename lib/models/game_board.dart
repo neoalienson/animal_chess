@@ -39,11 +39,14 @@ class GameBoard {
   ];
 
   GameBoard() {
-    _initializeBoard();
+    initializeDefaultBoard();
   }
 
+  // Named constructor for an empty board
+  GameBoard.empty();
+
   /// Initialize the board with pieces in their starting positions
-  void _initializeBoard() {
+  void initializeDefaultBoard() {
     // Clear the board
     for (int col = 0; col < columns; col++) {
       for (int row = 0; row < rows; row++) {
