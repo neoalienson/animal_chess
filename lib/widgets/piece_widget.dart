@@ -7,6 +7,7 @@ class PieceWidget extends StatelessWidget {
   final bool isSelected;
   final VoidCallback? onTap;
   final double size; // New parameter for piece size
+  final bool isRankDisplay; // New parameter for rank display
 
   const PieceWidget({
     super.key,
@@ -14,6 +15,7 @@ class PieceWidget extends StatelessWidget {
     this.isSelected = false,
     this.onTap,
     this.size = 40.0, // Default size
+    this.isRankDisplay = false, // Default to false
   });
 
   @override
@@ -26,15 +28,21 @@ class PieceWidget extends StatelessWidget {
         ? Colors.green[300]!
         : Colors.red[300]!;
 
-    // Add selection indicator
-    if (isSelected) {
+    // Define text color for better contrast
+    Color textColor = Colors.white;
+
+    // If this is for rank display, use dark grey with white text
+    if (isRankDisplay) {
+      backgroundColor = Colors.grey[800]!; // Dark grey
+      textColor = Colors.white; // White text
+    }
+
+    // Add selection indicator (only for game board, not rank display)
+    if (isSelected && !isRankDisplay) {
       backgroundColor = piece.playerColor == PlayerColor.green
           ? Colors.green[700]!
           : Colors.red[700]!;
     }
-
-    // Define text color for better contrast
-    Color textColor = Colors.white;
 
     return GestureDetector(
       onTap: onTap,
@@ -45,8 +53,8 @@ class PieceWidget extends StatelessWidget {
           color: backgroundColor,
           shape: BoxShape.circle,
           border: Border.all(
-            color: isSelected ? Colors.yellow : Colors.black,
-            width: isSelected ? 3 : 1,
+            color: isSelected && !isRankDisplay ? Colors.yellow : Colors.black,
+            width: isSelected && !isRankDisplay ? 3 : 1,
           ),
           boxShadow: [
             BoxShadow(

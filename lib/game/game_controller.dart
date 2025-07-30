@@ -3,27 +3,25 @@ import 'package:animal_chess/models/game_board.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/piece.dart';
+import 'package:animal_chess/models/game_config.dart';
 
 class GameController {
-  late GameBoard board;
-  PlayerColor currentPlayer;
+  GameBoard board = GameBoard();
+  PlayerColor currentPlayer = PlayerColor.red; // Red goes first
   Position? selectedPosition;
   bool gameEnded = false;
   PlayerColor? winner;
+  List<Piece> capturedPieces = []; // List to track captured pieces
 
-  // Game variants
-  bool ratOnlyDenEntry = false;
-  bool extendedLionTigerJumps = false;
-  bool dogRiverVariant = false;
-  bool ratCannotCaptureElephant = false;
+  final GameConfig gameConfig;
 
-  GameController() : currentPlayer = PlayerColor.red {
+  GameController({required this.gameConfig}) : currentPlayer = PlayerColor.red {
     board = GameBoard();
   }
 
   /// Select a piece to move
   bool selectPiece(Position position) {
-    if (gameEnded) return false;
+    if (this.gameEnded) return false;
 
     Piece? piece = board.getPiece(position);
 
@@ -59,12 +57,12 @@ class GameController {
     // Special rules for river
     if (board.isRiver(to)) {
       // Only rat can enter river (unless dog variant is enabled)
-      if (piece.animalType != AnimalType.rat && !dogRiverVariant) {
+      if (piece.animalType != AnimalType.rat && !gameConfig.dogRiverVariant) {
         return false;
       }
 
       // In dog variant, only dog can enter river
-      if (dogRiverVariant && piece.animalType != AnimalType.dog) {
+      if (gameConfig.dogRiverVariant && piece.animalType != AnimalType.dog) {
         return false;
       }
     }
@@ -82,7 +80,7 @@ class GameController {
       }
 
       // Rat cannot capture elephant (if variant is enabled)
-      if (ratCannotCaptureElephant &&
+      if (gameConfig.ratCannotCaptureElephant &&
           piece.animalType == AnimalType.rat &&
           targetPiece.animalType == AnimalType.elephant) {
         return false;
@@ -103,7 +101,7 @@ class GameController {
         piece.animalType == AnimalType.tiger);
 
     // With extended variant, leopard can also jump horizontally
-    if (extendedLionTigerJumps && piece.animalType == AnimalType.leopard) {
+    if (gameConfig.extendedLionTigerJumps && piece.animalType == AnimalType.leopard) {
       canJump = true;
     }
 
@@ -195,7 +193,7 @@ class GameController {
 
   /// Move a piece
   bool movePiece(Position to) {
-    if (gameEnded || selectedPosition == null) return false;
+    if (this.gameEnded || this.selectedPosition == null) return false;
 
     Position from = selectedPosition!;
     if (!isValidMove(from, to)) {
@@ -214,7 +212,7 @@ class GameController {
     // Check win condition: entering opponent's den
     if (board.isOpponentDen(to, currentPlayer)) {
       // With rat-only variant, only rat can win by entering den
-      if (ratOnlyDenEntry && piece.animalType != AnimalType.rat) {
+      if (gameConfig.ratOnlyDenEntry && piece.animalType != AnimalType.rat) {
         // Not a valid win
       } else {
         // Valid win
@@ -229,6 +227,7 @@ class GameController {
     // Capture opponent piece
     if (targetPiece != null) {
       board.removePiece(to);
+      capturedPieces.add(targetPiece);
     }
 
     // Move the piece
@@ -287,20 +286,5 @@ class GameController {
     selectedPosition = null;
     gameEnded = false;
     winner = null;
-  }
-
-  /// Set game variant options
-  void setGameVariant({
-    bool? ratOnlyDenEntry,
-    bool? extendedLionTigerJumps,
-    bool? dogRiverVariant,
-    bool? ratCannotCaptureElephant,
-  }) {
-    if (ratOnlyDenEntry != null) this.ratOnlyDenEntry = ratOnlyDenEntry;
-    if (extendedLionTigerJumps != null)
-      this.extendedLionTigerJumps = extendedLionTigerJumps;
-    if (dogRiverVariant != null) this.dogRiverVariant = dogRiverVariant;
-    if (ratCannotCaptureElephant != null)
-      this.ratCannotCaptureElephant = ratCannotCaptureElephant;
   }
 }

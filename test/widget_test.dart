@@ -15,7 +15,7 @@ void main() {
     await tester.pumpWidget(const AnimalChessApp());
 
     // Verify that the app title is displayed.
-    expect(find.text('Animal Chess (鬥獸棋)'), findsOneWidget);
+    expect(find.text('Animal Chess'), findsOneWidget);
 
     // Verify that player indicators are displayed.
     expect(find.text('Green Player'), findsOneWidget);

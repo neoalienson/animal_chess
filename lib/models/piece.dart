@@ -7,6 +7,9 @@ class Piece {
 
   Piece(this.animalType, this.playerColor);
 
+  // Getter to access playerColor as player for compatibility
+  PlayerColor get player => playerColor;
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
