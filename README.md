@@ -139,8 +139,11 @@ lib/
 │   ├── player_color.dart     # Player colors
 │   └── position.dart         # Position on the board
 └── widgets/
+    ├── about_dialog_widget.dart # About dialog UI
     ├── game_board_widget.dart # Game board UI
-    └── piece_widget.dart      # Individual piece UI
+    ├── main_menu_screen.dart  # Main menu UI
+    ├── piece_widget.dart      # Individual piece UI
+    └── pieces_rank_list_widget.dart # Pieces rank list UI
 ```
 
 ## Testing
