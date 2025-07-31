@@ -8,6 +8,8 @@ import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/widgets/game_board_widget.dart';
 import 'package:animal_chess/widgets/piece_widget.dart';
 import 'package:animal_chess/widgets/pieces_rank_list_widget.dart';
+import 'package:animal_chess/widgets/game_rules_dialog_widget.dart';
+import 'package:animal_chess/widgets/about_dialog_widget.dart';
 import 'dart:math';
 
 void main() {
@@ -30,7 +32,7 @@ class AnimalChessApp extends StatelessWidget {
   }
 
   // Get localized string based on current language
-  static String _getLocalizedString(
+  static String getLocalizedString(
     String english,
     String chineseTraditional,
     String chineseSimplified,
@@ -97,7 +99,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
               children: [
                 // Title
                 Text(
-                  _getLocalizedString(
+                  getLocalizedString(
                     'Animal Chess',
                     '鬥獸棋',
                     '斗兽棋',
@@ -127,7 +129,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: _buildMenuButton(
-                          _getLocalizedString(
+                          getLocalizedString(
                             'New Game',
                             '新遊戲',
                             '新游戏',
@@ -158,7 +160,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: _buildMenuButton(
-                          _getLocalizedString(
+                          getLocalizedString(
                             'Game Instructions',
                             '遊戲說明',
                             '游戏说明',
@@ -173,7 +175,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                           ),
                           Icons.help,
                           () {
-                            _showGameInstructions();
+                            _showRulesDialog();
                           },
                         ),
                       ),
@@ -181,7 +183,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: _buildMenuButton(
-                          _getLocalizedString(
+                          getLocalizedString(
                             'Settings',
                             '設定',
                             '设置',
@@ -211,7 +213,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: _buildMenuButton(
-                          _getLocalizedString(
+                          getLocalizedString(
                             'About',
                             '關於',
                             '关于',
@@ -299,195 +301,6 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     );
   }
 
-  // Show game instructions
-  void _showGameInstructions() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            AnimalChessApp._getLocalizedString(
-              'Game Instructions',
-              '遊戲規則',
-              '游戏规则',
-              'ゲームの遊び方',
-              '게임 방법',
-              'คำแนะนำเกม',
-              'Instructions du jeu',
-              'Instrucciones del juego',
-              'Instruções do Jogo',
-              'Spielanleitung',
-              _currentLanguage,
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    'Animal Chess is a strategic board game for two players.',
-                    '鬥獸棋是兩人對弈的戰略棋盤遊戲。',
-                    '斗兽棋是两人对弈的战略棋盘游戏。',
-                    '動物チェスは2人用の戦略ボードゲームです。',
-                    '동물 체스는 두 명의 플레이어를 위한 전략 보드 게임입니다.',
-                    'หมากรุกสัตว์เป็นเกมกระดานกลยุทธ์สำหรับผู้เล่นสองคน',
-                    'Animal Chess est un jeu de société stratégique pour deux joueurs.',
-                    'El Ajedrez Animal es un juego de mesa estratégico para dos jugadores.',
-                    'Xadrez Animal é um jogo de tabuleiro estratégico para dois jogadores.',
-                    'Tier Schach ist ein strategisches Brettspiel für zwei Spieler.',
-                    _currentLanguage,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    '1. Each player commands 8 animals with different ranks.',
-                    '1. 每位玩家指揮8隻不同等級的動物。',
-                    '1. 每位玩家指挥8只不同等级的动物。',
-                    '1. 各プレイヤーは異なるランクの8匹の動物を指揮します。',
-                    '1. 각 플레이어는 다른 등급의 동물 8마리를 지휘합니다.',
-                    '1. ผู้เล่นแต่ละคนควบคุมสัตว์ 8 ตัวที่มีอันดับต่างกัน',
-                    '1. Chaque joueur commande 8 animaux de rangs différents.',
-                    '1. Cada jugador comanda 8 animales con diferentes rangos.',
-                    '1. Cada jogador comanda 8 animais com diferentes patentes.',
-                    '1. Jeder Spieler befehligt 8 Tiere mit unterschiedlichen Rängen.',
-                    _currentLanguage,
-                  ),
-                ),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    "2. Objective: Move any piece into opponent's den or capture all opponent pieces.",
-                    '2. 目標：將任何棋子移入對方獸穴或捕獲所有對方棋子。',
-                    '2. 目标：将任何棋子移入对方兽穴或捕获所有对方棋子。',
-                    '2. 目的：相手の巣穴に駒を進めるか、相手の駒をすべて捕獲する。',
-                    '2. 목표: 상대방의 굴에 말을 이동시키거나 상대방의 말을 모두 잡는 것입니다.',
-                    '2. วัตถุประสงค์: ย้ายหมากตัวใดตัวหนึ่งเข้าไปในรังของคู่ต่อสู้ หรือจับหมากของคู่ต่อสู้ทั้งหมด',
-                    '2. Objectif: Déplacer une pièce dans le repaire de l\'adversaire ou capturer toutes les pièces adverses.',
-                    '2. Objetivo: Mover cualquier pieza al den del oponente o capturar todas las piezas del oponente.',
-                    '2. Objetivo: Mover qualquer peça para a toca do oponente ou capturar todas as peças do oponente.',
-                    '2. Ziel: Eine Figur in die Höhle des Gegners bewegen oder alle gegnerischen Figuren schlagen.',
-                    _currentLanguage,
-                  ),
-                ),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    '3. Pieces move one space orthogonally (up, down, left, or right).',
-                    '3. 棋子可向上、下、左、右移動一格。',
-                    '3. 棋子可向上、下、左、右移动一格。',
-                    '3. 駒は縦横に1マス移動します。',
-                    '3. 말은 상하좌우로 한 칸씩 움직입니다.',
-                    '3. หมากเคลื่อนที่ได้หนึ่งช่องในแนวตั้ง (ขึ้น, ลง, ซ้าย, หรือขวา)',
-                    '3. Les pièces se déplacent d\'une case orthogonalement (haut, bas, gauche ou droite).',
-                    '3. Las piezas se mueven una casilla ortogonalmente (arriba, abajo, izquierda o derecha).',
-                    '3. As peças movem-se uma casa ortogonalmente (para cima, para baixo, para a esquerda ou para a direita).',
-                    '3. Figuren bewegen sich ein Feld orthogonal (hoch, runter, links oder rechts).',
-                    _currentLanguage,
-                  ),
-                ),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    '4. Only the Rat can enter the river.',
-                    '4. 只有老鼠可以進入河流。',
-                    '4. 只有老鼠可以进入河流。',
-                    '4. ネズミだけが川に入ることができます。',
-                    '4. 쥐만 강에 들어갈 수 있습니다.',
-                    '4. หนูเท่านั้นที่สามารถลงแม่น้ำได้',
-                    '4. Seul le Rat peut entrer dans la rivière.',
-                    '4. Solo la Rata puede entrar al río.',
-                    '4. Apenas o Rato pode entrar no rio.',
-                    '4. Nur die Ratte darf den Fluss betreten.',
-                    _currentLanguage,
-                  ),
-                ),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    '5. Lion and Tiger can jump over rivers.',
-                    '5. 獅子和老虎可以跳過河流。',
-                    '5. 狮子和老虎可以跳过河流。',
-                    '5. ライオンとトラは川を飛び越えることができます。',
-                    '5. 사자와 호랑이는 강을 뛰어넘을 수 있습니다.',
-                    '5. สิงโตและเสือสามารถกระโดดข้ามแม่น้ำได้',
-                    '5. Le Lion et le Tigre peuvent sauter par-dessus les rivières.',
-                    '5. El León y el Tigre pueden saltar sobre los ríos.',
-                    '5. O Leão e o Tigre podem saltar sobre os rios.',
-                    '5. Löwe und Tiger können über Flüsse springen.',
-                    _currentLanguage,
-                  ),
-                ),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    '6. Pieces in traps can be captured by any opponent piece.',
-                    '6. 在陷阱中的棋子可被任何對手棋子捕獲。',
-                    '6. 在陷阱中的棋子可被任何对手棋子捕获。',
-                    '6. 罠の中の駒は、相手のどの駒でも捕獲できます。',
-                    '6. 덫에 갇힌 말은 상대방의 어떤 말이라도 잡을 수 있습니다.',
-                    '6. หมากในกับดักสามารถถูกจับได้โดยหมากของคู่ต่อสู้',
-                    '6. Les pièces dans les pièges peuvent être capturées par n\'importe quelle pièce adverse.',
-                    '6. Las piezas en trampas pueden ser capturadas por cualquier pieza oponente.',
-                    '6. Peças em armadilhas podem ser capturadas por qualquer peça adversária.',
-                    '6. Figuren in Fallen können von jeder gegnerischen Figur geschlagen werden.',
-                    _currentLanguage,
-                  ),
-                ),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    "7. A piece can capture an opponent's piece if it is of equal or lower rank.",
-                    '7. 棋子可以捕獲等級相同或較低的對手棋子。',
-                    '7. 棋子可以捕获等级相同或较低的对手棋子。',
-                    '7. 駒は、同等またはそれ以下のランクの相手の駒を捕獲できます。',
-                    '7. 말은 자신과 같거나 낮은 등급의 상대방 말을 잡을 수 있습니다.',
-                    '7. หมากสามารถจับหมากของคู่ต่อสู้ได้หากมีอันดับเท่ากันหรือต่ำกว่า',
-                    '7. Une pièce peut capturer une pièce adverse si elle est de rang égal ou inférieur.',
-                    '7. Una pieza puede capturar una pieza oponente si es de igual o menor rango.',
-                    '7. Uma peça pode capturar uma peça do oponente se for de patente igual ou inferior.',
-                    '7. Eine Figur kann eine gegnerische Figur schlagen, wenn sie gleich oder niedriger im Rang ist.',
-                    _currentLanguage,
-                  ),
-                ),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    '8. Exception: Rat can capture Elephant, and Elephant can capture Rat.',
-                    '8. 例外：老鼠可以捕獲大象，大象可以捕獲老鼠。',
-                    '8. 例外：老鼠可以捕获大象，大象可以捕获老鼠。',
-                    '8. 例外：ネズミはゾウを捕獲でき、ゾウはネズミを捕獲できます。',
-                    '8. 예외: 쥐는 코끼리를 잡을 수 있고, 코끼리는 쥐를 잡을 수 있습니다.',
-                    '8. ข้อยกเว้น: หนูจับช้างได้ และช้างจับหนูได้',
-                    '8. Exception: Le rat peut capturer l\'éléphant, et l\'éléphant peut capturer le rat.',
-                    '8. Excepción: La rata puede capturar al elefante, y el elefante puede capturar a la rata.',
-                    '8. Exceção: O Rato pode capturar o Elefante, e o Elefante pode capturar o Rato.',
-                    '8. Ausnahme: Ratte kann Elefant schlagen, und Elefant kann Ratte schlagen.',
-                    _currentLanguage,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: Navigator.of(context).pop,
-              child: Text(
-                AnimalChessApp._getLocalizedString(
-                  'Close',
-                  '關閉',
-                  '关闭',
-                  '閉じる',
-                  '닫기',
-                  'ปิด',
-                  'Fermer',
-                  'Cerrar',
-                  'Fechar',
-                  'Schließen',
-                  _currentLanguage,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   // Show settings dialog
   void _showSettingsDialog() {
     showDialog(
@@ -497,7 +310,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           builder: (context, setState) {
             return AlertDialog(
               title: Text(
-                AnimalChessApp._getLocalizedString(
+                AnimalChessApp.getLocalizedString(
                   'Game Settings',
                   '遊戲設定',
                   '游戏设置',
@@ -515,7 +328,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _buildVariantToggle(
-                    AnimalChessApp._getLocalizedString(
+                    AnimalChessApp.getLocalizedString(
                       'Rat-Only Den Entry',
                       '只有老鼠可以進入獸穴',
                       '只有老鼠可以进入兽穴',
@@ -538,7 +351,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                     },
                   ),
                   _buildVariantToggle(
-                    AnimalChessApp._getLocalizedString(
+                    AnimalChessApp.getLocalizedString(
                       'Extended Lion/Tiger Jumps',
                       '獅虎跳躍擴展',
                       '狮虎跳跃扩展',
@@ -561,7 +374,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                     },
                   ),
                   _buildVariantToggle(
-                    AnimalChessApp._getLocalizedString(
+                    AnimalChessApp.getLocalizedString(
                       'Dog River Variant',
                       '狗入河變體',
                       '狗入河变体',
@@ -584,7 +397,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                     },
                   ),
                   _buildVariantToggle(
-                    AnimalChessApp._getLocalizedString(
+                    AnimalChessApp.getLocalizedString(
                       'Rat cannot capture Elephant',
                       '老鼠不能捕獲大象',
                       '老鼠不能捕获大象',
@@ -616,7 +429,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                     this.setState(() {});
                   },
                   child: Text(
-                    AnimalChessApp._getLocalizedString(
+                    AnimalChessApp.getLocalizedString(
                       'Close',
                       '關閉',
                       '关闭',
@@ -658,7 +471,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            AnimalChessApp._getLocalizedString(
+            AnimalChessApp.getLocalizedString(
               'Select Language',
               '選擇語言',
               '选择语言',
@@ -691,7 +504,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
             TextButton(
               onPressed: Navigator.of(context).pop,
               child: Text(
-                AnimalChessApp._getLocalizedString(
+                AnimalChessApp.getLocalizedString(
                   'Cancel',
                   '取消',
                   '取消',
@@ -726,48 +539,28 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     );
   }
 
+  // Show rules dialog
+  void _showRulesDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return GameRulesDialogWidget(currentLanguage: _currentLanguage);
+      },
+    );
+  }
+
   // Show about dialog
   void _showAboutDialog() {
-    showAboutDialog(
+    showDialog(
       context: context,
-      applicationName: AnimalChessApp._getLocalizedString(
-        'Animal Chess',
-        '鬥獸棋',
-        '斗兽棋',
-        '動物チェス',
-        '동물 체스',
-        'หมากรุกสัตว์',
-        'Échecs Animaux',
-        'Ajedrez Animal',
-        'Xadrez Animal',
-        'Tier Schach',
-        _currentLanguage,
-      ),
-      applicationVersion: '1.0.0',
-      applicationIcon: const Icon(Icons.adb),
-      applicationLegalese: '© 2025 Animal Chess',
-      children: [
-        Text(
-          AnimalChessApp._getLocalizedString(
-            'A Flutter implementation of the classic Chinese board game Animal Chess (Dou Shou Qi).',
-            '經典中國棋盤遊戲鬥獸棋的Flutter實現。',
-            '经典中国棋盘游戏斗兽棋的Flutter实现。',
-            '古典的な中国のボードゲーム「動物チェス（鬥獸棋）」のFlutter実装。',
-            '고전 중국 보드 게임 동물 체스(鬥獸棋)의 Flutter 구현.',
-            'การนำเกมหมากรุกสัตว์ (鬥獸棋) แบบจีนคลาสสิกมาใช้ใน Flutter',
-            'Une implémentation Flutter du jeu de société chinois classique Animal Chess (Dou Shou Qi).',
-            'Una implementación en Flutter del clásico juego de mesa chino Ajedrez Animal (Dou Shou Qi).',
-            'Uma implementação Flutter do clássico jogo de tabuleiro chinês Xadrez Animal (Dou Shou Qi).',
-            'Eine Flutter-Implementierung des klassischen chinesischen Brettspiels Tier Schach (Dou Shou Qi).',
-            _currentLanguage,
-          ),
-        ),
-      ],
+      builder: (BuildContext context) {
+        return AboutDialogWidget(currentLanguage: _currentLanguage);
+      },
     );
   }
 
   // Get localized string based on current language
-  static String _getLocalizedString(
+  static String getLocalizedString(
     String english,
     String chineseTraditional,
     String chineseSimplified,
@@ -848,7 +641,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AnimalChessApp._getLocalizedString(
+          AnimalChessApp.getLocalizedString(
             'Animal Chess',
             '鬥獸棋',
             '斗兽棋',
@@ -867,7 +660,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _resetGame,
-            tooltip: AnimalChessApp._getLocalizedString(
+            tooltip: AnimalChessApp.getLocalizedString(
               'Reset Game',
               '重置遊戲',
               '重置游戏',
@@ -889,7 +682,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
                 PopupMenuItem<String>(
                   value: 'rules',
                   child: Text(
-                    AnimalChessApp._getLocalizedString(
+                    AnimalChessApp.getLocalizedString(
                       'Game Rules',
                       '遊戲規則',
                       '游戏规则',
@@ -907,7 +700,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
                 PopupMenuItem<String>(
                   value: 'variants',
                   child: Text(
-                    AnimalChessApp._getLocalizedString(
+                    AnimalChessApp.getLocalizedString(
                       'Game Variants',
                       '遊戲變體',
                       '游戏变体',
@@ -993,7 +786,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
         children: [
           _buildPlayerIndicator(
             PlayerColor.green,
-            AnimalChessApp._getLocalizedString(
+            AnimalChessApp.getLocalizedString(
               'Green Player',
               '綠方玩家',
               '绿方玩家',
@@ -1010,7 +803,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
           ),
           _buildPlayerIndicator(
             PlayerColor.red,
-            AnimalChessApp._getLocalizedString(
+            AnimalChessApp.getLocalizedString(
               'Red Player',
               '紅方玩家',
               '红方玩家',
@@ -1076,7 +869,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
     if (_gameController.gameEnded) {
       if (_gameController.winner != null) {
         String winner = _gameController.winner == PlayerColor.green
-            ? AnimalChessApp._getLocalizedString(
+            ? AnimalChessApp.getLocalizedString(
                 'Green Player',
                 '綠方玩家',
                 '绿方玩家',
@@ -1089,7 +882,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
                 'Grüner Spieler',
                 widget.currentLanguage,
               )
-            : AnimalChessApp._getLocalizedString(
+            : AnimalChessApp.getLocalizedString(
                 'Red Player',
                 '紅方玩家',
                 '红方玩家',
@@ -1102,7 +895,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
                 'Roter Spieler',
                 widget.currentLanguage,
               );
-        statusText = AnimalChessApp._getLocalizedString(
+        statusText = AnimalChessApp.getLocalizedString(
           'Game Over! $winner wins!',
           '遊戲結束！$winner 獲勝！',
           '游戏结束！$winner 获胜！',
@@ -1119,7 +912,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
             ? Colors.green
             : Colors.red;
       } else {
-        statusText = AnimalChessApp._getLocalizedString(
+        statusText = AnimalChessApp.getLocalizedString(
           'Game Over! It\'s a draw!',
           '遊戲結束！平局！',
           '游戏结束！平局！',
@@ -1136,7 +929,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
       }
     } else {
       String currentPlayer = _gameController.currentPlayer == PlayerColor.green
-          ? AnimalChessApp._getLocalizedString(
+          ? AnimalChessApp.getLocalizedString(
               'Green Player',
               '綠方玩家',
               '绿方玩家',
@@ -1149,7 +942,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
               'Grüner Spieler',
               widget.currentLanguage,
             )
-          : AnimalChessApp._getLocalizedString(
+          : AnimalChessApp.getLocalizedString(
               'Red Player',
               '紅方玩家',
               '红方玩家',
@@ -1162,7 +955,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
               'Roter Spieler',
               widget.currentLanguage,
             );
-      statusText = AnimalChessApp._getLocalizedString(
+      statusText = AnimalChessApp.getLocalizedString(
         '$currentPlayer' + '\'s turn',
         '$currentPlayer 的回合',
         '$currentPlayer 的回合',
@@ -1245,195 +1038,6 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
     }
   }
 
-  /// Show game rules dialog
-  void _showRulesDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            AnimalChessApp._getLocalizedString(
-              'Game Rules',
-              '遊戲規則',
-              '游戏规则',
-              'ゲームルール',
-              '게임 규칙',
-              'กฎของเกม',
-              'Règles du jeu',
-              'Reglas del juego',
-              'Regras do Jogo',
-              'Spielregeln',
-              widget.currentLanguage,
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    'Animal Chess is a strategic board game for two players.',
-                    '鬥獸棋是兩人對弈的戰略棋盤遊戲。',
-                    '斗兽棋是两人对弈的战略棋盘游戏。',
-                    '動物チェスは2人用の戦略ボードゲームです。',
-                    '동물 체스는 두 명의 플레이어를 위한 전략 보드 게임입니다.',
-                    'หมากรุกสัตว์เป็นเกมกระดานกลยุทธ์สำหรับผู้เล่นสองคน',
-                    'Animal Chess est un jeu de société stratégique pour deux joueurs.',
-                    'El Ajedrez Animal es un juego de mesa estratégico para dos jugadores.',
-                    'Xadrez Animal é um jogo de tabuleiro estratégico para dois jogadores.',
-                    'Tier Schach ist ein strategisches Brettspiel für zwei Spieler.',
-                    widget.currentLanguage,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    '1. Each player commands 8 animals with different ranks.',
-                    '1. 每位玩家指揮8隻不同等級的動物。',
-                    '1. 每位玩家指挥8只不同等级的动物。',
-                    '1. 各プレイヤーは異なるランクの8匹の動物を指揮します。',
-                    '1. 각 플레이어는 다른 등급의 동물 8마리를 지휘합니다.',
-                    '1. ผู้เล่นแต่ละคนควบคุมสัตว์ 8 ตัวที่มีอันดับต่างกัน',
-                    '1. Chaque joueur commande 8 animaux de rangs différents.',
-                    '1. Cada jugador comanda 8 animales con diferentes rangos.',
-                    '1. Cada jogador comanda 8 animais com diferentes patentes.',
-                    '1. Jeder Spieler befehligt 8 Tiere mit unterschiedlichen Rängen.',
-                    widget.currentLanguage,
-                  ),
-                ),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    "2. Objective: Move any piece into opponent's den or capture all opponent pieces.",
-                    '2. 目標：將任何棋子移入對方獸穴或捕獲所有對方棋子。',
-                    '2. 目标：将任何棋子移入对方兽穴或捕获所有对方棋子。',
-                    '2. 目的：相手の巣穴に駒を進めるか、相手の駒をすべて捕獲する。',
-                    '2. 목표: 상대방의 굴에 말을 이동시키거나 상대방의 말을 모두 잡는 것입니다.',
-                    '2. วัตถุประสงค์: ย้ายหมากตัวใดตัวหนึ่งเข้าไปในรังของคู่ต่อสู้ หรือจับหมากของคู่ต่อสู้ทั้งหมด',
-                    "2. Objectif: Déplacer une pièce dans le repaire de l'adversaire ou capturer toutes les pièces adverses.",
-                    '2. Objetivo: Mover cualquier pieza al den del oponente o capturar todas las piezas del oponente.',
-                    '2. Objetivo: Mover qualquer peça para a toca do oponente ou capturar todas as peças do oponente.',
-                    '2. Ziel: Eine Figur in die Höhle des Gegners bewegen oder alle gegnerischen Figuren schlagen.',
-                    widget.currentLanguage,
-                  ),
-                ),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    '3. Pieces move one space orthogonally (up, down, left, or right).',
-                    '3. 棋子可向上、下、左、右移動一格。',
-                    '3. 棋子可向上、下、左、右移动一格。',
-                    '3. 駒は縦横に1マス移動します。',
-                    '3. 말은 상하좌우로 한 칸씩 움직입니다.',
-                    '3. หมากเคลื่อนที่ได้หนึ่งช่องในแนวตั้ง (ขึ้น, ลง, ซ้าย, หรือขวา)',
-                    '3. Les pièces se déplacent d\'une case orthogonalement (haut, bas, gauche ou droite).',
-                    '3. Las piezas se mueven una casilla ortogonalmente (arriba, abajo, izquierda o derecha).',
-                    '3. As peças movem-se uma casa ortogonalmente (para cima, para baixo, para a esquerda ou para a direita).',
-                    '3. Figuren bewegen sich ein Feld orthogonal (hoch, runter, links oder rechts).',
-                    widget.currentLanguage,
-                  ),
-                ),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    '4. Only the Rat can enter the river.',
-                    '4. 只有老鼠可以進入河流。',
-                    '4. 只有老鼠可以进入河流。',
-                    '4. ネズミだけが川に入ることができます。',
-                    '4. 쥐만 강에 들어갈 수 있습니다.',
-                    '4. หนูเท่านั้นที่สามารถลงแม่น้ำได้',
-                    '4. Seul le Rat peut entrer dans la rivière.',
-                    '4. Solo la Rata puede entrar al río.',
-                    '4. Apenas o Rato pode entrar no rio.',
-                    '4. Nur die Ratte darf den Fluss betreten.',
-                    widget.currentLanguage,
-                  ),
-                ),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    '5. Lion and Tiger can jump over rivers.',
-                    '5. 獅子和老虎可以跳過河流。',
-                    '5. 狮子和老虎可以跳过两条河流。',
-                    '5. ライオンとトラは川を飛び越えることができます。',
-                    '5. 사자와 호랑이는 강을 뛰어넘을 수 있습니다.',
-                    '5. สิงโตและเสือสามารถกระโดดข้ามแม่น้ำทั้งสองได้',
-                    '5. Le Lion et le Tigre peuvent sauter par-dessus les rivières.',
-                    '5. El León y el Tigre pueden saltar sobre ambos ríos.',
-                    '5. O Leão e o Tigre podem saltar sobre ambos os rios.',
-                    '5. Löwe und Tiger können über beide Flüsse springen.',
-                    widget.currentLanguage,
-                  ),
-                ),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    '6. Pieces in traps can be captured by any opponent piece.',
-                    '6. 在陷阱中的棋子可被任何對手棋子捕獲。',
-                    '6. 在陷阱中的棋子可被任何对手棋子捕获。',
-                    '6. 罠の中の駒は、相手のどの駒でも捕獲できます。',
-                    '6. 덫에 갇힌 말은 상대방의 어떤 말이라도 잡을 수 있습니다.',
-                    '6. หมากในกับดักสามารถถูกจับได้โดยหมากของคู่ต่อสู้',
-                    '6. Les pièces dans les pièges peuvent être capturées par n\'importe quelle pièce adverse.',
-                    '6. Las piezas en trampas pueden ser capturadas por cualquier pieza oponente.',
-                    '6. Peças em armadilhas podem ser capturadas por qualquer peça adversária.',
-                    '6. Figuren in Fallen können von jeder gegnerischen Figur geschlagen werden.',
-                    widget.currentLanguage,
-                  ),
-                ),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    '7. A piece can capture an opponent\'s piece if it is of equal or lower rank.',
-                    '7. 棋子可以捕獲等級相同或較低的對手棋子。',
-                    '7. 棋子可以捕获等级相同或较低的对手棋子。',
-                    '7. 駒は、同等またはそれ以下のランクの相手の駒を捕獲できます。',
-                    '7. 말은 자신과 같거나 낮은 등급의 상대방 말을 잡을 수 있습니다.',
-                    '7. หมากสามารถจับหมากของคู่ต่อสู้ได้หากมีอันดับเท่ากันหรือต่ำกว่า',
-                    '7. Une pièce peut capturer une pièce adverse si elle est de rang égal ou inférieur.',
-                    '7. Las piezas en trampas pueden ser capturadas por cualquier pieza oponente.',
-                    '7. Uma peça pode capturar uma peça do oponente se for de patente igual ou inferior.',
-                    '7. Eine Figur kann eine gegnerische Figur schlagen, wenn sie gleich oder niedriger im Rang ist.',
-                    widget.currentLanguage,
-                  ),
-                ),
-                Text(
-                  AnimalChessApp._getLocalizedString(
-                    '8. Exception: Rat can capture Elephant, and Elephant can capture Rat.',
-                    '8. 例外：老鼠可以捕獲大象，大象可以捕獲老鼠。',
-                    '8. 例外：老鼠可以捕獲大象，大象可以捕獲老鼠。',
-                    '8. 例外：ネズミはゾウを捕獲でき、ゾウはネズミを捕獲できます。',
-                    '8. 예외: 쥐는 코끼리를 잡을 수 있고, 코끼리는 쥐를 잡을 수 있습니다.',
-                    '8. ข้อยกเว้น: หนูจับช้างได้ และช้างจับหนูได้',
-                    '8. Exception: Le rat peut capturer l\'éléphant, et l\'éléphant peut capturer le rat.',
-                    '8. Excepción: La rata puede capturar al elefante, y el elefante puede capturar a la rata.',
-                    '8. Exceção: O Rato pode capturar o Elefante, e o Elefante pode capturar o Rato.',
-                    '8. Ausnahme: Ratte kann Elefant schlagen, und Elefant kann Ratte schlagen.',
-                    widget.currentLanguage,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: Navigator.of(context).pop,
-              child: Text(
-                AnimalChessApp._getLocalizedString(
-                  'Close',
-                  '關閉',
-                  '关闭',
-                  '閉じる',
-                  '닫기',
-                  'ปิด',
-                  'Fermer',
-                  'Cerrar',
-                  'Fechar',
-                  'Schließen',
-                  widget.currentLanguage,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   /// Show game variants dialog
   void _showVariantsDialog() {
     showDialog(
@@ -1441,7 +1045,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            AnimalChessApp._getLocalizedString(
+            AnimalChessApp.getLocalizedString(
               'Game Variants',
               '遊戲變體',
               '游戏变体',
@@ -1460,7 +1064,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AnimalChessApp._getLocalizedString(
+                  AnimalChessApp.getLocalizedString(
                     '1. Rat-Only Den Entry: Only the Rat can enter the opponent\'s den to win',
                     '1. 只有老鼠可以進入獸穴：只有老鼠可以進入對手獸穴獲勝',
                     '1. 只有老鼠可以进入兽穴：只有老鼠可以进入对手兽穴获胜',
@@ -1476,7 +1080,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  AnimalChessApp._getLocalizedString(
+                  AnimalChessApp.getLocalizedString(
                     '2. Extended Lion/Tiger Jumps:',
                     '2. 獅虎跳躍擴展：',
                     '2. 狮虎跳跃扩展：',
@@ -1491,7 +1095,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
                   ),
                 ),
                 Text(
-                  AnimalChessApp._getLocalizedString(
+                  AnimalChessApp.getLocalizedString(
                     '   - Lion can jump over both rivers',
                     '   - 獅子可以跳過兩條河流',
                     '   - 狮子可以跳过两条河流',
@@ -1506,7 +1110,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
                   ),
                 ),
                 Text(
-                  AnimalChessApp._getLocalizedString(
+                  AnimalChessApp.getLocalizedString(
                     '   - Tiger can jump over a single river',
                     '   - 老虎可以跳過一條河流',
                     '   - 老虎可以跳过一条河流',
@@ -1521,7 +1125,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
                   ),
                 ),
                 Text(
-                  AnimalChessApp._getLocalizedString(
+                  AnimalChessApp.getLocalizedString(
                     '   - Leopard can cross rivers horizontally',
                     '   - 豹可以橫向過河',
                     '   - 豹可以横向过河',
@@ -1537,7 +1141,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  AnimalChessApp._getLocalizedString(
+                  AnimalChessApp.getLocalizedString(
                     '3. Dog River Variant:',
                     '3. 狗入河變體：',
                     '3. 狗入河变体：',
@@ -1552,7 +1156,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
                   ),
                 ),
                 Text(
-                  AnimalChessApp._getLocalizedString(
+                  AnimalChessApp.getLocalizedString(
                     '   - Dog can enter the river',
                     '   - 狗可以進入河流。',
                     '   - 狗可以进入河流。',
@@ -1567,7 +1171,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
                   ),
                 ),
                 Text(
-                  AnimalChessApp._getLocalizedString(
+                  AnimalChessApp.getLocalizedString(
                     '   - Only the Dog can capture pieces on the shore from within the river',
                     '   - 只有狗可以在河中捕獲岸上的棋子',
                     '   - 只有狗可以在河中捕获岸上的棋子',
@@ -1583,7 +1187,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  AnimalChessApp._getLocalizedString(
+                  AnimalChessApp.getLocalizedString(
                     '4. Rat cannot capture Elephant',
                     '4. 老鼠不能捕獲大象',
                     '4. 老鼠不能捕獲大象',
@@ -1604,7 +1208,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
             TextButton(
               onPressed: Navigator.of(context).pop,
               child: Text(
-                AnimalChessApp._getLocalizedString(
+                AnimalChessApp.getLocalizedString(
                   'Close',
                   '關閉',
                   '关闭',
@@ -1628,5 +1232,15 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
   /// Build pieces rank list
   Widget _buildPiecesRankList() {
     return PiecesRankListWidget();
+  }
+
+  /// Show rules dialog
+  void _showRulesDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return GameRulesDialogWidget(currentLanguage: widget.currentLanguage);
+      },
+    );
   }
 }
