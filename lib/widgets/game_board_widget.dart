@@ -3,8 +3,10 @@ import 'package:animal_chess/models/game_board.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/piece.dart';
+import 'package:animal_chess/models/animal_type.dart';
 import 'package:animal_chess/widgets/piece_widget.dart';
 import 'package:animal_chess/game/game_controller.dart';
+import 'package:animal_chess/l10n/app_localizations.dart';
 
 class GameBoardWidget extends StatelessWidget {
   final GameController gameController;
@@ -24,6 +26,7 @@ class GameBoardWidget extends StatelessWidget {
       aspectRatio: 7 / 9, // 7 columns × 9 rows
       child: LayoutBuilder(
         builder: (context, constraints) {
+          final localizations = AppLocalizations.of(context);
           // Calculate the size of each cell
           final cellSize = constraints.maxWidth / GameBoard.columns;
 
@@ -42,7 +45,7 @@ class GameBoardWidget extends StatelessWidget {
                 int col = index % GameBoard.columns;
                 Position position = Position(col, row);
 
-                return _buildBoardCell(position, cellSize);
+                return _buildBoardCell(position, cellSize, localizations);
               },
             ),
           );
@@ -52,7 +55,7 @@ class GameBoardWidget extends StatelessWidget {
   }
 
   /// Build a single cell of the board
-  Widget _buildBoardCell(Position position, double cellSize) {
+  Widget _buildBoardCell(Position position, double cellSize, AppLocalizations localizations) {
     GameBoard board = gameController.board;
     Piece? piece = board.getPiece(position);
     bool isSelected = gameController.selectedPosition == position;
@@ -89,6 +92,7 @@ class GameBoardWidget extends StatelessWidget {
               isSelected: isSelected,
               onTap: () => onPositionTap(position),
               size: cellSize, // Pass the cell size to the PieceWidget
+              animalName: _getLocalizedAnimalName(localizations, piece.animalType),
             )
           // Empty cell tap handler
           else
@@ -110,6 +114,27 @@ class GameBoardWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+  
+  String _getLocalizedAnimalName(AppLocalizations localizations, AnimalType animalType) {
+    switch (animalType) {
+      case AnimalType.elephant:
+        return localizations.elephantName;
+      case AnimalType.lion:
+        return localizations.lionName;
+      case AnimalType.tiger:
+        return localizations.tigerName;
+      case AnimalType.leopard:
+        return localizations.leopardName;
+      case AnimalType.wolf:
+        return localizations.wolfName;
+      case AnimalType.dog:
+        return localizations.dogName;
+      case AnimalType.cat:
+        return localizations.catName;
+      case AnimalType.rat:
+        return localizations.ratName;
+    }
   }
 
   /// Get background color for a cell based on its type

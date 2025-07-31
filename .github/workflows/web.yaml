@@ -22,7 +22,7 @@ jobs:
           channel: 'stable'
 
       - run: flutter pub get
-
+      - run: flutter gen-l10n
       - run: flutter build web --release --base-href="/animal_chess/"
 
       - uses: peaceiris/actions-gh-pages@v3

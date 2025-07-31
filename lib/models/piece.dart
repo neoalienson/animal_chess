@@ -23,7 +23,7 @@ class Piece {
   int get hashCode => Object.hash(animalType, playerColor);
 
   @override
-  String toString() => '${playerColor.name} ${animalType.chineseName}';
+  String toString() => '${playerColor.name} ${animalType.name}';
 
   /// Check if this piece can capture the opponent piece
   bool canCapture(Piece opponent) {

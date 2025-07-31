@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/piece.dart';
+import 'package:animal_chess/models/animal_type.dart';
+import 'package:animal_chess/l10n/app_localizations.dart';
 
 class PieceWidget extends StatelessWidget {
   final Piece piece;
@@ -8,6 +10,7 @@ class PieceWidget extends StatelessWidget {
   final VoidCallback? onTap;
   final double size; // New parameter for piece size
   final bool isRankDisplay; // New parameter for rank display
+  final String? animalName; // New parameter for localized animal name
 
   const PieceWidget({
     super.key,
@@ -16,7 +19,30 @@ class PieceWidget extends StatelessWidget {
     this.onTap,
     this.size = 40.0, // Default size
     this.isRankDisplay = false, // Default to false
+    this.animalName, // Allow passing a localized name
   });
+
+  /// Returns the default animal name (Chinese) when no localized name is provided
+  String _getDefaultAnimalName(AnimalType animalType) {
+    switch (animalType) {
+      case AnimalType.elephant:
+        return '象';
+      case AnimalType.lion:
+        return '獅';
+      case AnimalType.tiger:
+        return '虎';
+      case AnimalType.leopard:
+        return '豹';
+      case AnimalType.wolf:
+        return '狼';
+      case AnimalType.dog:
+        return '狗';
+      case AnimalType.cat:
+        return '貓';
+      case AnimalType.rat:
+        return '鼠';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +92,9 @@ class PieceWidget extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            piece.animalType.chineseName,
+            _getDefaultAnimalName(
+              piece.animalType,
+            ), // Enforce Chines for game pieces
             style: TextStyle(
               color: textColor,
               fontSize: pieceSize * 0.5, // Adjust font size proportionally

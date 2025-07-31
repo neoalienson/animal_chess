@@ -1,6 +1,8 @@
 {
   "@@locale": "fr",
   "animalChess": "Échecs Animaux",
+  "appTitle": "Échecs Animaux (Dou Shou Qi)",
+  "appLegalese": "© {year} Échecs Animaux",
   "appDescription": "Une implémentation Flutter du jeu de société chinois classique Animal Chess (Dou Shou Qi).",
   "newGame": "Nouvelle partie",
   "gameInstructions": "Instructions du jeu",
@@ -38,5 +40,13 @@
   "variantDogRiver": "Variante de la rivière du chien:",
   "variantDogEnterRiver": "Le Chien peut entrer dans la rivière.",
   "variantDogCaptureFromRiver": "Seul le Chien peut capturer des pièces sur le rivage depuis la rivière",
-  "piecesRank": "Rang des pièces"
+  "piecesRank": "Rang des pièces",
+  "elephantName": "Éléphant",
+  "lionName": "Lion",
+  "tigerName": "Tigre",
+  "leopardName": "Léopard",
+  "wolfName": "Loup",
+  "dogName": "Chien",
+  "catName": "Chat",
+  "ratName": "Rat"
 }

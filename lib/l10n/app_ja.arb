@@ -1,6 +1,8 @@
 {
   "@@locale": "ja",
   "animalChess": "動物チェス",
+  "appTitle": "動物チェス（鬥獸棋）",
+  "appLegalese": "© {year} 動物チェス",
   "appDescription": "古典的な中国のボードゲーム「動物チェス（鬥獸棋）」のFlutter実装。",
   "newGame": "新しいゲーム",
   "gameInstructions": "ゲームの遊び方",
@@ -38,5 +40,13 @@
   "variantDogRiver": "犬の川のバリアント：",
   "variantDogEnterRiver": "犬は川に入ることができます。",
   "variantDogCaptureFromRiver": "犬だけが川の中から岸の駒を捕獲できます",
-  "piecesRank": "駒のランク"
+  "piecesRank": "駒のランク",
+  "elephantName": "ゾウ",
+  "lionName": "ライオン",
+  "tigerName": "トラ",
+  "leopardName": "ヒョウ",
+  "wolfName": "オオカミ",
+  "dogName": "イヌ",
+  "catName": "ネコ",
+  "ratName": "ネズミ"
 }

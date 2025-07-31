@@ -1,6 +1,8 @@
 {
   "@@locale": "th",
   "animalChess": "หมากรุกสัตว์",
+  "appTitle": "หมากรุกสัตว์ (Dou Shou Qi)",
+  "appLegalese": "© {year} หมากรุกสัตว์",
   "appDescription": "การนำเกมหมากรุกสัตว์ (鬥獸棋) แบบจีนคลาสสิกมาใช้ใน Flutter",
   "newGame": "เกมใหม่",
   "gameInstructions": "คำแนะนำเกม",
@@ -38,5 +40,13 @@
   "variantDogRiver": "รูปแบบแม่น้ำสุนัข:",
   "variantDogEnterRiver": "สุนัขสามารถลงแม่น้ำได้",
   "variantDogCaptureFromRiver": "สุนัขเท่านั้นที่สามารถจับหมากบนฝั่งจากในแม่น้ำได้",
-  "piecesRank": "ระดับหมาก"
+  "piecesRank": "ระดับหมาก",
+  "elephantName": "ช้าง",
+  "lionName": "สิงโต",
+  "tigerName": "เสือ",
+  "leopardName": "เสือดาว",
+  "wolfName": "หมาป่า",
+  "dogName": "สุนัข",
+  "catName": "แมว",
+  "ratName": "หนู"
 }

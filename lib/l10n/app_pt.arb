@@ -1,6 +1,8 @@
 {
   "@@locale": "pt",
   "animalChess": "Xadrez Animal",
+  "appTitle": "Xadrez Animal (Dou Shou Qi)",
+  "appLegalese": "© {year} Xadrez Animal",
   "appDescription": "Uma implementação Flutter do clássico jogo de tabuleiro chinês Xadrez Animal (Dou Shou Qi).",
   "newGame": "Novo Jogo",
   "gameInstructions": "Instruções do Jogo",
@@ -38,5 +40,13 @@
   "variantDogRiver": "Variante do Rio Cão:",
   "variantDogEnterRiver": "O Cão pode entrar no rio.",
   "variantDogCaptureFromRiver": "Apenas o Cão pode capturar peças na margem a partir do rio",
-  "piecesRank": "Patente das peças"
+  "piecesRank": "Patente das peças",
+  "elephantName": "Elefante",
+  "lionName": "Leão",
+  "tigerName": "Tigre",
+  "leopardName": "Leopardo",
+  "wolfName": "Lobo",
+  "dogName": "Cão",
+  "catName": "Gato",
+  "ratName": "Rato"
 }

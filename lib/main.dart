@@ -14,7 +14,7 @@ class AnimalChessApp extends StatefulWidget {
 }
 
 class _AnimalChessAppState extends State<AnimalChessApp> {
-  Locale _locale = const Locale('zh');
+  Locale _locale = const Locale('zh-TW');
 
   void setLocale(Locale locale) {
     setState(() {
@@ -25,7 +25,7 @@ class _AnimalChessAppState extends State<AnimalChessApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Animal Chess (Dou Shou Qi)',
+      title: 'Animal Chess 鬥獸棋',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
         useMaterial3: true,
