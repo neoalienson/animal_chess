@@ -12,6 +12,7 @@ import 'package:animal_chess/widgets/game_rules_dialog_widget.dart';
 import 'package:animal_chess/widgets/about_dialog_widget.dart';
 import 'package:animal_chess/widgets/variants_dialog_widget.dart';
 import 'package:animal_chess/widgets/settings_dialog_widget.dart';
+import 'package:animal_chess/widgets/player_indicator_widget.dart';
 import 'dart:math';
 
 void main() {
@@ -648,9 +649,9 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildPlayerIndicator(
-            PlayerColor.green,
-            AnimalChessApp.getLocalizedString(
+          PlayerIndicatorWidget(
+            player: PlayerColor.green,
+            label: AnimalChessApp.getLocalizedString(
               'Green Player',
               '綠方玩家',
               '绿方玩家',
@@ -663,11 +664,12 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
               'Grüner Spieler',
               widget.currentLanguage,
             ),
-            _gameController.currentPlayer == PlayerColor.green,
+            isActive: _gameController.currentPlayer == PlayerColor.green,
+            currentLanguage: widget.currentLanguage,
           ),
-          _buildPlayerIndicator(
-            PlayerColor.red,
-            AnimalChessApp.getLocalizedString(
+          PlayerIndicatorWidget(
+            player: PlayerColor.red,
+            label: AnimalChessApp.getLocalizedString(
               'Red Player',
               '紅方玩家',
               '红方玩家',
@@ -680,45 +682,8 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
               'Roter Spieler',
               widget.currentLanguage,
             ),
-            _gameController.currentPlayer == PlayerColor.red,
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Build a single player indicator
-  Widget _buildPlayerIndicator(
-    PlayerColor player,
-    String label,
-    bool isActive,
-  ) {
-    Color color = player == PlayerColor.green ? Colors.green : Colors.red;
-    Color backgroundColor = isActive
-        ? color.withValues(alpha: 0.3)
-        : Colors.grey.withValues(alpha: 0.2);
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color, width: 2),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 20,
-            height: 20,
-            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: TextStyle(
-              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-              color: isActive ? color : Colors.grey,
-            ),
+            isActive: _gameController.currentPlayer == PlayerColor.red,
+            currentLanguage: widget.currentLanguage,
           ),
         ],
       ),
