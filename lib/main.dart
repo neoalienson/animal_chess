@@ -13,14 +13,28 @@ import 'package:animal_chess/widgets/about_dialog_widget.dart';
 import 'package:animal_chess/widgets/variants_dialog_widget.dart';
 import 'package:animal_chess/widgets/settings_dialog_widget.dart';
 import 'package:animal_chess/widgets/player_indicator_widget.dart';
+import 'package:animal_chess/l10n/app_localizations.dart';
 import 'dart:math';
 
 void main() {
   runApp(const AnimalChessApp());
 }
 
-class AnimalChessApp extends StatelessWidget {
+class AnimalChessApp extends StatefulWidget {
   const AnimalChessApp({super.key});
+
+  @override
+  State<AnimalChessApp> createState() => _AnimalChessAppState();
+}
+
+class _AnimalChessAppState extends State<AnimalChessApp> {
+  Locale _locale = const Locale('zh');
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,65 +44,32 @@ class AnimalChessApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
         useMaterial3: true,
       ),
-      home: const MainMenuScreen(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: _locale,
+      home: MainMenuScreen(setLocale: setLocale),
     );
-  }
-
-  // Get localized string based on current language
-  static String getLocalizedString(
-    String english,
-    String chineseTraditional,
-    String chineseSimplified,
-    String japanese,
-    String korean,
-    String thai,
-    String french,
-    String spanish,
-    String portuguese,
-    String german,
-    Language currentLanguage,
-  ) {
-    switch (currentLanguage) {
-      case Language.english:
-        return english;
-      case Language.chineseTraditional:
-        return chineseTraditional;
-      case Language.chineseSimplified:
-        return chineseSimplified;
-      case Language.japanese:
-        return japanese;
-      case Language.korean:
-        return korean;
-      case Language.thai:
-        return thai;
-      case Language.french:
-        return french;
-      case Language.spanish:
-        return spanish;
-      case Language.portuguese:
-        return portuguese;
-      case Language.german:
-        return german;
-    }
   }
 }
 
 // Main menu screen
 class MainMenuScreen extends StatefulWidget {
-  const MainMenuScreen({super.key});
+  final Function(Locale) setLocale;
+
+  const MainMenuScreen({super.key, required this.setLocale});
 
   @override
   State<MainMenuScreen> createState() => _MainMenuScreenState();
 }
 
 class _MainMenuScreenState extends State<MainMenuScreen> {
-  // Language options
-  Language _currentLanguage = Language.chineseTraditional;
   // Game configuration
   GameConfig _gameConfig = GameConfig();
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    
     return Scaffold(
       body: Stack(
         children: [
@@ -102,19 +83,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
               children: [
                 // Title
                 Text(
-                  getLocalizedString(
-                    'Animal Chess',
-                    '鬥獸棋',
-                    '斗兽棋',
-                    '動物チェス',
-                    '동물 체스',
-                    'หมากรุกสัตว์',
-                    'Échecs Animaux',
-                    'Ajedrez Animal',
-                    'Xadrez Animal',
-                    'Tier Schach',
-                    _currentLanguage,
-                  ),
+                  localizations.animalChess,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 32,
@@ -132,19 +101,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: _buildMenuButton(
-                          getLocalizedString(
-                            'New Game',
-                            '新遊戲',
-                            '新游戏',
-                            '新しいゲーム',
-                            '새 게임',
-                            'เกมใหม่',
-                            'Nouvelle partie',
-                            'Nuevo juego',
-                            'Novo Jogo',
-                            'Neues Spiel',
-                            _currentLanguage,
-                          ),
+                          localizations.newGame,
                           Icons.play_arrow,
                           () {
                             Navigator.push(
@@ -152,7 +109,6 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                               MaterialPageRoute(
                                 builder: (context) => AnimalChessGame(
                                   gameConfig: _gameConfig,
-                                  currentLanguage: _currentLanguage,
                                 ),
                               ),
                             );
@@ -163,19 +119,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: _buildMenuButton(
-                          getLocalizedString(
-                            'Game Instructions',
-                            '遊戲說明',
-                            '游戏说明',
-                            'ゲームの遊び方',
-                            '게임 방법',
-                            'คำแนะนำเกม',
-                            'Instructions du jeu',
-                            'Instrucciones del juego',
-                            'Instruções do Jogo',
-                            'Spielanleitung',
-                            _currentLanguage,
-                          ),
+                          localizations.gameInstructions,
                           Icons.help,
                           () {
                             _showRulesDialog();
@@ -186,26 +130,13 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: _buildMenuButton(
-                          getLocalizedString(
-                            'Settings',
-                            '設定',
-                            '设置',
-                            '設定',
-                            '설정',
-                            'การตั้งค่า',
-                            'Paramètres',
-                            'Configuración',
-                            'Configurações',
-                            'Einstellungen',
-                            _currentLanguage,
-                          ),
+                          localizations.settings,
                           Icons.settings,
                           () {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return SettingsDialogWidget(
-                                  currentLanguage: _currentLanguage,
                                   gameConfig: _gameConfig,
                                   onConfigChanged: (GameConfig newConfig) {
                                     setState(() {
@@ -221,27 +152,19 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                       const SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity,
-                        child: _buildMenuButton('Language', Icons.language, () {
-                          _showLanguageSelection();
-                        }),
+                        child: _buildMenuButton(
+                          localizations.language,
+                          Icons.language,
+                          () {
+                            _showLanguageSelection();
+                          },
+                        ),
                       ),
                       const SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity,
                         child: _buildMenuButton(
-                          getLocalizedString(
-                            'About',
-                            '關於',
-                            '关于',
-                            'について',
-                            '정보',
-                            'เกี่ยวกับ',
-                            'À propos',
-                            'Acerca de',
-                            'Sobre',
-                            'Über',
-                            _currentLanguage,
-                          ),
+                          localizations.about,
                           Icons.info,
                           () {
                             _showAboutDialog();
@@ -317,72 +240,34 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     );
   }
 
-  Widget _buildVariantToggle(
-    String title,
-    bool value,
-    ValueChanged<bool> onChanged,
-  ) {
-    return SwitchListTile(
-      title: Text(title),
-      value: value,
-      onChanged: onChanged,
-    );
-  }
-
   // Show language selection
   void _showLanguageSelection() {
+    final localizations = AppLocalizations.of(context);
+    
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(
-            AnimalChessApp.getLocalizedString(
-              'Select Language',
-              '選擇語言',
-              '选择语言',
-              '言語選択',
-              '언어 선택',
-              'เลือกภาษา',
-              'Sélectionner la langue',
-              'Seleccionar idioma',
-              'Selecionar Idioma',
-              'Sprache auswählen',
-              _currentLanguage,
-            ),
-          ),
+          title: Text(localizations.selectLanguage),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildLanguageOption(Language.english, 'English'),
-              _buildLanguageOption(Language.chineseTraditional, '繁體中文'),
-              _buildLanguageOption(Language.chineseSimplified, '简体中文'),
-              _buildLanguageOption(Language.japanese, '日本語'),
-              _buildLanguageOption(Language.korean, '한국어'),
-              _buildLanguageOption(Language.thai, 'ไทย'),
-              _buildLanguageOption(Language.french, 'Français'),
-              _buildLanguageOption(Language.spanish, 'Español'),
-              _buildLanguageOption(Language.portuguese, 'Português'),
-              _buildLanguageOption(Language.german, 'Deutsch'),
+              _buildLanguageOption(const Locale('en'), 'English'),
+              _buildLanguageOption(const Locale('zh', 'TW'), '繁體中文'),
+              _buildLanguageOption(const Locale('zh'), '简体中文'),
+              _buildLanguageOption(const Locale('ja'), '日本語'),
+              _buildLanguageOption(const Locale('ko'), '한국어'),
+              _buildLanguageOption(const Locale('th'), 'ไทย'),
+              _buildLanguageOption(const Locale('fr'), 'Français'),
+              _buildLanguageOption(const Locale('es'), 'Español'),
+              _buildLanguageOption(const Locale('pt'), 'Português'),
+              _buildLanguageOption(const Locale('de'), 'Deutsch'),
             ],
           ),
           actions: [
             TextButton(
               onPressed: Navigator.of(context).pop,
-              child: Text(
-                AnimalChessApp.getLocalizedString(
-                  'Cancel',
-                  '取消',
-                  '取消',
-                  'キャンセル',
-                  '취소',
-                  'ยกเลิก',
-                  'Annuler',
-                  'Cancelar',
-                  'Cancelar',
-                  'Abbrechen',
-                  _currentLanguage,
-                ),
-              ),
+              child: Text(localizations.cancel),
             ),
           ],
         );
@@ -391,14 +276,12 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   }
 
   // Build language option
-  Widget _buildLanguageOption(Language language, String label) {
+  Widget _buildLanguageOption(Locale locale, String label) {
     return ListTile(
       title: Text(label),
-      trailing: _currentLanguage == language ? const Icon(Icons.check) : null,
+      trailing: Localizations.localeOf(context) == locale ? const Icon(Icons.check) : null,
       onTap: () {
-        setState(() {
-          _currentLanguage = language;
-        });
+        widget.setLocale(locale);
         Navigator.of(context).pop();
       },
     );
@@ -409,7 +292,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return GameRulesDialogWidget(currentLanguage: _currentLanguage);
+        return const GameRulesDialogWidget();
       },
     );
   }
@@ -419,72 +302,18 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AboutDialogWidget(currentLanguage: _currentLanguage);
+        return const AboutDialogWidget();
       },
     );
   }
-
-  // Get localized string based on current language
-  static String getLocalizedString(
-    String english,
-    String chineseTraditional,
-    String chineseSimplified,
-    String japanese,
-    String korean,
-    String thai,
-    String french,
-    String spanish,
-    String portuguese,
-    String german,
-    Language currentLanguage,
-  ) {
-    switch (currentLanguage) {
-      case Language.english:
-        return english;
-      case Language.chineseTraditional:
-        return chineseTraditional;
-      case Language.chineseSimplified:
-        return chineseSimplified;
-      case Language.japanese:
-        return japanese;
-      case Language.korean:
-        return korean;
-      case Language.thai:
-        return thai;
-      case Language.french:
-        return french;
-      case Language.spanish:
-        return spanish;
-      case Language.portuguese:
-        return portuguese;
-      case Language.german:
-        return german;
-    }
-  }
-}
-
-// Language enum
-enum Language {
-  english,
-  chineseTraditional,
-  chineseSimplified,
-  japanese,
-  korean,
-  thai,
-  french,
-  spanish,
-  portuguese,
-  german,
 }
 
 class AnimalChessGame extends StatefulWidget {
   final GameConfig gameConfig;
-  final Language currentLanguage;
 
   const AnimalChessGame({
     super.key,
     required this.gameConfig,
-    required this.currentLanguage,
   });
 
   @override
@@ -503,41 +332,17 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          AnimalChessApp.getLocalizedString(
-            'Animal Chess',
-            '鬥獸棋',
-            '斗兽棋',
-            '動物チェス',
-            '동물 체스',
-            'หมากรุกสัตว์',
-            'Échecs Animaux',
-            'Ajedrez Animal',
-            'Xadrez Animal',
-            'Tier Schach',
-            widget.currentLanguage,
-          ),
-        ),
+        title: Text(localizations.animalChess),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _resetGame,
-            tooltip: AnimalChessApp.getLocalizedString(
-              'Reset Game',
-              '重置遊戲',
-              '重置游戏',
-              'ゲームをリセット',
-              '게임 재설정',
-              'รีเซ็ตเกม',
-              'Réinitialiser le jeu',
-              'Reiniciar juego',
-              'Reiniciar Jogo',
-              'Spiel zurücksetzen',
-              widget.currentLanguage,
-            ),
+            tooltip: localizations.resetGame,
           ),
           PopupMenuButton<String>(
             icon: const Icon(Icons.settings),
@@ -546,39 +351,11 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
               return [
                 PopupMenuItem<String>(
                   value: 'rules',
-                  child: Text(
-                    AnimalChessApp.getLocalizedString(
-                      'Game Rules',
-                      '遊戲規則',
-                      '游戏规则',
-                      'ゲームルール',
-                      '게임 규칙',
-                      'กฎของเกม',
-                      'Règles du jeu',
-                      'Reglas del juego',
-                      'Regras do Jogo',
-                      'Spielregeln',
-                      widget.currentLanguage,
-                    ),
-                  ),
+                  child: Text(localizations.gameRules),
                 ),
                 PopupMenuItem<String>(
                   value: 'variants',
-                  child: Text(
-                    AnimalChessApp.getLocalizedString(
-                      'Game Variants',
-                      '遊戲變體',
-                      '游戏变体',
-                      'ゲームバリアント',
-                      '게임 변형',
-                      'รูปแบบเกม',
-                      'Variantes du jeu',
-                      'Variantes del juego',
-                      'Variantes do Jogo',
-                      'Spielvarianten',
-                      widget.currentLanguage,
-                    ),
-                  ),
+                  child: Text(localizations.gameVariants),
                 ),
               ];
             },
@@ -617,11 +394,11 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          'Pieces Rank',
-                          style: TextStyle(
+                          localizations.piecesRank,
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -644,6 +421,8 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
 
   /// Build player indicators showing whose turn it is
   Widget _buildPlayerIndicators() {
+    final localizations = AppLocalizations.of(context);
+    
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -651,39 +430,13 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
         children: [
           PlayerIndicatorWidget(
             player: PlayerColor.green,
-            label: AnimalChessApp.getLocalizedString(
-              'Green Player',
-              '綠方玩家',
-              '绿方玩家',
-              '緑のプレイヤー',
-              '녹색 플레이어',
-              'ผู้เล่นสีเขียว',
-              'Joueur Vert',
-              'Jugador Verde',
-              'Jogador Verde',
-              'Grüner Spieler',
-              widget.currentLanguage,
-            ),
+            label: localizations.greenPlayer,
             isActive: _gameController.currentPlayer == PlayerColor.green,
-            currentLanguage: widget.currentLanguage,
           ),
           PlayerIndicatorWidget(
             player: PlayerColor.red,
-            label: AnimalChessApp.getLocalizedString(
-              'Red Player',
-              '紅方玩家',
-              '红方玩家',
-              '赤のプレイヤー',
-              '빨간색 플레이어',
-              'ผู้เล่นสีแดง',
-              'Joueur Rouge',
-              'Jugador Rojo',
-              'Jogador Vermelho',
-              'Roter Spieler',
-              widget.currentLanguage,
-            ),
+            label: localizations.redPlayer,
             isActive: _gameController.currentPlayer == PlayerColor.red,
-            currentLanguage: widget.currentLanguage,
           ),
         ],
       ),
@@ -692,111 +445,29 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
 
   /// Build game status display (winner or current player)
   Widget _buildGameStatus() {
+    final localizations = AppLocalizations.of(context);
+    
     String statusText;
     Color statusColor;
 
     if (_gameController.gameEnded) {
       if (_gameController.winner != null) {
         String winner = _gameController.winner == PlayerColor.green
-            ? AnimalChessApp.getLocalizedString(
-                'Green Player',
-                '綠方玩家',
-                '绿方玩家',
-                '緑のプレイヤー',
-                '녹색 플레이어',
-                'ผู้เล่นสีเขียว',
-                'Joueur Vert',
-                'Jugador Verde',
-                'Jogador Verde',
-                'Grüner Spieler',
-                widget.currentLanguage,
-              )
-            : AnimalChessApp.getLocalizedString(
-                'Red Player',
-                '紅方玩家',
-                '红方玩家',
-                '赤のプレイヤー',
-                '빨간색 플레이어',
-                'ผู้เล่นสีแดง',
-                'Joueur Rouge',
-                'Jugador Rojo',
-                'Jogador Vermelho',
-                'Roter Spieler',
-                widget.currentLanguage,
-              );
-        statusText = AnimalChessApp.getLocalizedString(
-          'Game Over! $winner wins!',
-          '遊戲結束！$winner 獲勝！',
-          '游戏结束！$winner 获胜！',
-          'ゲームオーバー！$winnerの勝ち！',
-          '게임 종료! $winner 승리!',
-          'จบเกม! $winner ชนะ!',
-          'Partie terminée ! $winner gagne !',
-          '¡Juego terminado! ¡$winner gana!',
-          'Fim de jogo! $winner vence!',
-          'Spiel vorbei! $winner gewinnt!',
-          widget.currentLanguage,
-        );
+            ? localizations.greenPlayer
+            : localizations.redPlayer;
+        statusText = localizations.gameOverWins(winner);
         statusColor = _gameController.winner == PlayerColor.green
             ? Colors.green
             : Colors.red;
       } else {
-        statusText = AnimalChessApp.getLocalizedString(
-          'Game Over! It\'s a draw!',
-          '遊戲結束！平局！',
-          '游戏结束！平局！',
-          'ゲームオーバー！引き分け！',
-          '게임 종료! 무승부!',
-          'จบเกม! เสมอ!',
-          'Partie terminée ! Match nul !',
-          '¡Juego terminado! ¡Es un empate!',
-          'Fim de jogo! É um empate!',
-          'Spiel vorbei! Unentschieden!',
-          widget.currentLanguage,
-        );
+        statusText = localizations.gameOverDraw;
         statusColor = Colors.grey;
       }
     } else {
       String currentPlayer = _gameController.currentPlayer == PlayerColor.green
-          ? AnimalChessApp.getLocalizedString(
-              'Green Player',
-              '綠方玩家',
-              '绿方玩家',
-              '緑のプレイヤー',
-              '녹색 플레이어',
-              'ผู้เล่นสีเขียว',
-              'Joueur Vert',
-              'Jugador Verde',
-              'Jogador Verde',
-              'Grüner Spieler',
-              widget.currentLanguage,
-            )
-          : AnimalChessApp.getLocalizedString(
-              'Red Player',
-              '紅方玩家',
-              '红方玩家',
-              '赤のプレイヤー',
-              '빨간색 플레이어',
-              'ผู้เล่นสีแดง',
-              'Joueur Rouge',
-              'Jugador Rojo',
-              'Jogador Vermelho',
-              'Roter Spieler',
-              widget.currentLanguage,
-            );
-      statusText = AnimalChessApp.getLocalizedString(
-        '$currentPlayer' + '\'s turn',
-        '$currentPlayer 的回合',
-        '$currentPlayer 的回合',
-        '$currentPlayer のターン',
-        '$currentPlayer의 차례',
-        'ตาของ $currentPlayer',
-        'Tour de $currentPlayer',
-        'Turno de $currentPlayer',
-        'Vez de $currentPlayer',
-        '$currentPlayer ist am Zug',
-        widget.currentLanguage,
-      );
+          ? localizations.greenPlayer
+          : localizations.redPlayer;
+      statusText = localizations.turn(currentPlayer);
       statusColor = _gameController.currentPlayer == PlayerColor.green
           ? Colors.green
           : Colors.red;
@@ -866,7 +537,6 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
           context: context,
           builder: (BuildContext context) {
             return VariantsDialogWidget(
-              currentLanguage: widget.currentLanguage,
               gameConfig: widget.gameConfig,
               onConfigChanged: (GameConfig newConfig) {},
             );
@@ -886,7 +556,7 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return GameRulesDialogWidget(currentLanguage: widget.currentLanguage);
+        return const GameRulesDialogWidget();
       },
     );
   }

@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:animal_chess/models/player_color.dart';
-import 'package:animal_chess/main.dart';
 
 class PlayerIndicatorWidget extends StatelessWidget {
   final PlayerColor player;
   final String label;
   final bool isActive;
-  final Language currentLanguage;
 
   const PlayerIndicatorWidget({
     super.key,
     required this.player,
     required this.label,
     required this.isActive,
-    required this.currentLanguage,
   });
 
   @override
