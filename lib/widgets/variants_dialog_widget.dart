@@ -22,18 +22,45 @@ class VariantsDialogWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('1. ${localizations.variantRatOnlyDenEntry}'),
+            Text(
+              '1. ${localizations.variantRatOnlyDenEntry}',
+              overflow: TextOverflow.ellipsis,
+            ),
             const SizedBox(height: 10),
-            Text('2. ${localizations.variantExtendedLionTigerJumps}:'),
-            Text('   - ${localizations.variantLionJumpBothRivers}'),
-            Text('   - ${localizations.variantTigerJumpSingleRiver}'),
-            Text('   - ${localizations.variantLeopardCrossRivers}'),
+            Text(
+              '2. ${localizations.variantExtendedLionTigerJumps}:',
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              '   - ${localizations.variantLionJumpBothRivers}',
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              '   - ${localizations.variantTigerJumpSingleRiver}',
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              '   - ${localizations.variantLeopardCrossRivers}',
+              overflow: TextOverflow.ellipsis,
+            ),
             const SizedBox(height: 10),
-            Text('3. ${localizations.variantDogRiver}:'),
-            Text('   - ${localizations.variantDogEnterRiver}'),
-            Text('   - ${localizations.variantDogCaptureFromRiver}'),
+            Text(
+              '3. ${localizations.variantDogRiver}:',
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              '   - ${localizations.variantDogEnterRiver}',
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              '   - ${localizations.variantDogCaptureFromRiver}',
+              overflow: TextOverflow.ellipsis,
+            ),
             const SizedBox(height: 10),
-            Text('4. ${localizations.ratCannotCaptureElephant}'),
+            Text(
+              '4. ${localizations.ratCannotCaptureElephant}',
+              overflow: TextOverflow.ellipsis,
+            ),
           ],
         ),
       ),

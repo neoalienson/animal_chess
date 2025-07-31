@@ -101,7 +101,11 @@ class _SettingsDialogWidgetState extends State<SettingsDialogWidget> {
     ValueChanged<bool> onChanged,
   ) {
     return SwitchListTile(
-      title: Text(title),
+      title: Text(
+        title,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 2,
+      ),
       value: value,
       onChanged: onChanged,
     );

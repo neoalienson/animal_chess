@@ -14,16 +14,43 @@ class GameRulesDialogWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(localizations.appDescription),
+            Text(
+              localizations.appDescription,
+              overflow: TextOverflow.ellipsis,
+            ),
             const SizedBox(height: 10),
-            Text('1. ${localizations.gameRule1}'),
-            Text('2. ${localizations.gameRule2}'),
-            Text('3. ${localizations.gameRule3}'),
-            Text('4. ${localizations.gameRule4}'),
-            Text('5. ${localizations.gameRule5}'),
-            Text('6. ${localizations.gameRule6}'),
-            Text('7. ${localizations.gameRule7}'),
-            Text('8. ${localizations.gameRule8}'),
+            Text(
+              '1. ${localizations.gameRule1}',
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              '2. ${localizations.gameRule2}',
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              '3. ${localizations.gameRule3}',
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              '4. ${localizations.gameRule4}',
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              '5. ${localizations.gameRule5}',
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              '6. ${localizations.gameRule6}',
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              '7. ${localizations.gameRule7}',
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              '8. ${localizations.gameRule8}',
+              overflow: TextOverflow.ellipsis,
+            ),
           ],
         ),
       ),

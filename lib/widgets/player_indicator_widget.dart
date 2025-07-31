@@ -28,6 +28,7 @@ class PlayerIndicatorWidget extends StatelessWidget {
         border: Border.all(color: color, width: 2),
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             width: 20,
@@ -35,11 +36,14 @@ class PlayerIndicatorWidget extends StatelessWidget {
             decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           ),
           const SizedBox(width: 8),
-          Text(
-            label,
-            style: TextStyle(
-              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-              color: isActive ? color : Colors.grey,
+          Flexible(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                color: isActive ? color : Colors.grey,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

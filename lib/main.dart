@@ -94,7 +94,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                 const SizedBox(height: 40),
 
                 // Menu buttons
-                IntrinsicWidth(
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 400),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -223,17 +224,20 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           vertical: 20,
         ), // Larger padding
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        minimumSize: const Size(200, 60), // Minimum button size
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 36), // Larger icon
           const SizedBox(width: 10), // Space between icon and text
-          Text(
-            text,
-            style: const TextStyle(fontSize: 24), // Larger text
-            overflow: TextOverflow.visible, // Allow text to be fully visible
-            softWrap: false, // Prevent text wrapping
+          Flexible(
+            child: Text(
+              text,
+              style: const TextStyle(fontSize: 24), // Larger text
+              overflow: TextOverflow.ellipsis, // Handle overflow with ellipsis
+              softWrap: false, // Prevent text wrapping
+            ),
           ),
         ],
       ),
@@ -278,7 +282,10 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   // Build language option
   Widget _buildLanguageOption(Locale locale, String label) {
     return ListTile(
-      title: Text(label),
+      title: Text(
+        label,
+        overflow: TextOverflow.ellipsis,
+      ),
       trailing: Localizations.localeOf(context) == locale ? const Icon(Icons.check) : null,
       onTap: () {
         widget.setLocale(locale);
@@ -428,15 +435,20 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          PlayerIndicatorWidget(
-            player: PlayerColor.green,
-            label: localizations.greenPlayer,
-            isActive: _gameController.currentPlayer == PlayerColor.green,
+          Flexible(
+            child: PlayerIndicatorWidget(
+              player: PlayerColor.green,
+              label: localizations.greenPlayer,
+              isActive: _gameController.currentPlayer == PlayerColor.green,
+            ),
           ),
-          PlayerIndicatorWidget(
-            player: PlayerColor.red,
-            label: localizations.redPlayer,
-            isActive: _gameController.currentPlayer == PlayerColor.red,
+          const SizedBox(width: 10),
+          Flexible(
+            child: PlayerIndicatorWidget(
+              player: PlayerColor.red,
+              label: localizations.redPlayer,
+              isActive: _gameController.currentPlayer == PlayerColor.red,
+            ),
           ),
         ],
       ),
@@ -483,6 +495,8 @@ class _AnimalChessGameState extends State<AnimalChessGame> {
           color: statusColor,
         ),
         textAlign: TextAlign.center,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 2,
       ),
     );
   }

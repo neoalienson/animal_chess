@@ -13,7 +13,12 @@ class AboutDialogWidget extends StatelessWidget {
       applicationVersion: '1.0.0',
       applicationIcon: const Icon(Icons.adb),
       applicationLegalese: '© 2025 Animal Chess',
-      children: [Text(localizations.appDescription)],
+      children: [
+        Text(
+          localizations.appDescription,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
     );
   }
 }
