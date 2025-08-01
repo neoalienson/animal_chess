@@ -16,7 +16,7 @@ class AnimalChessApp extends StatefulWidget {
 }
 
 class _AnimalChessAppState extends State<AnimalChessApp> {
-  Locale _locale = const Locale('zh-TW');
+  Locale _locale = const Locale('zh', 'TW');
 
   void setLocale(Locale locale) {
     setState(() {
