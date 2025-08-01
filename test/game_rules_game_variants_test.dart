@@ -8,8 +8,6 @@ import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/core/service_locator.dart';
 
-const bool kEnableTestDebugOutput = bool.fromEnvironment('ENABLE_TEST_DEBUG_OUTPUT', defaultValue: false);
-
 void main() {
   group('GameController - Game Variants', () {
     late GameController gameController;
@@ -121,9 +119,7 @@ void main() {
         Piece(AnimalType.dog, PlayerColor.red),
       );
       gameController.currentPlayer = PlayerColor.red;
-      if (kEnableTestDebugOutput) {
-        gameController.board.dumpBoardAndChessPieces();
-      }
+      gameController.board.dumpBoardAndChessPieces();
 
       gameController.selectPiece(Position(1, 2));
       expect(
@@ -155,9 +151,7 @@ void main() {
         Piece(AnimalType.cat, PlayerColor.green),
       );
       gameController.currentPlayer = PlayerColor.red; // Still red's turn
-      if (kEnableTestDebugOutput) {
-        gameController.board.dumpBoardAndChessPieces();
-      }
+      gameController.board.dumpBoardAndChessPieces();
 
       gameController.selectPiece(Position(1, 3)); // Select dog in river
       expect(

@@ -8,8 +8,6 @@ import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/core/service_locator.dart';
 
-const bool kEnableTestDebugOutput = bool.fromEnvironment('ENABLE_TEST_DEBUG_OUTPUT', defaultValue: false);
-
 void main() {
   group('GameController - River Rules', () {
     late GameController gameController;
@@ -116,9 +114,7 @@ void main() {
         Position(4, 2),
         Piece(AnimalType.tiger, PlayerColor.red),
       );
-      if (kEnableTestDebugOutput) {
-        gameController.board.dumpBoardAndChessPieces();
-      }
+      gameController.board.dumpBoardAndChessPieces();
       gameController.currentPlayer = PlayerColor.red;
 
       gameController.selectPiece(Position(4, 2));

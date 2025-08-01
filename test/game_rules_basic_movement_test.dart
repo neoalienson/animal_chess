@@ -8,8 +8,6 @@ import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/core/service_locator.dart';
 
-const bool kEnableTestDebugOutput = bool.fromEnvironment('ENABLE_TEST_DEBUG_OUTPUT', defaultValue: false);
-
 void main() {
   group('GameController - Basic Movement and Capture', () {
     late GameController gameController;
@@ -43,9 +41,7 @@ void main() {
         Piece(AnimalType.rat, PlayerColor.red),
       );
       gameController.currentPlayer = PlayerColor.red;
-      if (kEnableTestDebugOutput) {
-        gameController.board.dumpBoardAndChessPieces();
-      }
+      gameController.board.dumpBoardAndChessPieces();
 
       // Valid move: (0,0) to (0,1)
       gameController.selectPiece(Position(0, 0));

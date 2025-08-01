@@ -6,8 +6,10 @@ import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/game/game_rules.dart';
 import 'package:animal_chess/constants/board_constants.dart';
+import 'package:logging/logging.dart';
 
 class GameActions {
+  final Logger _logger = Logger('GameActions');
   final GameBoard board;
   final GameConfig gameConfig;
   PlayerColor currentPlayer = PlayerColor.red;
@@ -25,14 +27,19 @@ class GameActions {
 
   /// Move a piece
   bool movePiece(Position from, Position to) {
-    if (gameEnded) return false;
+    if (gameEnded) {
+      _logger.fine("Game ended, cannot move piece.");
+      return false;
+    }
 
     if (!gameRules.isValidMove(from, to, currentPlayer)) {
+      _logger.fine("Invalid move from $from to $to for $currentPlayer.");
       return false;
     }
 
     Piece? piece = board.getPiece(from);
     if (piece == null) {
+      _logger.fine("No piece at $from.");
       return false;
     }
 
@@ -42,12 +49,14 @@ class GameActions {
     if (board.isOpponentDen(to, currentPlayer)) {
       // With rat-only variant, only rat can win by entering den
       if (gameConfig.ratOnlyDenEntry && piece.animalType != AnimalType.rat) {
+        _logger.fine("Rat-only den entry variant enabled, non-rat piece cannot win.");
         return false; // Not a valid win under this variant
       } else {
         // Valid win
         board.movePiece(from, to);
         winner = currentPlayer;
         gameEnded = true;
+        _logger.info("$currentPlayer wins by entering opponent's den!");
         return true;
       }
     }
@@ -56,18 +65,22 @@ class GameActions {
     if (targetPiece != null) {
       board.removePiece(to);
       capturedPieces.add(targetPiece);
+      _logger.info("$currentPlayer's ${piece.animalType} captured $targetPiece.");
     }
 
     // Move the piece
     board.movePiece(from, to);
+    _logger.fine("$currentPlayer moved ${piece.animalType} from $from to $to.");
 
     // Check if game has ended (capture all pieces)
     winner = board.getWinner();
     if (winner != null) {
       gameEnded = true;
+      _logger.info("$winner wins by capturing all opponent pieces!");
     }
 
     switchPlayer();
+    _logger.fine("Switched player to $currentPlayer.");
     return true;
   }
 
@@ -80,7 +93,10 @@ class GameActions {
 
   /// Get valid moves for a selected piece
   List<Position> getValidMoves(Position from) {
-    if (board.getPiece(from)?.playerColor != currentPlayer) return [];
+    if (board.getPiece(from)?.playerColor != currentPlayer) {
+      _logger.fine("No piece or not current player's piece at $from.");
+      return [];
+    }
 
     List<Position> validMoves = [];
     for (int col = 0; col < BoardConstants.columns; col++) {
@@ -91,7 +107,7 @@ class GameActions {
         }
       }
     }
-
+    _logger.fine("Found ${validMoves.length} valid moves for piece at $from.");
     return validMoves;
   }
 
@@ -102,5 +118,7 @@ class GameActions {
     selectedPosition = null;
     gameEnded = false;
     winner = null;
+    capturedPieces.clear();
+    _logger.info("Game reset.");
   }
 }

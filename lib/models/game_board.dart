@@ -4,8 +4,11 @@ import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/constants/board_constants.dart';
 import 'package:animal_chess/constants/game_constants.dart';
+import 'package:logging/logging.dart';
 
 class GameBoard {
+  final Logger _logger = Logger('GameBoard');
+
   // Board state
   final Map<Position, Piece?> _board = {};
 
@@ -75,7 +78,7 @@ class GameBoard {
   }
 
   void dumpBoardAndChessPieces() {
-    print("""Board State (R=Red, G=Green, 0=River):""");
+    _logger.fine("""Board State (R=Red, G=Green, 0=River):""");
     for (int row = 0; row < BoardConstants.rows; row++) {
       String rowString = "";
       for (int col = 0; col < BoardConstants.columns; col++) {
@@ -125,7 +128,7 @@ class GameBoard {
           rowString += "- ";
         }
       }
-      print(rowString);
+      _logger.fine(rowString);
     }
   }
 
