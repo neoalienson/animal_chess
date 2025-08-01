@@ -3,6 +3,7 @@ import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/animal_type.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
+import 'package:animal_chess/constants/ui_constants.dart';
 
 class PieceWidget extends StatelessWidget {
   final Piece piece;
@@ -47,27 +48,27 @@ class PieceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Calculate the piece size as 90% of the block size
-    final pieceSize = size * 0.9;
+    final pieceSize = size * UIConstants.pieceSizeFactor;
 
     // Define colors for each player
     Color backgroundColor = piece.playerColor == PlayerColor.green
-        ? Colors.green[300]!
-        : Colors.red[300]!;
+        ? UIConstants.greenPieceColor
+        : UIConstants.redPieceColor;
 
     // Define text color for better contrast
-    Color textColor = Colors.white;
+    Color textColor = UIConstants.pieceTextColor;
 
     // If this is for rank display, use dark grey with white text
     if (isRankDisplay) {
-      backgroundColor = Colors.grey[800]!; // Dark grey
-      textColor = Colors.white; // White text
+      backgroundColor = UIConstants.rankDisplayBackgroundColor; // Dark grey
+      textColor = UIConstants.pieceTextColor; // White text
     }
 
     // Add selection indicator (only for game board, not rank display)
     if (isSelected && !isRankDisplay) {
       backgroundColor = piece.playerColor == PlayerColor.green
-          ? Colors.green[700]!
-          : Colors.red[700]!;
+          ? UIConstants.greenPieceColor
+          : UIConstants.redPieceColor;
     }
 
     return GestureDetector(
@@ -79,14 +80,14 @@ class PieceWidget extends StatelessWidget {
           color: backgroundColor,
           shape: BoxShape.circle,
           border: Border.all(
-            color: isSelected && !isRankDisplay ? Colors.yellow : Colors.black,
-            width: isSelected && !isRankDisplay ? 3 : 1,
+            color: isSelected && !isRankDisplay ? UIConstants.pieceBorderColorSelected : UIConstants.pieceBorderColorNormal,
+            width: isSelected && !isRankDisplay ? UIConstants.pieceBorderWidthSelected : UIConstants.pieceBorderWidthNormal,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.2),
-              blurRadius: 2,
-              offset: const Offset(1, 1),
+              color: UIConstants.pieceShadowColor.withOpacity(0.2),
+              blurRadius: UIConstants.pieceShadowBlurRadius,
+              offset: UIConstants.pieceShadowOffset,
             ),
           ],
         ),
@@ -97,7 +98,7 @@ class PieceWidget extends StatelessWidget {
             ), // Enforce Chines for game pieces
             style: TextStyle(
               color: textColor,
-              fontSize: pieceSize * 0.5, // Adjust font size proportionally
+              fontSize: pieceSize * UIConstants.pieceFontSizeFactor, // Adjust font size proportionally
               fontWeight: FontWeight.bold,
             ),
           ),

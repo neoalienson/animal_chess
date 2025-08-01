@@ -6,14 +6,23 @@ import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
+import 'package:animal_chess/core/service_locator.dart';
 
 void main() {
   group('GameController - Basic Movement and Capture', () {
     late GameController gameController;
 
+    setUpAll(() {
+      setupDependencies();
+    });
+
     setUp(() {
-      gameController = GameController(gameConfig: GameConfig());
+      gameController = locator<GameController>();
       gameController.resetGame();
+    });
+
+    tearDown(() {
+      locator.reset();
     });
 
     test('Piece moves one space orthogonally', () {

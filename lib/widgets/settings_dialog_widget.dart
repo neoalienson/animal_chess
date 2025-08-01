@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
 
+import 'package:animal_chess/core/service_locator.dart';
+
 class SettingsDialogWidget extends StatefulWidget {
-  final GameConfig gameConfig;
   final Function(GameConfig) onConfigChanged;
 
   const SettingsDialogWidget({
     super.key,
-    required this.gameConfig,
     required this.onConfigChanged,
   });
 
@@ -22,7 +22,7 @@ class _SettingsDialogWidgetState extends State<SettingsDialogWidget> {
   @override
   void initState() {
     super.initState();
-    _gameConfig = widget.gameConfig;
+    _gameConfig = locator<GameConfig>();
   }
 
   @override

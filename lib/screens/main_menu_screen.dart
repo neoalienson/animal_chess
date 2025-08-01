@@ -11,6 +11,8 @@ import 'package:animal_chess/widgets/settings_dialog_widget.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
 import 'dart:math';
 
+import 'package:animal_chess/constants/ui_constants.dart';
+
 // Main menu screen
 class MainMenuScreen extends StatefulWidget {
   final Function(Locale) setLocale;
@@ -23,7 +25,7 @@ class MainMenuScreen extends StatefulWidget {
 
 class _MainMenuScreenState extends State<MainMenuScreen> {
   // Game configuration
-  GameConfig _gameConfig = GameConfig();
+  // GameConfig _gameConfig = GameConfig();
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +47,12 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                   localizations.animalChess,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 32,
+                    fontSize: UIConstants.titleFontSize,
                     fontWeight: FontWeight.bold,
-                    color: Colors.brown,
+                    color: UIConstants.boardBorderColor,
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: UIConstants.defaultPadding * 2.5),
 
                 // Menu buttons
                 ConstrainedBox(
@@ -67,15 +69,13 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AnimalChessGameScreen(
-                                  gameConfig: _gameConfig,
-                                ),
+                                builder: (context) => AnimalChessGameScreen(),
                               ),
                             );
                           },
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: UIConstants.defaultPadding),
                       SizedBox(
                         width: double.infinity,
                         child: _buildMenuButton(
@@ -86,7 +86,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                           },
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: UIConstants.defaultPadding),
                       SizedBox(
                         width: double.infinity,
                         child: _buildMenuButton(
@@ -97,11 +97,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                               context: context,
                               builder: (BuildContext context) {
                                 return SettingsDialogWidget(
-                                  gameConfig: _gameConfig,
                                   onConfigChanged: (GameConfig newConfig) {
-                                    setState(() {
-                                      _gameConfig = newConfig;
-                                    });
+                                    // No longer need to set state here as GameConfig is a singleton
                                   },
                                 );
                               },
@@ -109,7 +106,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                           },
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: UIConstants.defaultPadding),
                       SizedBox(
                         width: double.infinity,
                         child: _buildMenuButton(
@@ -120,7 +117,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                           },
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: UIConstants.defaultPadding),
                       SizedBox(
                         width: double.infinity,
                         child: _buildMenuButton(
@@ -145,7 +142,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   // Build background with random pieces
   Widget _buildBackgroundWithRandomPieces() {
     return Container(
-      color: Colors.amber[50],
+      color: UIConstants.boardBackgroundColor,
       child: Stack(
         children: List.generate(15, (index) {
           final random = Random();
@@ -163,8 +160,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                 piece: Piece(animalType, playerColor),
                 isSelected: false,
                 size:
-                    30 +
-                    random.nextDouble() * 30, // Random size between 30 and 60
+                    UIConstants.pieceSizeFactor * 30 +
+                    random.nextDouble() * UIConstants.pieceSizeFactor * 30, // Random size between 30 and 60
               ),
             ),
           );
@@ -179,21 +176,21 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(
-          horizontal: 30,
-          vertical: 20,
+          horizontal: UIConstants.defaultPadding * 1.875,
+          vertical: UIConstants.defaultPadding * 1.25,
         ), // Larger padding
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(UIConstants.pieceBorderRadius)),
         minimumSize: const Size(200, 60), // Minimum button size
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 36), // Larger icon
-          const SizedBox(width: 10), // Space between icon and text
+          Icon(icon, size: UIConstants.buttonIconSize), // Larger icon
+          const SizedBox(width: UIConstants.smallPadding), // Space between icon and text
           Flexible(
             child: Text(
               text,
-              style: const TextStyle(fontSize: 24), // Larger text
+              style: const TextStyle(fontSize: UIConstants.buttonFontSize), // Larger text
               overflow: TextOverflow.ellipsis, // Handle overflow with ellipsis
               softWrap: false, // Prevent text wrapping
             ),

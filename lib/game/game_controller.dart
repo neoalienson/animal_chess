@@ -15,50 +15,41 @@ class GameController {
   List<Piece> capturedPieces = []; // List to track captured pieces
 
   final GameConfig gameConfig;
-  late GameRules _gameRules;
-  late GameActions _gameActions;
+  final GameRules gameRules;
+  final GameActions gameActions;
 
-  GameController({required this.gameConfig})
-    : board = GameBoard(),
-      currentPlayer = PlayerColor.red {
-    _gameRules = GameRules(board: board, gameConfig: gameConfig);
-    _gameActions = GameActions(
-      board: board,
-      gameConfig: gameConfig,
-      currentPlayer: currentPlayer,
-      selectedPosition: selectedPosition,
-      gameEnded: gameEnded,
-      winner: winner,
-      capturedPieces: capturedPieces,
-      gameRules: _gameRules,
-    );
-  }
+  GameController({
+    required this.board,
+    required this.gameRules,
+    required this.gameActions,
+    required this.gameConfig,
+  }) : currentPlayer = PlayerColor.red;
 
   bool movePiece(Position toPosition) {
     if (selectedPosition == null) return false;
-    bool moved = _gameActions.movePiece(selectedPosition!, toPosition);
+    bool moved = gameActions.movePiece(selectedPosition!, toPosition);
     if (moved) {
       selectedPosition = null;
-      currentPlayer = _gameActions.currentPlayer;
-      gameEnded = _gameActions.gameEnded;
-      winner = _gameActions.winner;
+      currentPlayer = gameActions.currentPlayer;
+      gameEnded = gameActions.gameEnded;
+      winner = gameActions.winner;
     }
     return moved;
   }
 
   List<Position> getValidMoves(Position fromPosition) {
-    return _gameActions.getValidMoves(fromPosition);
+    return gameActions.getValidMoves(fromPosition);
   }
 
   void resetGame() {
-    _gameActions.resetGame();
+    gameActions.resetGame();
     // Update GameController's state from GameActions after reset
 
-    currentPlayer = _gameActions.currentPlayer;
+    currentPlayer = gameActions.currentPlayer;
     selectedPosition = null;
-    gameEnded = _gameActions.gameEnded;
-    winner = _gameActions.winner;
-    capturedPieces = _gameActions.capturedPieces;
+    gameEnded = gameActions.gameEnded;
+    winner = gameActions.winner;
+    capturedPieces = gameActions.capturedPieces;
   }
 
   /// Select a piece to move
@@ -79,6 +70,6 @@ class GameController {
 
   /// Check if a move is valid
   bool isValidMove(Position from, Position to) {
-    return _gameRules.isValidMove(from, to, currentPlayer);
+    return gameRules.isValidMove(from, to, currentPlayer);
   }
 }

@@ -2,7 +2,7 @@ class Position {
   final int column;
   final int row;
 
-  Position(this.column, this.row);
+  const Position(this.column, this.row);
 
   @override
   bool operator ==(Object other) {

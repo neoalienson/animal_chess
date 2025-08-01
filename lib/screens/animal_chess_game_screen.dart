@@ -9,13 +9,13 @@ import 'package:animal_chess/widgets/game_rules_dialog_widget.dart';
 import 'package:animal_chess/widgets/variants_dialog_widget.dart';
 import 'package:animal_chess/widgets/player_indicator_widget.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
+import 'package:animal_chess/constants/ui_constants.dart';
+
+import 'package:animal_chess/core/service_locator.dart';
 
 class AnimalChessGameScreen extends StatefulWidget {
-  final GameConfig gameConfig;
-
   const AnimalChessGameScreen({
     super.key,
-    required this.gameConfig,
   });
 
   @override
@@ -29,7 +29,7 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
   @override
   void initState() {
     super.initState();
-    _gameController = GameController(gameConfig: widget.gameConfig);
+    _gameController = locator<GameController>();
   }
 
   @override
@@ -77,7 +77,7 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
                 Expanded(
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(UIConstants.defaultPadding),
                       child: AspectRatio(
                         aspectRatio: 7 / 9, // Maintain board aspect ratio
                         child: GameBoardWidget(
@@ -97,11 +97,11 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(UIConstants.smallPadding),
                         child: Text(
                           localizations.piecesRank,
                           style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: UIConstants.boardFontSize,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -126,7 +126,7 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
     final localizations = AppLocalizations.of(context);
     
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: UIConstants.smallPadding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -137,7 +137,7 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
               isActive: _gameController.currentPlayer == PlayerColor.green,
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: UIConstants.smallPadding * 1.25),
           Flexible(
             child: PlayerIndicatorWidget(
               player: PlayerColor.red,
@@ -164,8 +164,8 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
             : localizations.redPlayer;
         statusText = localizations.gameOverWins(winner);
         statusColor = _gameController.winner == PlayerColor.green
-            ? Colors.green
-            : Colors.red;
+            ? UIConstants.greenPieceColor
+            : UIConstants.redPieceColor;
       } else {
         statusText = localizations.gameOverDraw;
         statusColor = Colors.grey;
@@ -176,16 +176,16 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
           : localizations.redPlayer;
       statusText = localizations.turn(currentPlayer);
       statusColor = _gameController.currentPlayer == PlayerColor.green
-          ? Colors.green
-          : Colors.red;
+          ? UIConstants.greenPieceColor
+          : UIConstants.redPieceColor;
     }
 
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(UIConstants.defaultPadding),
       child: Text(
         statusText,
         style: TextStyle(
-          fontSize: 18,
+          fontSize: UIConstants.statusFontSize,
           fontWeight: FontWeight.bold,
           color: statusColor,
         ),
@@ -245,10 +245,7 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return VariantsDialogWidget(
-              gameConfig: widget.gameConfig,
-              onConfigChanged: (GameConfig newConfig) {},
-            );
+            return VariantsDialogWidget();
           },
         );
         break;

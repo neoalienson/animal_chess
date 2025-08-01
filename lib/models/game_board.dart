@@ -2,41 +2,19 @@ import 'package:animal_chess/models/animal_type.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/piece.dart';
+import 'package:animal_chess/constants/board_constants.dart';
+import 'package:animal_chess/constants/game_constants.dart';
 
 class GameBoard {
-  static const int columns = 7;
-  static const int rows = 9;
-
   // Board state
   final Map<Position, Piece?> _board = {};
 
   // Special positions
-  final Map<PlayerColor, Position> dens = {
-    PlayerColor.green: Position(3, 0),
-    PlayerColor.red: Position(3, 8),
-  };
+  final Map<PlayerColor, Position> dens = BoardConstants.dens;
 
-  final Map<PlayerColor, List<Position>> traps = {
-    PlayerColor.green: [Position(2, 0), Position(4, 0), Position(3, 1)],
-    PlayerColor.red: [Position(2, 8), Position(4, 8), Position(3, 7)],
-  };
+  final Map<PlayerColor, List<Position>> traps = BoardConstants.traps;
 
-  final List<Position> rivers = [
-    // Left river (2x3 area)
-    Position(1, 3),
-    Position(1, 4),
-    Position(1, 5),
-    Position(2, 3),
-    Position(2, 4),
-    Position(2, 5),
-    // Right river (2x3 area)
-    Position(4, 3),
-    Position(4, 4),
-    Position(4, 5),
-    Position(5, 3),
-    Position(5, 4),
-    Position(5, 5),
-  ];
+  final List<Position> rivers = BoardConstants.rivers;
 
   GameBoard() {
     initializeDefaultBoard();
@@ -48,31 +26,18 @@ class GameBoard {
   /// Initialize the board with pieces in their starting positions
   void initializeDefaultBoard() {
     // Clear the board
-    for (int col = 0; col < columns; col++) {
-      for (int row = 0; row < rows; row++) {
+    for (int col = 0; col < BoardConstants.columns; col++) {
+      for (int row = 0; row < BoardConstants.rows; row++) {
         _board[Position(col, row)] = null;
       }
     }
 
-    // Place green pieces (top player)
-    _board[Position(0, 0)] = Piece(AnimalType.lion, PlayerColor.green);
-    _board[Position(6, 0)] = Piece(AnimalType.tiger, PlayerColor.green);
-    _board[Position(1, 1)] = Piece(AnimalType.dog, PlayerColor.green);
-    _board[Position(5, 1)] = Piece(AnimalType.cat, PlayerColor.green);
-    _board[Position(0, 2)] = Piece(AnimalType.rat, PlayerColor.green);
-    _board[Position(2, 2)] = Piece(AnimalType.leopard, PlayerColor.green);
-    _board[Position(4, 2)] = Piece(AnimalType.wolf, PlayerColor.green);
-    _board[Position(6, 2)] = Piece(AnimalType.elephant, PlayerColor.green);
-
-    // Place red pieces (bottom player)
-    _board[Position(6, 8)] = Piece(AnimalType.lion, PlayerColor.red);
-    _board[Position(0, 8)] = Piece(AnimalType.tiger, PlayerColor.red);
-    _board[Position(5, 7)] = Piece(AnimalType.dog, PlayerColor.red);
-    _board[Position(1, 7)] = Piece(AnimalType.cat, PlayerColor.red);
-    _board[Position(6, 6)] = Piece(AnimalType.rat, PlayerColor.red);
-    _board[Position(4, 6)] = Piece(AnimalType.leopard, PlayerColor.red);
-    _board[Position(2, 6)] = Piece(AnimalType.wolf, PlayerColor.red);
-    _board[Position(0, 6)] = Piece(AnimalType.elephant, PlayerColor.red);
+    // Place pieces based on GameConstants
+    GameConstants.pieceStartPositions.forEach((playerColor, pieces) {
+      for (var pieceData in pieces) {
+        _board[pieceData['position']] = Piece(pieceData['type'], playerColor);
+      }
+    });
   }
 
   /// Get the piece at a specific position
@@ -111,9 +76,9 @@ class GameBoard {
 
   void dumpBoardAndChessPieces() {
     print("""Board State (R=Red, G=Green, 0=River):""");
-    for (int row = 0; row < GameBoard.rows; row++) {
+    for (int row = 0; row < BoardConstants.rows; row++) {
       String rowString = "";
-      for (int col = 0; col < GameBoard.columns; col++) {
+      for (int col = 0; col < BoardConstants.columns; col++) {
         Position currentPosition = Position(col, row);
         Piece? piece = getPiece(currentPosition);
         if (piece != null) {

@@ -7,6 +7,8 @@ import 'package:animal_chess/models/animal_type.dart';
 import 'package:animal_chess/widgets/piece_widget.dart';
 import 'package:animal_chess/game/game_controller.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
+import 'package:animal_chess/constants/board_constants.dart';
+import 'package:animal_chess/constants/ui_constants.dart';
 
 class GameBoardWidget extends StatelessWidget {
   final GameController gameController;
@@ -23,26 +25,26 @@ class GameBoardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 7 / 9, // 7 columns × 9 rows
+      aspectRatio: BoardConstants.columns / BoardConstants.rows, // 7 columns × 9 rows
       child: LayoutBuilder(
         builder: (context, constraints) {
           final localizations = AppLocalizations.of(context);
           // Calculate the size of each cell
-          final cellSize = constraints.maxWidth / GameBoard.columns;
+          final cellSize = constraints.maxWidth / BoardConstants.columns;
 
           return Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.brown, width: 2),
-              color: Colors.amber[50],
+              border: Border.all(color: UIConstants.boardBorderColor, width: UIConstants.boardBorderWidth),
+              color: UIConstants.boardBackgroundColor,
             ),
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 7, // 7 columns
+                crossAxisCount: BoardConstants.columns, // 7 columns
               ),
-              itemCount: GameBoard.columns * GameBoard.rows,
+              itemCount: BoardConstants.columns * BoardConstants.rows,
               itemBuilder: (context, index) {
-                int row = index ~/ GameBoard.columns;
-                int col = index % GameBoard.columns;
+                int row = index ~/ BoardConstants.columns;
+                int col = index % BoardConstants.columns;
                 Position position = Position(col, row);
 
                 return _buildBoardCell(position, cellSize, localizations);
@@ -66,13 +68,13 @@ class GameBoardWidget extends StatelessWidget {
 
     // Add highlight for valid moves
     if (isValidMove) {
-      cellColor = cellColor.withValues(alpha: 0.7);
+      cellColor = cellColor.withOpacity(0.7);
     }
 
     return Container(
       decoration: BoxDecoration(
         color: cellColor,
-        border: Border.all(color: Colors.brown.withValues(alpha: 0.3)),
+        border: Border.all(color: UIConstants.cellBorderColor.withOpacity(UIConstants.cellBorderWidth)),
       ),
       child: Stack(
         alignment: Alignment.center,
@@ -104,10 +106,10 @@ class GameBoardWidget extends StatelessWidget {
           // Valid move indicator
           if (isValidMove && piece == null)
             Container(
-              width: cellSize * 0.3,
-              height: cellSize * 0.3,
+              width: cellSize * UIConstants.validMoveIndicatorSizeFactor,
+              height: cellSize * UIConstants.validMoveIndicatorSizeFactor,
               decoration: const BoxDecoration(
-                color: Colors.green,
+                color: UIConstants.validMoveIndicatorColor,
                 shape: BoxShape.circle,
               ),
             ),
@@ -144,24 +146,24 @@ class GameBoardWidget extends StatelessWidget {
     // Dens
     if (board.isDen(position)) {
       return board.getZoneOwner(position) == PlayerColor.green
-          ? Colors.green[100]!
-          : Colors.red[100]!;
+          ? UIConstants.greenDenColor
+          : UIConstants.redDenColor;
     }
 
     // Traps
     if (board.isTrap(position)) {
       return board.getZoneOwner(position) == PlayerColor.green
-          ? Colors.green[200]!
-          : Colors.red[200]!;
+          ? UIConstants.greenTrapColor
+          : UIConstants.redTrapColor;
     }
 
     // Rivers
     if (board.isRiver(position)) {
-      return Colors.blue[100]!;
+      return UIConstants.riverColor;
     }
 
     // Regular cells
-    return Colors.amber[50]!;
+    return UIConstants.boardBackgroundColor;
   }
 
   /// Build indicator for den cells
@@ -169,11 +171,11 @@ class GameBoardWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.transparent,
-        border: Border.all(color: Colors.brown, width: 2),
-        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: UIConstants.denBorderColor, width: UIConstants.boardBorderWidth),
+        borderRadius: BorderRadius.circular(UIConstants.denBorderRadius),
       ),
       child: const Center(
-        child: Icon(Icons.home, color: Colors.brown, size: 20),
+        child: Icon(Icons.home, color: UIConstants.denIconColor, size: UIConstants.denIconSize),
       ),
     );
   }
@@ -183,11 +185,11 @@ class GameBoardWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.transparent,
-        border: Border.all(color: Colors.orange, width: 2),
-        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: UIConstants.trapBorderColor, width: UIConstants.boardBorderWidth),
+        borderRadius: BorderRadius.circular(UIConstants.trapBorderRadius),
       ),
       child: const Center(
-        child: Icon(Icons.warning, color: Colors.orange, size: 16),
+        child: Icon(Icons.warning, color: UIConstants.trapIconColor, size: UIConstants.trapIconSize),
       ),
     );
   }
@@ -195,7 +197,7 @@ class GameBoardWidget extends StatelessWidget {
   /// Build indicator for river cells
   Widget _buildRiverIndicator() {
     return const Center(
-      child: Icon(Icons.water_drop, color: Colors.blue, size: 16),
+      child: Icon(Icons.water_drop, color: UIConstants.riverIconColor, size: UIConstants.riverIconSize),
     );
   }
 }

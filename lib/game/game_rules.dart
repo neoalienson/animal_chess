@@ -4,6 +4,7 @@ import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/game_config.dart';
+import 'package:animal_chess/constants/game_constants.dart';
 
 class GameRules {
   final GameBoard board;
@@ -94,7 +95,7 @@ class GameRules {
     if (from.row == to.row) {
       distance = (from.column - to.column).abs();
       // Standard horizontal jump for Lion/Tiger (over 2 river cells)
-      if ((piece.animalType == AnimalType.lion || piece.animalType == AnimalType.tiger) && distance == 3) {
+      if ((piece.animalType == AnimalType.lion || piece.animalType == AnimalType.tiger) && distance == GameConstants.lionTigerVerticalJumpDistance) {
         Position river1 = Position(from.column + (to.column > from.column ? 1 : -1), from.row);
         Position river2 = Position(from.column + (to.column > from.column ? 2 : -2), from.row);
         if (board.isRiver(river1) && board.isRiver(river2)) {
@@ -108,7 +109,7 @@ class GameRules {
         }
       }
       // Extended Lion double river jump (over 2 rivers)
-      if (gameConfig.extendedLionTigerJumps && piece.animalType == AnimalType.lion && distance == 5) { // 2 columns for first river + 1 column for land + 2 columns for second river
+      if (gameConfig.extendedLionTigerJumps && piece.animalType == AnimalType.lion && distance == GameConstants.extendedLionDoubleRiverJumpHorizontal) { // 2 columns for first river + 1 column for land + 2 columns for second river
         // Check if both rivers are clear of rats
         Position river1_1 = Position(from.column + (to.column > from.column ? 1 : -1), from.row);
         Position river1_2 = Position(from.column + (to.column > from.column ? 2 : -2), from.row);
@@ -127,7 +128,7 @@ class GameRules {
         }
       }
       // Extended Leopard horizontal river crossing (same as single river jump)
-      if (gameConfig.extendedLionTigerJumps && piece.animalType == AnimalType.leopard && distance == 3) {
+      if (gameConfig.extendedLionTigerJumps && piece.animalType == AnimalType.leopard && distance == GameConstants.lionTigerHorizontalJumpDistance) {
         Position river1 = Position(from.column + (to.column > from.column ? 1 : -1), from.row);
         Position river2 = Position(from.column + (to.column > from.column ? 2 : -2), from.row);
         if (board.isRiver(river1) && board.isRiver(river2)) {
@@ -145,7 +146,7 @@ class GameRules {
     else if (from.column == to.column) {
       distance = (from.row - to.row).abs();
       // Standard vertical jump for Lion/Tiger (over 3 river cells)
-      if ((piece.animalType == AnimalType.lion || piece.animalType == AnimalType.tiger) && distance == 4) {
+      if ((piece.animalType == AnimalType.lion || piece.animalType == AnimalType.tiger) && distance == GameConstants.lionTigerVerticalJumpDistance) {
         Position river1 = Position(from.column, from.row + (to.row > from.row ? 1 : -1));
         Position river2 = Position(from.column, from.row + (to.row > from.row ? 2 : -2));
         Position river3 = Position(from.column, from.row + (to.row > from.row ? 3 : -3));
@@ -162,7 +163,7 @@ class GameRules {
         }
       }
       // Extended Lion double river jump (over 2 rivers)
-      if (gameConfig.extendedLionTigerJumps && piece.animalType == AnimalType.lion && distance == 7) { // 3 rows for first river + 1 row for land + 3 rows for second river
+      if (gameConfig.extendedLionTigerJumps && piece.animalType == AnimalType.lion && distance == GameConstants.extendedLionDoubleRiverJumpVertical) { // 3 rows for first river + 1 row for land + 3 rows for second river
         // Check if both rivers are clear of rats
         Position river1_1 = Position(from.column, from.row + (to.row > from.row ? 1 : -1));
         Position river1_2 = Position(from.column, from.row + (to.row > from.row ? 2 : -2));

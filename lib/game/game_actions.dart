@@ -5,25 +5,21 @@ import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/game/game_rules.dart';
+import 'package:animal_chess/constants/board_constants.dart';
 
 class GameActions {
   final GameBoard board;
   final GameConfig gameConfig;
-  PlayerColor currentPlayer;
+  PlayerColor currentPlayer = PlayerColor.red;
   Position? selectedPosition;
-  bool gameEnded;
+  bool gameEnded = false;
   PlayerColor? winner;
-  List<Piece> capturedPieces;
+  List<Piece> capturedPieces = []; // List to track captured pieces
   final GameRules gameRules;
 
   GameActions({
     required this.board,
     required this.gameConfig,
-    required this.currentPlayer,
-    required this.selectedPosition,
-    required this.gameEnded,
-    required this.winner,
-    required this.capturedPieces,
     required this.gameRules,
   });
 
@@ -87,8 +83,8 @@ class GameActions {
     if (board.getPiece(from)?.playerColor != currentPlayer) return [];
 
     List<Position> validMoves = [];
-    for (int col = 0; col < GameBoard.columns; col++) {
-      for (int row = 0; row < GameBoard.rows; row++) {
+    for (int col = 0; col < BoardConstants.columns; col++) {
+      for (int row = 0; row < BoardConstants.rows; row++) {
         Position to = Position(col, row);
         if (gameRules.isValidMove(from, to, currentPlayer)) {
           validMoves.add(to);

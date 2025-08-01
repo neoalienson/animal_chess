@@ -6,14 +6,31 @@ import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
+import 'package:animal_chess/core/service_locator.dart';
 
 void main() {
   group('GameController - Game Variants', () {
+    setUpAll(() {
+      setupDependencies();
+    });
+
+    setUp(() {
+      locator.reset(); // Reset GetIt before each test
+      setupDependencies();
+    });
+
+    tearDown(() {
+      locator.reset(); // Reset GetIt after each test
+    });
+
     test(
       'Rat-Only Den Entry: Only Rat can win by entering opponent\'s den',
       () {
         GameConfig config = GameConfig(ratOnlyDenEntry: true);
-        GameController gameController = GameController(gameConfig: config);
+        locator.unregister<GameConfig>();
+        locator.registerLazySingleton<GameConfig>(() => config);
+        GameController gameController = locator<GameController>();
+
         gameController.resetGame();
 
         // Test Setup:
@@ -39,7 +56,9 @@ void main() {
         expect(gameController.winner, PlayerColor.red);
 
         // Reset and test with a non-rat piece
-        gameController = GameController(gameConfig: config);
+        locator.unregister<GameConfig>();
+        locator.registerLazySingleton<GameConfig>(() => config);
+        gameController = locator<GameController>();
         gameController.resetGame();
         gameController.board.setPiece(
           Position(3, 1),
@@ -61,7 +80,9 @@ void main() {
       'Extended Lion/Tiger Jumps: Leopard can cross rivers horizontally',
       () {
         GameConfig config = GameConfig(extendedLionTigerJumps: true);
-        GameController gameController = GameController(gameConfig: config);
+        locator.unregister<GameConfig>();
+        locator.registerLazySingleton<GameConfig>(() => config);
+        GameController gameController = locator<GameController>();
         gameController.resetGame();
         gameController.board.clearBoard();
 
@@ -86,7 +107,9 @@ void main() {
 
     test('Dog can enter river', () {
       GameConfig config = GameConfig(dogRiverVariant: true);
-      GameController gameController = GameController(gameConfig: config);
+      locator.unregister<GameConfig>();
+      locator.registerLazySingleton<GameConfig>(() => config);
+      GameController gameController = locator<GameController>();
       gameController.resetGame();
       gameController.board.clearBoard();
 
@@ -111,7 +134,9 @@ void main() {
 
     test('Dog River Variant: Dog can enter river and capture from river', () {
       GameConfig config = GameConfig(extendedLionTigerJumps: true);
-      GameController gameController = GameController(gameConfig: config);
+      locator.unregister<GameConfig>();
+      locator.registerLazySingleton<GameConfig>(() => config);
+      GameController gameController = locator<GameController>();
       gameController.resetGame();
       gameController.board.clearBoard();
 
@@ -147,7 +172,9 @@ void main() {
 
     test('Rat cannot capture Elephant variant', () {
       GameConfig config = GameConfig(ratCannotCaptureElephant: true);
-      GameController gameController = GameController(gameConfig: config);
+      locator.unregister<GameConfig>();
+      locator.registerLazySingleton<GameConfig>(() => config);
+      GameController gameController = locator<GameController>();
       gameController.resetGame();
 
       // Red Rat at (0,0), Green Elephant at (0,1)

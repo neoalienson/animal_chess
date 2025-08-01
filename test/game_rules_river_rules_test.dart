@@ -6,14 +6,23 @@ import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
+import 'package:animal_chess/core/service_locator.dart';
 
 void main() {
   group('GameController - River Rules', () {
     late GameController gameController;
 
+    setUpAll(() {
+      setupDependencies();
+    });
+
     setUp(() {
-      gameController = GameController(gameConfig: GameConfig());
+      gameController = locator<GameController>();
       gameController.resetGame();
+    });
+
+    tearDownAll(() {
+      locator.reset();
     });
 
     test('Only Rat can enter the river', () {

@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
+import 'package:animal_chess/constants/ui_constants.dart';
 
 class VariantsDialogWidget extends StatelessWidget {
-  final GameConfig gameConfig;
-  final Function(GameConfig) onConfigChanged;
-
   const VariantsDialogWidget({
     super.key,
-    required this.gameConfig,
-    required this.onConfigChanged,
   });
 
   @override
@@ -26,7 +21,7 @@ class VariantsDialogWidget extends StatelessWidget {
               '1. ${localizations.variantRatOnlyDenEntry}',
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: UIConstants.smallPadding),
             Text(
               '2. ${localizations.variantExtendedLionTigerJumps}:',
               overflow: TextOverflow.ellipsis,
@@ -43,7 +38,7 @@ class VariantsDialogWidget extends StatelessWidget {
               '   - ${localizations.variantLeopardCrossRivers}',
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: UIConstants.smallPadding),
             Text(
               '3. ${localizations.variantDogRiver}:',
               overflow: TextOverflow.ellipsis,
@@ -56,7 +51,7 @@ class VariantsDialogWidget extends StatelessWidget {
               '   - ${localizations.variantDogCaptureFromRiver}',
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: UIConstants.smallPadding),
             Text(
               '4. ${localizations.ratCannotCaptureElephant}',
               overflow: TextOverflow.ellipsis,
