@@ -8,6 +8,8 @@ import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/core/service_locator.dart';
 
+const bool kEnableTestDebugOutput = bool.fromEnvironment('ENABLE_TEST_DEBUG_OUTPUT', defaultValue: false);
+
 void main() {
   group('GameController - Game Variants', () {
     late GameController gameController;
@@ -29,7 +31,7 @@ void main() {
         locator.unregister<GameConfig>();
         locator.registerLazySingleton<GameConfig>(() => config);
         GameController gameController = locator<GameController>();
-
+        gameController.board.clearBoard(); // Clear the board before setting up custom pieces
         gameController.resetGame();
 
         // Test Setup:
@@ -58,6 +60,7 @@ void main() {
         locator.unregister<GameConfig>();
         locator.registerLazySingleton<GameConfig>(() => config);
         gameController = locator<GameController>();
+        gameController.board.clearBoard();
         gameController.resetGame();
         gameController.board.setPiece(
           Position(3, 1),
@@ -82,8 +85,8 @@ void main() {
         locator.unregister<GameConfig>();
         locator.registerLazySingleton<GameConfig>(() => config);
         GameController gameController = locator<GameController>();
+        gameController.board.clearBoard(); // Clear the board before setting up custom pieces
         gameController.resetGame();
-        gameController.board.clearBoard();
 
         // Leopard at (0,4), river at (1,4) and (2,4), target (3,4)
         gameController.board.setPiece(
@@ -118,7 +121,9 @@ void main() {
         Piece(AnimalType.dog, PlayerColor.red),
       );
       gameController.currentPlayer = PlayerColor.red;
-      gameController.board.dumpBoardAndChessPieces();
+      if (kEnableTestDebugOutput) {
+        gameController.board.dumpBoardAndChessPieces();
+      }
 
       gameController.selectPiece(Position(1, 2));
       expect(
@@ -150,7 +155,9 @@ void main() {
         Piece(AnimalType.cat, PlayerColor.green),
       );
       gameController.currentPlayer = PlayerColor.red; // Still red's turn
-      gameController.board.dumpBoardAndChessPieces();
+      if (kEnableTestDebugOutput) {
+        gameController.board.dumpBoardAndChessPieces();
+      }
 
       gameController.selectPiece(Position(1, 3)); // Select dog in river
       expect(

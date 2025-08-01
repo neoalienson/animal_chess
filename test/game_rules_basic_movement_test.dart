@@ -8,6 +8,8 @@ import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/core/service_locator.dart';
 
+const bool kEnableTestDebugOutput = bool.fromEnvironment('ENABLE_TEST_DEBUG_OUTPUT', defaultValue: false);
+
 void main() {
   group('GameController - Basic Movement and Capture', () {
     late GameController gameController;
@@ -41,7 +43,9 @@ void main() {
         Piece(AnimalType.rat, PlayerColor.red),
       );
       gameController.currentPlayer = PlayerColor.red;
-      gameController.board.dumpBoardAndChessPieces();
+      if (kEnableTestDebugOutput) {
+        gameController.board.dumpBoardAndChessPieces();
+      }
 
       // Valid move: (0,0) to (0,1)
       gameController.selectPiece(Position(0, 0));
@@ -54,6 +58,7 @@ void main() {
     });
 
     test('Piece cannot move diagonally', () {
+      gameController.board.clearBoard();
       // Test Setup:
       //   0 1 2 3 4 5 6
       // 0 R _ _ _ _ _ _  (Red Rat at (0,0))
@@ -85,6 +90,7 @@ void main() {
     });
 
     test('Piece cannot move into its own den', () {
+      gameController.board.clearBoard();
       // Test Setup:
       //   0 1 2 3 4 5 6
       // 0 _ _ _ _ _ _ _
@@ -114,6 +120,7 @@ void main() {
     });
 
     test("Piece can capture opponent's piece of equal or lower rank", () {
+      gameController.board.clearBoard();
       // Test Setup:
       //   0 1 2 3 4 5 6
       // 0 C _ _ _ _ _ _  (Red Cat at (0,0))
@@ -157,6 +164,7 @@ void main() {
     });
 
     test("Piece cannot capture opponent's piece of higher rank", () {
+      gameController.board.clearBoard();
       // Test Setup:
       //   0 1 2 3 4 5 6
       // 0 R _ _ _ _ _ _  (Red Rat at (0,0))
@@ -194,6 +202,7 @@ void main() {
     });
 
     test('Rat can capture Elephant', () {
+      gameController.board.clearBoard();
       // Test Setup:
       //   0 1 2 3 4 5 6
       // 0 R _ _ _ _ _ _  (Red Rat at (0,0))
@@ -233,6 +242,7 @@ void main() {
     });
 
     test('Elephant can capture Rat', () {
+      gameController.board.clearBoard();
       // Test Setup:
       //   0 1 2 3 4 5 6
       // 0 E _ _ _ _ _ _  (Red Elephant at (0,0))
@@ -272,6 +282,7 @@ void main() {
     });
 
     test('Any piece can capture an opponent\'s piece in a trap', () {
+      gameController.board.clearBoard();
       // Test Setup:
       //   0 1 2 3 4 5 6
       // 0 _ _ t _ _ _ _  (Green Trap at (2,0))

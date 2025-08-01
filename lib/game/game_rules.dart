@@ -16,7 +16,6 @@ class GameRules {
   bool isValidMove(Position from, Position to, PlayerColor currentPlayer) {
     print("isValidMove: from=$from, to=$to, currentPlayer=$currentPlayer");
     Piece? piece = board.getPiece(from);
-    this.board.dumpBoardAndChessPieces();
     print("Piece at from: $piece");
     if (piece == null || piece.playerColor != currentPlayer) {
       print("Invalid: piece is null or not current player's");
