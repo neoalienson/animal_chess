@@ -8,7 +8,7 @@ import 'package:animal_chess/models/game_config.dart';
 final locator = GetIt.instance;
 
 void setupDependencies() {
-  locator.registerFactory<GameBoard>(() => GameBoard());
+  locator.registerLazySingleton<GameBoard>(() => GameBoard());
   locator.registerLazySingleton<GameConfig>(() => GameConfig());
 
   locator.registerFactory<GameRules>(

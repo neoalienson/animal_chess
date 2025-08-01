@@ -26,11 +26,7 @@ class GameBoard {
   /// Initialize the board with pieces in their starting positions
   void initializeDefaultBoard() {
     // Clear the board
-    for (int col = 0; col < BoardConstants.columns; col++) {
-      for (int row = 0; row < BoardConstants.rows; row++) {
-        _board[Position(col, row)] = null;
-      }
-    }
+    clearBoard();
 
     // Place pieces based on GameConstants
     GameConstants.pieceStartPositions.forEach((playerColor, pieces) {
@@ -71,7 +67,11 @@ class GameBoard {
 
   /// Clear all pieces from the board
   void clearBoard() {
-    _board.clear();
+    for (int col = 0; col < BoardConstants.columns; col++) {
+      for (int row = 0; row < BoardConstants.rows; row++) {
+        _board[Position(col, row)] = null;
+      }
+    }
   }
 
   void dumpBoardAndChessPieces() {
@@ -94,7 +94,8 @@ class GameBoard {
               pieceChar = "T";
               break;
             case AnimalType.leopard:
-              pieceChar = "P"; // Using P for Leopard to avoid conflict with Lion
+              pieceChar =
+                  "P"; // Using P for Leopard to avoid conflict with Lion
               break;
             case AnimalType.wolf:
               pieceChar = "W";

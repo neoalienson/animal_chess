@@ -12,17 +12,15 @@ void main() {
   group('GameController - Basic Movement and Capture', () {
     late GameController gameController;
 
-    setUpAll(() {
-      setupDependencies();
-    });
-
     setUp(() {
+      locator.reset(); // Reset GetIt before each test
+      setupDependencies();
       gameController = locator<GameController>();
       gameController.resetGame();
     });
 
     tearDown(() {
-      locator.reset();
+      locator.reset(); // Reset GetIt after each test
     });
 
     test('Piece moves one space orthogonally', () {
@@ -37,11 +35,13 @@ void main() {
       // 6 _ _ _ _ _ _ _
       // 7 _ _ _ _ _ _ _
       // 8 _ _ _ _ _ _ _
+      gameController.board.clearBoard();
       gameController.board.setPiece(
         Position(0, 0),
         Piece(AnimalType.rat, PlayerColor.red),
       );
       gameController.currentPlayer = PlayerColor.red;
+      gameController.board.dumpBoardAndChessPieces();
 
       // Valid move: (0,0) to (0,1)
       gameController.selectPiece(Position(0, 0));
@@ -65,7 +65,7 @@ void main() {
       // 6 _ _ _ _ _ _ _
       // 7 _ _ _ _ _ _ _
       // 8 _ _ _ _ _ _ _
-      gameController.board.clearBoard();
+
       gameController.board.setPiece(
         Position(0, 0),
         Piece(AnimalType.rat, PlayerColor.red),

@@ -12,17 +12,15 @@ void main() {
   group('GameController - River Rules', () {
     late GameController gameController;
 
-    setUpAll(() {
-      setupDependencies();
-    });
-
     setUp(() {
+      locator.reset(); // Reset GetIt before each test
+      setupDependencies();
       gameController = locator<GameController>();
       gameController.resetGame();
     });
 
-    tearDownAll(() {
-      locator.reset();
+    tearDown(() {
+      locator.reset(); // Reset GetIt after each test
     });
 
     test('Only Rat can enter the river', () {
