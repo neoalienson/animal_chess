@@ -46,11 +46,11 @@ Each player has 8 pieces ranked from strongest to weakest:
 The game includes several optional rule variants:
 
 1. **Rat-Only Den Entry**: Only the Rat can enter the opponent's den to win
-2. **Extended Lion/Tiger Jumps**: 
+2. **Extended Lion/Tiger Jumps**:
    - Lion can jump over both rivers (double river jump)
    - Tiger can jump over a single river (single river jump)
    - Leopard can cross rivers horizontally
-3. **Dog River Variant**: 
+3. **Dog River Variant**:
    - Dog can enter the river
    - Only the Dog can capture pieces on the shore from within the river
 4. **Rat cannot capture Elephant**
@@ -66,36 +66,6 @@ The game includes several optional rule variants:
 ## Code Structure Analysis
 
 The project follows a well-organized Flutter architecture with a clear separation of concerns:
-
-### Project Structure
-```
-lib/
-├── main.dart                 # Entry point of the application
-├── game/
-│   ├── game_controller.dart  # Main game logic coordinator
-│   ├── game_actions.dart     # Game actions implementation
-│   └── game_rules.dart       # Game rules validation
-├── models/
-│   ├── animal_type.dart      # Animal types and their properties
-│   ├── game_board.dart       # Game board representation
-│   ├── game_config.dart      # Game configuration options
-│   ├── piece.dart            # Game piece representation
-│   ├── player_color.dart     # Player colors
-│   └── position.dart         # Position on the board
-├── screens/
-│   ├── animal_chess_game_screen.dart # Main game screen
-│   └── main_menu_screen.dart         # Main menu screen
-└── widgets/
-    ├── about_dialog_widget.dart      # About dialog UI
-    ├── game_board_widget.dart        # Game board UI
-    ├── game_rules_dialog_widget.dart # Game rules dialog UI
-    ├── piece_widget.dart             # Individual piece UI
-    ├── pieces_rank_list_widget.dart  # Pieces rank list UI
-    ├── player_indicator_widget.dart  # Player indicator UI
-    ├── settings_dialog_widget.dart   # Settings dialog UI
-    ├── variants_dialog_widget.dart   # Game variants dialog UI
-    └── ...                           # Other UI components
-```
 
 ### Key Components
 
@@ -153,3 +123,136 @@ The codebase demonstrates several good practices:
 
 ### 7. Code Structure Improvements
 - **Error Handling**: Implement more robust error handling throughout the application
+
+## Architecture Diagram
+
+This section elaborates on the interaction flow between the layers and lists additional significant UI components.
+
+### Interaction Flow:
+
+1.  **UI Layer (`lib/screens/` and `lib/widgets/`)**:
+    *   Users interact with the `AnimalChessGameScreen` and `MainMenuScreen`.
+    *   Widgets like `GameBoardWidget`, `PieceWidget`, `SettingsDialogWidget`, etc., render the game state and capture user input.
+    *   User actions (e.g., moving a piece, changing settings) are typically passed to the `GameController` in the Game Logic Layer.
+
+2.  **Game Logic Layer (`lib/game/`)**:
+    *   The `GameController` receives user input from the UI.
+    *   It orchestrates game actions by calling methods in `GameActions` (e.g., `movePiece`, `switchPlayer`).
+    *   `GameRules` is used by `GameActions` and `GameController` to validate moves and enforce game rules based on the current `GameBoard` state.
+    *   The `GameController` updates the `GameBoard` and `Piece` models in the Model Layer, which in turn triggers UI updates.
+
+3.  **Model Layer (`lib/models/`)**:
+    *   Contains the data structures representing the game state (`GameBoard`, `Piece`, `Position`, `AnimalType`, `GameConfig`, `PlayerColor`).
+    *   These models are manipulated by the Game Logic Layer.
+    *   Changes in the Model Layer are observed by the UI Layer to reflect the updated game state.
+
+### Additional UI Components (`lib/widgets/`):
+
+Based on the provided file list, the `lib/widgets/` directory contains:
+*   `about_dialog_widget.dart`
+*   `game_board_widget.dart`
+*   `game_rules_dialog_widget.dart`
+*   `piece_widget.dart`
+*   `pieces_rank_list_widget.dart`
+*   `player_indicator_widget.dart`
+*   `settings_dialog_widget.dart`
+*   `variants_dialog_widget.dart`
+
+All of these were already explicitly mentioned in the `GEMINI.md` under "Other UI components". There are no other significant UI components to add from the provided directory listing.
+
+### Architecture Diagram:                                                                                            │
+
+```mermaid
+graph TD
+    UI[UI Layer] -->|User Input| GameLogic[Game Logic Layer]
+    GameLogic -->|Updates| Model[Model Layer]
+    Model -->|Observes Changes| UI
+
+    subgraph Game Logic Layer Details
+        GameLogic --> GameController(GameController)
+        GameController -->|Orchestrates| GameActions(GameActions)
+        GameController -->|Queries| GameRules(GameRules)
+        GameActions -->|Enforces| GameRules
+    end
+
+    subgraph Model Layer Details
+        Model --> GameBoard(GameBoard)
+        Model --> Piece(Piece)
+        Model --> Position(Position)
+        Model --> ModelsData(AnimalType, PlayerColor, GameConfig)
+    end
+```
+
+### Project Structure Diagram:
+
+```mermaid
+directory
+lib
+├── main.dart
+├── constants
+│   ├── board_constants.dart
+│   ├── game_constants.dart
+│   └── ui_constants.dart
+├── core
+│   └── service_locator.dart
+├── game
+│   ├── game_actions.dart
+│   ├── game_controller.dart
+│   └── game_rules.dart
+├── generated
+│   ├── l10n.dart
+│   └── intl
+├── l10n
+│   ├── app_de.arb
+│   ├── app_en.arb
+│   ├── app_es.arb
+│   ├── app_fr.arb
+│   ├── app_ja.arb
+│   ├── app_ko.arb
+│   ├── app_pt.arb
+│   ├── app_th.arb
+│   ├── app_zh_TW.arb
+│   └── app_zh.arb
+├── models
+│   ├── animal_type.dart
+│   ├── game_board.dart
+│   ├── game_config.dart
+│   ├── piece.dart
+│   ├── player_color.dart
+│   └── position.dart
+├── screens
+│   ├── animal_chess_game_screen.dart
+│   └── main_menu_screen.dart
+└── widgets
+    ├── about_dialog_widget.dart
+    ├── game_board_widget.dart
+    ├── game_rules_dialog_widget.dart
+    ├── piece_widget.dart
+    ├── pieces_rank_list_widget.dart
+    ├── player_indicator_widget.dart
+    ├── settings_dialog_widget.dart
+    └── variants_dialog_widget.dart
+```
+
+Key Components and Interaction:
+
+1.  **UI Layer** (`lib/screens/` and `lib/widgets/`):
+    *   Presents the game to the user and captures input.
+    *   Screens (e.g., `AnimalChessGameScreen`, `MainMenuScreen`) serve as top-level views.
+    *   Widgets (e.g., `GameBoardWidget`, `PieceWidget`, various dialogs) are reusable UI components that display game elements and handle specific interactions.
+    *   User actions are dispatched to the Game Logic Layer.
+
+2.  **Game Logic Layer** (`lib/game/`):
+    *   `GameController`: The central orchestrator. It receives user input from the UI, processes game events, and updates the game state. It acts as the bridge between the UI and the core game rules/actions.
+    *   `GameActions`: Implements the specific operations that change the game state (e.g., `movePiece`, `capture`, `switchTurns`). These actions are invoked by the `GameController`.
+    *   `GameRules`: Encapsulates all the rules of Animal Chess. `GameActions` and `GameController` query `GameRules` to validate moves, check for win conditions, and ensure adherence to game mechanics.
+
+3.  **Model Layer** (`lib/models/`):
+    *   Defines the data structures that represent the game's state and entities.
+    *   `GameBoard`: Represents the current layout of pieces on the board.
+    *   `Piece`: Represents an individual animal piece with its type, rank, and owner.
+    *   `Position`: Represents coordinates on the game board.
+    *   `AnimalType`, `PlayerColor`, `GameConfig`: Enums and data classes defining game constants and configurable options.
+    *   The Game Logic Layer modifies these models, and the UI Layer observes these changes to re-render the game.
+
+This structure ensures a clear separation of concerns, making the codebase modular, testable, and maintainable.
