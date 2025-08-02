@@ -9,12 +9,9 @@ import 'package:animal_chess/core/service_locator.dart';
 
 void main() {
   group('GameController - Game Variants', () {
-    late GameController gameController;
-
     setUp(() {
       locator.reset(); // Reset GetIt before each test
       setupDependencies();
-      gameController = locator<GameController>();
     });
 
     tearDown(() {

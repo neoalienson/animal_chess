@@ -22,7 +22,6 @@ class _TestLocalizationsDelegate
 }
 
 class MockAppLocalizations implements AppLocalizations {
-  @override
   final Locale locale;
 
   MockAppLocalizations(this.locale);

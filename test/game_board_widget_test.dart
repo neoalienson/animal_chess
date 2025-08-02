@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/gestures.dart';
 import 'package:animal_chess/widgets/game_board_widget.dart';
 import 'package:animal_chess/game/game_controller.dart';
 import 'package:animal_chess/models/game_board.dart';
 import 'package:animal_chess/models/position.dart';
-import 'package:animal_chess/models/piece.dart';
-import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mocktail/mocktail.dart';
