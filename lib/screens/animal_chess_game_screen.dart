@@ -118,8 +118,8 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: AppLocalizations.of(context).piecesRank,
-        child: const Icon(Icons.list),
         onPressed: _showPiecesRank,
+        child: const Icon(Icons.list),
       ),
     );
   }
