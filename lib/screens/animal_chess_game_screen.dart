@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import 'package:animal_chess/game/game_controller.dart';
+import 'package:animal_chess/widgets/victory_dialog_widget.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/widgets/game_board_widget.dart';
@@ -309,50 +310,13 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        final localizations = AppLocalizations.of(context);
-        String winner = _gameController.winner == PlayerColor.green
-            ? localizations.greenPlayer
-            : localizations.redPlayer;
-
-        return Dialog(
-          child: Container(
-            padding: const EdgeInsets.all(UIConstants.defaultPadding),
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.8,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  localizations.gameOverWins(winner),
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  height: 200,
-                  child: ConfettiWidget(
-                    confettiController: _confettiController,
-                    blastDirectionality: BlastDirectionality.explosive,
-                    shouldLoop: false,
-                    emissionFrequency: 0.01,
-                    numberOfParticles: 50,
-                    gravity: 0.1,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                TextButton(
-                  child: Text(localizations.close),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    _confettiController.stop();
-                  },
-                ),
-              ],
-            ),
-          ),
+        return VictoryDialogWidget(
+          winner: _gameController.winner,
+          confettiController: _confettiController,
+          onClose: () {
+            Navigator.of(context).pop();
+            _confettiController.stop();
+          },
         );
       },
     );
