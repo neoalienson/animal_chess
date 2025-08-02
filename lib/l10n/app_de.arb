@@ -48,5 +48,6 @@
   "variantDogRiver": "Hund-Fluss-Variante:",
   "variantDogEnterRiver": "Hund kann den Fluss betreten.",
   "variantDogCaptureFromRiver": "Nur der Hund kann Figuren am Ufer vom Fluss aus schlagen",
-  "piecesRank": "Figuren-Rang"
+  "piecesRank": "Figurenrang",
+  "piecesRankListTitle": "Figurenrang"
 }

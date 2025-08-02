@@ -41,6 +41,7 @@
   "variantDogEnterRiver": "Le Chien peut entrer dans la rivière.",
   "variantDogCaptureFromRiver": "Seul le Chien peut capturer des pièces sur le rivage depuis la rivière",
   "piecesRank": "Rang des pièces",
+  "piecesRankListTitle": "Rang des pièces",
   "elephantName": "Éléphant",
   "lionName": "Lion",
   "tigerName": "Tigre",

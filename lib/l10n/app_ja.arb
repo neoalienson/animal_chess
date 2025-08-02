@@ -41,6 +41,7 @@
   "variantDogEnterRiver": "犬は川に入ることができます。",
   "variantDogCaptureFromRiver": "犬だけが川の中から岸の駒を捕獲できます",
   "piecesRank": "駒のランク",
+  "piecesRankListTitle": "駒のランク",
   "elephantName": "ゾウ",
   "lionName": "ライオン",
   "tigerName": "トラ",

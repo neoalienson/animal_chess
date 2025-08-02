@@ -14,9 +14,7 @@ import 'package:animal_chess/constants/ui_constants.dart';
 import 'package:animal_chess/core/service_locator.dart';
 
 class AnimalChessGameScreen extends StatefulWidget {
-  const AnimalChessGameScreen({
-    super.key,
-  });
+  const AnimalChessGameScreen({super.key});
 
   @override
   State<AnimalChessGameScreen> createState() => _AnimalChessGameScreenState();
@@ -35,7 +33,7 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text(localizations.animalChess),
@@ -89,27 +87,6 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
                     ),
                   ),
                 ),
-
-                // Pieces Rank panel
-                SizedBox(
-                  width: 150,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(UIConstants.smallPadding),
-                        child: Text(
-                          localizations.piecesRank,
-                          style: const TextStyle(
-                            fontSize: UIConstants.boardFontSize,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Expanded(child: _buildPiecesRankList()),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),
@@ -118,13 +95,41 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
           _buildGameStatus(),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: AppLocalizations.of(context).piecesRank,
+        child: const Icon(Icons.list),
+        onPressed: _showPiecesRank,
+      ),
+    );
+  }
+
+  /// Show pieces rank dialog
+  void _showPiecesRank() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context).piecesRank),
+          content: SizedBox(
+            height: 400, // Fixed height to prevent layout issues
+            width: 300, // Fixed width for consistent dialog
+            child: const PiecesRankListWidget(),
+          ),
+          actions: [
+            TextButton(
+              child: Text(AppLocalizations.of(context).close),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
     );
   }
 
   /// Build player indicators showing whose turn it is
   Widget _buildPlayerIndicators() {
     final localizations = AppLocalizations.of(context);
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: UIConstants.smallPadding),
       child: Row(
@@ -153,7 +158,7 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
   /// Build game status display (winner or current player)
   Widget _buildGameStatus() {
     final localizations = AppLocalizations.of(context);
-    
+
     String statusText;
     Color statusColor;
 
@@ -250,11 +255,6 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
         );
         break;
     }
-  }
-
-  /// Build pieces rank list
-  Widget _buildPiecesRankList() {
-    return PiecesRankListWidget();
   }
 
   /// Show rules dialog

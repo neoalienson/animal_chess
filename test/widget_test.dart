@@ -9,22 +9,36 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:animal_chess/main.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
+import 'package:animal_chess/screens/main_menu_screen.dart';
 import 'package:flutter/material.dart';
-
-
 
 void main() {
   testWidgets('Animal Chess app smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const AnimalChessApp());
+    // Build our app with localization support and trigger a frame.
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('en'),
+        home: const AnimalChessApp(),
+      ),
+    );
 
-    // Load the app localizations.
-    final localizations = await AppLocalizations.delegate.load(const Locale('en'));
+    // Wait for localization to load
+    await tester.pumpAndSettle();
 
-    // Verify that the app title is displayed.
+    // Verify that the app title is displayed
+    expect(find.byType(MainMenuScreen), findsOneWidget);
+
+    // Verify that localization is working
+    final localizations = AppLocalizations.of(
+      tester.element(find.byType(MainMenuScreen)),
+    );
     expect(find.text(localizations.animalChess), findsOneWidget);
-
-    // Verify that the main menu elements are displayed.
     expect(find.text(localizations.newGame), findsOneWidget);
     expect(find.text(localizations.gameInstructions), findsOneWidget);
   });

@@ -11,12 +11,14 @@ class PiecesRankListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
-    
+
     // Create a list of all animal types sorted by rank (strongest to weakest)
     final animalTypes = List<AnimalType>.from(AnimalType.values);
     animalTypes.sort((a, b) => a.rank.compareTo(b.rank));
 
     return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: animalTypes.length,
       itemBuilder: (context, index) {
         final animalType = animalTypes[index];
@@ -31,13 +33,19 @@ class PiecesRankListWidget extends StatelessWidget {
             isRankDisplay: true,
             animalName: _getLocalizedAnimalName(localizations, animalType),
           ),
-          title: Text(_getLocalizedAnimalName(localizations, animalType), style: const TextStyle(fontSize: 12)),
+          title: Text(
+            _getLocalizedAnimalName(localizations, animalType),
+            style: const TextStyle(fontSize: 12),
+          ),
         );
       },
     );
   }
-  
-  String _getLocalizedAnimalName(AppLocalizations localizations, AnimalType animalType) {
+
+  String _getLocalizedAnimalName(
+    AppLocalizations localizations,
+    AnimalType animalType,
+  ) {
     switch (animalType) {
       case AnimalType.elephant:
         return localizations.elephantName;

@@ -48,5 +48,6 @@
   "variantDogRiver": "Variante del río Perro:",
   "variantDogEnterRiver": "El Perro puede entrar al río.",
   "variantDogCaptureFromRiver": "Solo el Perro puede capturar piezas en la orilla desde dentro del río",
-  "piecesRank": "Rango de piezas"
+  "piecesRank": "Rango de Piezas",
+  "piecesRankListTitle": "Rango de Piezas"
 }
