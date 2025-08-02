@@ -49,7 +49,9 @@ class GameActions {
     if (board.isOpponentDen(to, currentPlayer)) {
       // With rat-only variant, only rat can win by entering den
       if (gameConfig.ratOnlyDenEntry && piece.animalType != AnimalType.rat) {
-        _logger.fine("Rat-only den entry variant enabled, non-rat piece cannot win.");
+        _logger.fine(
+          "Rat-only den entry variant enabled, non-rat piece cannot win.",
+        );
         return false; // Not a valid win under this variant
       } else {
         // Valid win
@@ -65,7 +67,9 @@ class GameActions {
     if (targetPiece != null) {
       board.removePiece(to);
       capturedPieces.add(targetPiece);
-      _logger.info("$currentPlayer's ${piece.animalType} captured $targetPiece.");
+      _logger.info(
+        "$currentPlayer's ${piece.animalType} captured $targetPiece.",
+      );
     }
 
     // Move the piece
@@ -92,8 +96,9 @@ class GameActions {
   }
 
   /// Get valid moves for a selected piece
-  List<Position> getValidMoves(Position from) {
-    if (board.getPiece(from)?.playerColor != currentPlayer) {
+  List<Position> getValidMoves(Position from, [PlayerColor? player]) {
+    final effectivePlayer = player ?? currentPlayer;
+    if (board.getPiece(from)?.playerColor != effectivePlayer) {
       _logger.fine("No piece or not current player's piece at $from.");
       return [];
     }
@@ -102,7 +107,7 @@ class GameActions {
     for (int col = 0; col < BoardConstants.columns; col++) {
       for (int row = 0; row < BoardConstants.rows; row++) {
         Position to = Position(col, row);
-        if (gameRules.isValidMove(from, to, currentPlayer)) {
+        if (gameRules.isValidMove(from, to, effectivePlayer)) {
           validMoves.add(to);
         }
       }

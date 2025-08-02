@@ -27,7 +27,7 @@ class AnimalChessGameScreen extends StatefulWidget {
 }
 
 class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
-  late final GameController _gameController;
+  late GameController _gameController;
   List<Position> _validMoves = [];
   late ConfettiController _confettiController;
   bool _hasShownVictoryDialog = false;
@@ -42,6 +42,11 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
     );
     // Initialize display format from config
     _displayFormat = locator<GameConfig>().pieceDisplayFormat;
+
+    // Check if AI should make the first move
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _gameController.executeAIMoveIfNecessary();
+    });
   }
 
   @override
@@ -258,6 +263,9 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
       // If game is over, ignore taps
       if (_gameController.gameEnded) return;
 
+      // Check if next player is AI
+      _gameController.executeAIMoveIfNecessary();
+
       // If a piece is already selected, try to move it
       if (_gameController.selectedPosition != null) {
         bool moved = _gameController.movePiece(position);
@@ -295,6 +303,11 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
       _gameController.resetGame();
       _validMoves = [];
       _hasShownVictoryDialog = false;
+
+      // Check if AI should make the first move in the new game
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _gameController.executeAIMoveIfNecessary();
+      });
     });
   }
 
@@ -323,6 +336,10 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
           onConfigChanged: (GameConfig config) {
             setState(() {
               _displayFormat = config.pieceDisplayFormat;
+              // Get the new game controller with updated config
+              _gameController = locator<GameController>();
+              // Reset the entire game to ensure AI settings take effect
+              _resetGame();
             });
           },
         );

@@ -45,6 +45,7 @@ class _SettingsDialogWidgetState extends State<SettingsDialogWidget> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        _buildAIPlayerSettings(context, localizations),
                         _buildRatOnlyDenEntryVariant(context, localizations),
                         _buildExtendedLionTigerJumpsVariant(
                           context,
@@ -90,6 +91,9 @@ class _SettingsDialogWidgetState extends State<SettingsDialogWidget> {
                             _gameConfig.copyWith(),
                           );
 
+                          // Recreate the game controller with the new config
+                          recreateGameController();
+
                           // Notify listeners of the change
                           widget.onConfigChanged(_gameConfig);
 
@@ -105,6 +109,59 @@ class _SettingsDialogWidgetState extends State<SettingsDialogWidget> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildAIPlayerSettings(
+    BuildContext context,
+    AppLocalizations localizations,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+          child: Text(
+            localizations.aiPlayers,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        SwitchListTile(
+          title: Text(localizations.aiGreenPlayer),
+          value: _gameConfig.aiGreen,
+          onChanged: (bool value) {
+            setState(() {
+              _gameConfig = _gameConfig.copyWith(aiGreen: value);
+            });
+            widget.onConfigChanged(_gameConfig);
+          },
+        ),
+        SwitchListTile(
+          title: Text(localizations.aiRedPlayer),
+          value: _gameConfig.aiRed,
+          onChanged: (bool value) {
+            setState(() {
+              _gameConfig = _gameConfig.copyWith(aiRed: value);
+            });
+            widget.onConfigChanged(_gameConfig);
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
+          child: Container(
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceVariant,
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            child: Text(
+              localizations.aiPlayersDescription,
+              style: Theme.of(context).textTheme.bodySmall,
+              softWrap: true,
+            ),
+          ),
+        ),
+      ],
     );
   }
 

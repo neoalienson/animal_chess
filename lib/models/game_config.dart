@@ -1,4 +1,5 @@
 import 'package:animal_chess/models/piece_display_format.dart';
+import 'package:animal_chess/models/player_color.dart';
 
 class GameConfig {
   bool ratOnlyDenEntry;
@@ -7,12 +8,18 @@ class GameConfig {
   bool ratCannotCaptureElephant;
   PieceDisplayFormat pieceDisplayFormat;
 
+  // AI player configuration
+  bool aiGreen;
+  bool aiRed;
+
   GameConfig({
     this.ratOnlyDenEntry = false,
     this.extendedLionTigerJumps = false,
     this.dogRiverVariant = false,
     this.ratCannotCaptureElephant = false,
     this.pieceDisplayFormat = PieceDisplayFormat.traditionalChinese,
+    this.aiGreen = false,
+    this.aiRed = false,
   });
 
   GameConfig copyWith({
@@ -21,6 +28,8 @@ class GameConfig {
     bool? dogRiverVariant,
     bool? ratCannotCaptureElephant,
     PieceDisplayFormat? pieceDisplayFormat,
+    bool? aiGreen,
+    bool? aiRed,
   }) {
     return GameConfig(
       ratOnlyDenEntry: ratOnlyDenEntry ?? this.ratOnlyDenEntry,
@@ -30,6 +39,8 @@ class GameConfig {
       ratCannotCaptureElephant:
           ratCannotCaptureElephant ?? this.ratCannotCaptureElephant,
       pieceDisplayFormat: pieceDisplayFormat ?? this.pieceDisplayFormat,
+      aiGreen: aiGreen ?? this.aiGreen,
+      aiRed: aiRed ?? this.aiRed,
     );
   }
 
@@ -41,7 +52,9 @@ class GameConfig {
         other.extendedLionTigerJumps == extendedLionTigerJumps &&
         other.dogRiverVariant == dogRiverVariant &&
         other.ratCannotCaptureElephant == ratCannotCaptureElephant &&
-        other.pieceDisplayFormat == pieceDisplayFormat;
+        other.pieceDisplayFormat == pieceDisplayFormat &&
+        other.aiGreen == aiGreen &&
+        other.aiRed == aiRed;
   }
 
   @override
@@ -51,5 +64,7 @@ class GameConfig {
     dogRiverVariant,
     ratCannotCaptureElephant,
     pieceDisplayFormat,
+    aiGreen,
+    aiRed,
   );
 }

@@ -61,5 +61,9 @@
   "variantRatCannotCaptureElephantDescriptionEnabled": "Wenn diese Variante aktiviert ist, kann die Ratte den Elefanten nicht schlagen. In den Standardregeln kann die Ratte den Elefanten schlagen (Ausnahme in der normalen Rangfolge).",
   "variantRatCannotCaptureElephantDescriptionDisabled": "In den Standardregeln kann die Ratte den Elefanten schlagen (Ausnahme in der normalen Rangfolge). Aktivieren Sie diese Variante, um diese Ausnahme zu entfernen.",
   "piecesRank": "Figurenrang",
-  "piecesRankListTitle": "Figurenrang"
+  "piecesRankListTitle": "Figurenrang",
+  "aiPlayers": "KI-Spieler",
+  "aiGreenPlayer": "KI Grün Spieler",
+  "aiRedPlayer": "KI Rot Spieler",
+  "aiPlayersDescription": "Aktivieren Sie KI-Spieler, um gegen den Computer zu spielen. Sie können beide Spieler von der KI steuern lassen, um eine Demonstration zu sehen."
 }

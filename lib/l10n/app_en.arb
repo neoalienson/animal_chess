@@ -71,5 +71,9 @@
   "displayFormatSimplifiedChinese": "Simplified Chinese",
   "displayFormatTraditionalChinese": "Traditional Chinese",
   "enabled": "Enabled",
-  "disabled": "Disabled"
+  "disabled": "Disabled",
+  "aiPlayers": "AI Players",
+  "aiGreenPlayer": "AI Green Player",
+  "aiRedPlayer": "AI Red Player",
+  "aiPlayersDescription": "Enable AI players to play against the computer. You can have both players controlled by AI for demonstration purposes."
 }

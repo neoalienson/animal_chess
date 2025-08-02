@@ -61,5 +61,9 @@
   "wolfName": "オオカミ",
   "dogName": "イヌ",
   "catName": "ネコ",
-  "ratName": "ネズミ"
+  "ratName": "ネズミ",
+  "aiPlayers": "AIプレイヤー",
+  "aiGreenPlayer": "AI 緑プレイヤー",
+  "aiRedPlayer": "AI 赤プレイヤー",
+  "aiPlayersDescription": "AIプレイヤーを有効にしてコンピュータと対戦します。デモンストレーション目的で両方のプレイヤーをAIに制御させることができます。"
 }

@@ -68,5 +68,9 @@
   "displayFormatSimplifiedChinese": "簡體中文",
   "displayFormatTraditionalChinese": "繁體中文",
   "enabled": "已啟用",
-  "disabled": "已禁用"
+  "disabled": "已禁用",
+  "aiPlayers": "AI玩家",
+  "aiGreenPlayer": "AI綠方玩家",
+  "aiRedPlayer": "AI紅方玩家",
+  "aiPlayersDescription": "啟用AI玩家與電腦對戰。您可以設置雙方都由AI控制以進行演示。"
 }

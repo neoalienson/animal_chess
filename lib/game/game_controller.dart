@@ -5,8 +5,12 @@ import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/game/game_rules.dart';
 import 'package:animal_chess/game/game_actions.dart';
+import 'package:animal_chess/game/ai_strategy.dart';
+import 'package:animal_chess/game/ai_move.dart';
+import 'package:logging/logging.dart';
 
 class GameController {
+  final Logger _logger = Logger('GameController');
   final GameBoard board;
   PlayerColor currentPlayer = PlayerColor.red; // Red goes first
   Position? selectedPosition;
@@ -37,8 +41,36 @@ class GameController {
     return moved;
   }
 
+  /// Execute AI move if it's an AI player's turn
+  void executeAIMoveIfNecessary() {
+    _logger.fine(
+      "Checking AI move: current player=$currentPlayer, "
+      "aiGreen=${gameConfig.aiGreen}, aiRed=${gameConfig.aiRed}",
+    );
+
+    // Check if current player is AI
+    if ((currentPlayer == PlayerColor.green && gameConfig.aiGreen) ||
+        (currentPlayer == PlayerColor.red && gameConfig.aiRed)) {
+      _logger.info("Executing AI move for $currentPlayer");
+      _executeAIMove();
+    } else {
+      _logger.fine("No AI move needed");
+    }
+  }
+
+  /// Execute the best move for the AI player
+  void _executeAIMove() {
+    final ai = AIStrategy(gameConfig);
+    final bestMove = ai.calculateBestMove(board, currentPlayer, gameActions);
+    if (bestMove != null) {
+      // Set the selected position first
+      selectedPosition = bestMove.from;
+      movePiece(bestMove.to);
+    }
+  }
+
   List<Position> getValidMoves(Position fromPosition) {
-    return gameActions.getValidMoves(fromPosition);
+    return gameActions.getValidMoves(fromPosition, currentPlayer);
   }
 
   void resetGame() {

@@ -61,5 +61,9 @@
   "wolfName": "Lobo",
   "dogName": "Cão",
   "catName": "Gato",
-  "ratName": "Rato"
+  "ratName": "Rato",
+  "aiPlayers": "Jogadores IA",
+  "aiGreenPlayer": "Jogador Verde IA",
+  "aiRedPlayer": "Jogador Vermelho IA",
+  "aiPlayersDescription": "Ative jogadores IA para jogar contra o computador. Você pode ter ambos os jogadores controlados pela IA para fins de demonstração."
 }
