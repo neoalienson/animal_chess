@@ -20,6 +20,12 @@ class UIConstants {
   static const Color riverIconColor = Colors.blue;
   static const Color greenPieceColor = Color(0xFF81C784);
   static const Color redPieceColor = Color(0xFFE57373);
+  static const Color darkGreenPieceColor = Color(
+    0xFF0C3F10,
+  ); // Darker green for green's turn
+  static const Color darkRedPieceColor = Color(
+    0xFF331F1F,
+  ); // Darker red for red's turn
   static const Color pieceTextColor = Colors.white;
   static const Color rankDisplayBackgroundColor = Color(0xFF424242);
   static const Color pieceBorderColorNormal = Colors.black;

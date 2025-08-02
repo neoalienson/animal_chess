@@ -62,38 +62,45 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // Player indicators
-          _buildPlayerIndicators(),
+      body: Container(
+        color: _gameController.currentPlayer == PlayerColor.green
+            ? UIConstants.darkGreenPieceColor
+            : UIConstants.darkRedPieceColor,
+        child: Column(
+          children: [
+            // Player indicators
+            _buildPlayerIndicators(),
 
-          // Game board and captured pieces
-          Expanded(
-            child: Row(
-              children: [
-                // Game board
-                Expanded(
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(UIConstants.defaultPadding),
-                      child: AspectRatio(
-                        aspectRatio: 7 / 9, // Maintain board aspect ratio
-                        child: GameBoardWidget(
-                          gameController: _gameController,
-                          onPositionTap: _handlePositionTap,
-                          validMoves: _validMoves,
+            // Game board and captured pieces
+            Expanded(
+              child: Row(
+                children: [
+                  // Game board
+                  Expanded(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(
+                          UIConstants.defaultPadding,
+                        ),
+                        child: AspectRatio(
+                          aspectRatio: 7 / 9, // Maintain board aspect ratio
+                          child: GameBoardWidget(
+                            gameController: _gameController,
+                            onPositionTap: _handlePositionTap,
+                            validMoves: _validMoves,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
 
-          // Game status
-          _buildGameStatus(),
-        ],
+            // Game status
+            _buildGameStatus(),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: AppLocalizations.of(context).piecesRank,
