@@ -54,5 +54,7 @@
   "pieceDisplayFormat": "棋子顯示格式",
   "displayFormatEmoji": "表情符號",
   "displayFormatSimplifiedChinese": "簡體中文",
-  "displayFormatTraditionalChinese": "繁體中文"
+  "displayFormatTraditionalChinese": "繁體中文",
+  "enabled": "已啟用",
+  "disabled": "已禁用"
 }

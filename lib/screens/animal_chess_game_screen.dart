@@ -9,6 +9,7 @@ import 'package:animal_chess/models/piece_display_format.dart';
 import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/widgets/game_board_widget.dart';
 import 'package:animal_chess/widgets/pieces_rank_list_widget.dart';
+import 'package:animal_chess/widgets/game_info_dialog_widget.dart';
 import 'package:animal_chess/widgets/game_rules_dialog_widget.dart';
 import 'package:animal_chess/widgets/debug_menu_widget.dart';
 import 'package:animal_chess/widgets/player_indicator_widget.dart';
@@ -128,24 +129,29 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        tooltip: AppLocalizations.of(context).piecesRank,
-        onPressed: _showPiecesRank,
-        child: const Icon(Icons.list),
+        tooltip: AppLocalizations.of(context).gameVariants,
+        onPressed: _showGameInfo,
+        child: const Icon(Icons.info),
       ),
     );
   }
 
-  /// Show pieces rank dialog
-  void _showPiecesRank() {
+  /// Show game info dialog with pieces rank and game variants
+  void _showGameInfo() {
+    final gameConfig = locator<GameConfig>();
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(context).piecesRank),
+          title: Text(AppLocalizations.of(context).gameVariants),
           content: SizedBox(
-            height: 400, // Fixed height to prevent layout issues
-            width: 300, // Fixed width for consistent dialog
-            child: PiecesRankListWidget(displayFormat: _displayFormat),
+            height: 400,
+            width: 300,
+            child: GameInfoDialogWidget(
+              displayFormat: _displayFormat,
+              gameConfig: gameConfig,
+            ),
           ),
           actions: [
             TextButton(

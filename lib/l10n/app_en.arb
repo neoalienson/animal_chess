@@ -57,5 +57,7 @@
   "pieceDisplayFormat": "Piece Display Format",
   "displayFormatEmoji": "Emoji",
   "displayFormatSimplifiedChinese": "Simplified Chinese",
-  "displayFormatTraditionalChinese": "Traditional Chinese"
+  "displayFormatTraditionalChinese": "Traditional Chinese",
+  "enabled": "Enabled",
+  "disabled": "Disabled"
 }
