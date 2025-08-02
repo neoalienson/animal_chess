@@ -3,6 +3,7 @@ import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/animal_type.dart';
 import 'package:animal_chess/models/piece.dart';
+import 'package:animal_chess/models/piece_display_format.dart'; // Add this import
 import 'package:animal_chess/screens/animal_chess_game_screen.dart';
 import 'package:animal_chess/widgets/piece_widget.dart';
 import 'package:animal_chess/widgets/game_rules_dialog_widget.dart';
@@ -30,7 +31,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
-    
+
     return Scaffold(
       body: Stack(
         children: [
@@ -144,12 +145,15 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     return Container(
       color: UIConstants.boardBackgroundColor,
       child: Stack(
-        children: List.generate(15, (index) {
+        children: List.generate(40, (index) {
           final random = Random();
           final animalTypes = AnimalType.values;
           final animalType = animalTypes[random.nextInt(animalTypes.length)];
           final playerColors = PlayerColor.values;
           final playerColor = playerColors[random.nextInt(playerColors.length)];
+          final displayFormats = PieceDisplayFormat.values;
+          final displayFormat =
+              displayFormats[random.nextInt(displayFormats.length)];
 
           return Positioned(
             left: random.nextDouble() * MediaQuery.of(context).size.width,
@@ -160,8 +164,11 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                 piece: Piece(animalType, playerColor),
                 isSelected: false,
                 size:
-                    UIConstants.pieceSizeFactor * 30 +
-                    random.nextDouble() * UIConstants.pieceSizeFactor * 30, // Random size between 30 and 60
+                    UIConstants.pieceSizeFactor * 60 +
+                    random.nextDouble() *
+                        UIConstants.pieceSizeFactor *
+                        30, // Random size between 60 and 90
+                displayFormat: displayFormat, // Randomly select display format
               ),
             ),
           );
@@ -179,18 +186,24 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           horizontal: UIConstants.defaultPadding * 1.875,
           vertical: UIConstants.defaultPadding * 1.25,
         ), // Larger padding
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(UIConstants.pieceBorderRadius)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(UIConstants.pieceBorderRadius),
+        ),
         minimumSize: const Size(200, 60), // Minimum button size
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: UIConstants.buttonIconSize), // Larger icon
-          const SizedBox(width: UIConstants.smallPadding), // Space between icon and text
+          const SizedBox(
+            width: UIConstants.smallPadding,
+          ), // Space between icon and text
           Flexible(
             child: Text(
               text,
-              style: const TextStyle(fontSize: UIConstants.buttonFontSize), // Larger text
+              style: const TextStyle(
+                fontSize: UIConstants.buttonFontSize,
+              ), // Larger text
               overflow: TextOverflow.ellipsis, // Handle overflow with ellipsis
               softWrap: false, // Prevent text wrapping
             ),
@@ -203,7 +216,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   // Show language selection
   void _showLanguageSelection() {
     final localizations = AppLocalizations.of(context);
-    
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -238,11 +251,10 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   // Build language option
   Widget _buildLanguageOption(Locale locale, String label) {
     return ListTile(
-      title: Text(
-        label,
-        overflow: TextOverflow.ellipsis,
-      ),
-      trailing: Localizations.localeOf(context) == locale ? const Icon(Icons.check) : null,
+      title: Text(label, overflow: TextOverflow.ellipsis),
+      trailing: Localizations.localeOf(context) == locale
+          ? const Icon(Icons.check)
+          : null,
       onTap: () {
         widget.setLocale(locale);
         Navigator.of(context).pop();
