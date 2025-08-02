@@ -46,4 +46,6 @@ app.*.map.json
 
 untranslated-messages.txt
 lib/l10n/app_localizations_*.dart
-lib/l10n/app_localizations.dart 
+lib/l10n/app_localizations.dart
+
+coverage/*
