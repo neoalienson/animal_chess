@@ -53,5 +53,9 @@
   "debugMenuTitle": "Debug Menu",
   "forceGreenWin": "Force Green Win",
   "forceRedWin": "Force Red Win",
-  "save": "Save"
+  "save": "Save",
+  "pieceDisplayFormat": "Piece Display Format",
+  "displayFormatEmoji": "Emoji",
+  "displayFormatSimplifiedChinese": "Simplified Chinese",
+  "displayFormatTraditionalChinese": "Traditional Chinese"
 }

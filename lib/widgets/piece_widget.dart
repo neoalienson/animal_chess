@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/animal_type.dart';
+import 'package:animal_chess/models/piece_display_format.dart';
 import 'package:animal_chess/constants/ui_constants.dart';
 
 class PieceWidget extends StatelessWidget {
@@ -11,6 +12,7 @@ class PieceWidget extends StatelessWidget {
   final double size; // New parameter for piece size
   final bool isRankDisplay; // New parameter for rank display
   final String? animalName; // New parameter for localized animal name
+  final PieceDisplayFormat displayFormat; // New parameter for display format
 
   const PieceWidget({
     super.key,
@@ -20,10 +22,68 @@ class PieceWidget extends StatelessWidget {
     this.size = 40.0, // Default size
     this.isRankDisplay = false, // Default to false
     this.animalName, // Allow passing a localized name
+    this.displayFormat =
+        PieceDisplayFormat.traditionalChinese, // Default to traditional Chinese
   });
 
-  /// Returns the default animal name (Chinese) when no localized name is provided
-  String _getDefaultAnimalName(AnimalType animalType) {
+  /// Returns the animal symbol based on the selected display format
+  String _getAnimalSymbol(AnimalType animalType) {
+    switch (displayFormat) {
+      case PieceDisplayFormat.emoji:
+        return _getEmojiSymbol(animalType);
+      case PieceDisplayFormat.simplifiedChinese:
+        return _getSimplifiedChineseSymbol(animalType);
+      case PieceDisplayFormat.traditionalChinese:
+        return _getTraditionalChineseSymbol(animalType);
+    }
+  }
+
+  /// Returns the emoji symbol for the animal
+  String _getEmojiSymbol(AnimalType animalType) {
+    switch (animalType) {
+      case AnimalType.elephant:
+        return '🐘';
+      case AnimalType.lion:
+        return '🦁';
+      case AnimalType.tiger:
+        return '🐯';
+      case AnimalType.leopard:
+        return '🐆';
+      case AnimalType.wolf:
+        return '🐺';
+      case AnimalType.dog:
+        return '🐕';
+      case AnimalType.cat:
+        return '🐈';
+      case AnimalType.rat:
+        return '🐀';
+    }
+  }
+
+  /// Returns the simplified Chinese symbol for the animal
+  String _getSimplifiedChineseSymbol(AnimalType animalType) {
+    switch (animalType) {
+      case AnimalType.elephant:
+        return '象';
+      case AnimalType.lion:
+        return '狮';
+      case AnimalType.tiger:
+        return '虎';
+      case AnimalType.leopard:
+        return '豹';
+      case AnimalType.wolf:
+        return '狼';
+      case AnimalType.dog:
+        return '狗';
+      case AnimalType.cat:
+        return '猫';
+      case AnimalType.rat:
+        return '鼠';
+    }
+  }
+
+  /// Returns the traditional Chinese symbol for the animal
+  String _getTraditionalChineseSymbol(AnimalType animalType) {
     switch (animalType) {
       case AnimalType.elephant:
         return '象';
@@ -101,9 +161,7 @@ class PieceWidget extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              _getDefaultAnimalName(
-                piece.animalType,
-              ), // Enforce Chinese for game pieces
+              _getAnimalSymbol(piece.animalType),
               style: TextStyle(
                 color: textColor,
                 fontSize:

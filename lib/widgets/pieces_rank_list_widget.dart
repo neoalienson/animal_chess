@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:animal_chess/models/animal_type.dart';
 import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/player_color.dart';
+import 'package:animal_chess/models/piece_display_format.dart';
 import 'package:animal_chess/widgets/piece_widget.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
 
 class PiecesRankListWidget extends StatelessWidget {
-  const PiecesRankListWidget({super.key});
+  final PieceDisplayFormat displayFormat;
+
+  const PiecesRankListWidget({
+    super.key,
+    this.displayFormat = PieceDisplayFormat.traditionalChinese,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +37,7 @@ class PiecesRankListWidget extends StatelessWidget {
             isSelected: false,
             size: 30,
             isRankDisplay: true,
+            displayFormat: displayFormat,
             animalName: _getLocalizedAnimalName(localizations, animalType),
           ),
           title: Text(

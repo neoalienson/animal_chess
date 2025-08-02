@@ -4,6 +4,7 @@ import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/animal_type.dart';
+import 'package:animal_chess/models/piece_display_format.dart';
 import 'package:animal_chess/widgets/piece_widget.dart';
 import 'package:animal_chess/game/game_controller.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
@@ -14,12 +15,14 @@ class GameBoardWidget extends StatelessWidget {
   final GameController gameController;
   final Function(Position) onPositionTap;
   final List<Position> validMoves;
+  final PieceDisplayFormat displayFormat;
 
   const GameBoardWidget({
     super.key,
     required this.gameController,
     required this.onPositionTap,
     required this.validMoves,
+    this.displayFormat = PieceDisplayFormat.traditionalChinese,
   });
 
   @override
@@ -110,6 +113,7 @@ class GameBoardWidget extends StatelessWidget {
                 isSelected: isSelected,
                 onTap: () => onPositionTap(position),
                 size: cellSize, // Pass the cell size to the PieceWidget
+                displayFormat: displayFormat, // Pass the display format
                 animalName: _getLocalizedAnimalName(
                   localizations,
                   piece.animalType,

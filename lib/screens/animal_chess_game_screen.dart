@@ -5,11 +5,14 @@ import 'package:animal_chess/game/game_controller.dart';
 import 'package:animal_chess/widgets/victory_dialog_widget.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/player_color.dart';
+import 'package:animal_chess/models/piece_display_format.dart';
+import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/widgets/game_board_widget.dart';
 import 'package:animal_chess/widgets/pieces_rank_list_widget.dart';
 import 'package:animal_chess/widgets/game_rules_dialog_widget.dart';
 import 'package:animal_chess/widgets/debug_menu_widget.dart';
 import 'package:animal_chess/widgets/player_indicator_widget.dart';
+import 'package:animal_chess/widgets/settings_dialog_widget.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
 import 'package:animal_chess/constants/ui_constants.dart';
 
@@ -27,6 +30,7 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
   List<Position> _validMoves = [];
   late ConfettiController _confettiController;
   bool _hasShownVictoryDialog = false;
+  PieceDisplayFormat _displayFormat = PieceDisplayFormat.traditionalChinese;
 
   @override
   void initState() {
@@ -35,6 +39,8 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
     _confettiController = ConfettiController(
       duration: const Duration(seconds: 3),
     );
+    // Initialize display format from config
+    _displayFormat = locator<GameConfig>().pieceDisplayFormat;
   }
 
   @override
@@ -65,6 +71,10 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
                 PopupMenuItem<String>(
                   value: 'rules',
                   child: Text(localizations.gameRules),
+                ),
+                PopupMenuItem<String>(
+                  value: 'settings',
+                  child: Text(localizations.settings),
                 ),
                 if (kDebugMode)
                   PopupMenuItem<String>(
@@ -102,6 +112,7 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
                             gameController: _gameController,
                             onPositionTap: _handlePositionTap,
                             validMoves: _validMoves,
+                            displayFormat: _displayFormat,
                           ),
                         ),
                       ),
@@ -134,7 +145,7 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
           content: SizedBox(
             height: 400, // Fixed height to prevent layout issues
             width: 300, // Fixed width for consistent dialog
-            child: const PiecesRankListWidget(),
+            child: PiecesRankListWidget(displayFormat: _displayFormat),
           ),
           actions: [
             TextButton(
@@ -272,9 +283,32 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
   void _handleMenuSelection(String value) {
     if (value == 'rules') {
       _showRulesDialog();
+    } else if (value == 'settings') {
+      _showSettingsDialog();
     } else if (value == 'debug') {
       _showDebugMenu();
     }
+  }
+
+  /// Show settings dialog
+  void _showSettingsDialog() {
+    final gameConfig = locator<GameConfig>();
+    setState(() {
+      _displayFormat = gameConfig.pieceDisplayFormat;
+    });
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SettingsDialogWidget(
+          onConfigChanged: (GameConfig config) {
+            setState(() {
+              _displayFormat = config.pieceDisplayFormat;
+            });
+          },
+        );
+      },
+    );
   }
 
   /// Show rules dialog

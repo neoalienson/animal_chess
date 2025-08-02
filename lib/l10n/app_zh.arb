@@ -50,5 +50,9 @@
   "variantDogCaptureFromRiver": "只有狗可以在河中捕获岸上的棋子",
   "piecesRank": "棋子等级",
   "piecesRankListTitle": "棋子等级",
-  "save": "保存"
+  "save": "保存",
+  "pieceDisplayFormat": "棋子显示格式",
+  "displayFormatEmoji": "表情符号",
+  "displayFormatSimplifiedChinese": "简体中文",
+  "displayFormatTraditionalChinese": "繁体中文"
 }
