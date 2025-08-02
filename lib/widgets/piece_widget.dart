@@ -73,33 +73,43 @@ class PieceWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        width: pieceSize,
-        height: pieceSize,
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: isSelected && !isRankDisplay ? UIConstants.pieceBorderColorSelected : UIConstants.pieceBorderColorNormal,
-            width: isSelected && !isRankDisplay ? UIConstants.pieceBorderWidthSelected : UIConstants.pieceBorderWidthNormal,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: UIConstants.pieceShadowColor.withOpacity(0.2),
-              blurRadius: UIConstants.pieceShadowBlurRadius,
-              offset: UIConstants.pieceShadowOffset,
+      child: Padding(
+        padding: EdgeInsets.all(UIConstants.pieceTapPadding),
+        child: Container(
+          width: pieceSize,
+          height: pieceSize,
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: isSelected && !isRankDisplay
+                  ? UIConstants.pieceBorderColorSelected
+                  : UIConstants.pieceBorderColorNormal,
+              width: isSelected && !isRankDisplay
+                  ? UIConstants.pieceBorderWidthSelected
+                  : UIConstants.pieceBorderWidthNormal,
             ),
-          ],
-        ),
-        child: Center(
-          child: Text(
-            _getDefaultAnimalName(
-              piece.animalType,
-            ), // Enforce Chines for game pieces
-            style: TextStyle(
-              color: textColor,
-              fontSize: pieceSize * UIConstants.pieceFontSizeFactor, // Adjust font size proportionally
-              fontWeight: FontWeight.bold,
+            boxShadow: [
+              BoxShadow(
+                color: UIConstants.pieceShadowColor.withOpacity(0.2),
+                blurRadius: UIConstants.pieceShadowBlurRadius,
+                offset: UIConstants.pieceShadowOffset,
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              _getDefaultAnimalName(
+                piece.animalType,
+              ), // Enforce Chinese for game pieces
+              style: TextStyle(
+                color: textColor,
+                fontSize:
+                    pieceSize *
+                    UIConstants
+                        .pieceFontSizeFactor, // Adjust font size proportionally
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),

@@ -27,7 +27,7 @@ class UIConstants {
   static const Color pieceShadowColor = Colors.black;
   static const double pieceShadowBlurRadius = 2.0;
   static const Offset pieceShadowOffset = Offset(1, 1);
-  
+
   // Sizes
   static const double boardBorderWidth = 2.0;
   static const double cellBorderWidth = 0.3;
@@ -36,25 +36,27 @@ class UIConstants {
   static const double validMoveIndicatorSizeFactor = 0.3;
   static const double pieceSizeFactor = 0.9;
   static const double pieceFontSizeFactor = 0.5;
-  
+  static const double pieceTapPadding =
+      12.0; // Padding for better touch targets
+
   // Border Radius
   static const double denBorderRadius = 8.0;
   static const double trapBorderRadius = 4.0;
   static const double pieceBorderRadius = 20.0;
-  
+
   // Padding & Spacing
   static const double defaultPadding = 16.0;
   static const double smallPadding = 8.0;
   static const double pieceIndicatorSize = 20.0;
   static const double pieceIndicatorSpacing = 8.0;
-  
+
   // Font Sizes
   static const double titleFontSize = 32.0;
   static const double buttonFontSize = 24.0;
   static const double boardFontSize = 16.0;
   static const double statusFontSize = 18.0;
   static const double rankListFontSize = 12.0;
-  
+
   // Icon Sizes
   static const double denIconSize = 20.0;
   static const double trapIconSize = 16.0;
