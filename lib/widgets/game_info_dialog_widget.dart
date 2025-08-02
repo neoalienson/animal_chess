@@ -21,7 +21,7 @@ class GameInfoDialogWidget extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: [
           TabBar(
             tabs: [

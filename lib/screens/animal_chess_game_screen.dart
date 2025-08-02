@@ -143,22 +143,35 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context).gameVariants),
-          content: SizedBox(
-            height: 400,
-            width: 300,
-            child: GameInfoDialogWidget(
-              displayFormat: _displayFormat,
-              gameConfig: gameConfig,
+        return Dialog(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppBar(
+                  title: Text(AppLocalizations.of(context).gameVariants),
+                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                ),
+                Expanded(
+                  child: GameInfoDialogWidget(
+                    displayFormat: _displayFormat,
+                    gameConfig: gameConfig,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      child: Text(AppLocalizations.of(context).close),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          actions: [
-            TextButton(
-              child: Text(AppLocalizations.of(context).close),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
         );
       },
     );
