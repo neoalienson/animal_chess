@@ -16,7 +16,9 @@ class GameRules {
 
   /// Check if a move is valid
   bool isValidMove(Position from, Position to, PlayerColor currentPlayer) {
-    _logger.fine("isValidMove: from=$from, to=$to, currentPlayer=$currentPlayer");
+    _logger.fine(
+      "isValidMove: from=$from, to=$to, currentPlayer=$currentPlayer",
+    );
     Piece? piece = board.getPiece(from);
     _logger.fine("Piece at from: $piece");
     if (piece == null || piece.playerColor != currentPlayer) {
@@ -176,7 +178,9 @@ class GameRules {
           from.column + (to.column > from.column ? 5 : -5),
           from.row,
         );
-        _logger.fine("Double river cells: $river1_1, $river1_2, $river2_1, $river2_2");
+        _logger.fine(
+          "Double river cells: $river1_1, $river1_2, $river2_1, $river2_2",
+        );
         if (board.isRiver(river1_1) &&
             board.isRiver(river1_2) &&
             board.isRiver(river2_1) &&
@@ -226,7 +230,8 @@ class GameRules {
       // Standard vertical jump for Lion/Tiger (over 3 river cells)
       if ((piece.animalType == AnimalType.lion ||
               piece.animalType == AnimalType.tiger) &&
-          distance == GameConstants.lionTigerVerticalJumpDistance) {
+          distance == 4) {
+        // Tiger needs to jump 4 rows (from row 2 to 6)
         Position river1 = Position(
           from.column,
           from.row + (to.row > from.row ? 1 : -1),

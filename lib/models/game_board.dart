@@ -33,9 +33,9 @@ class GameBoard {
 
     // Place pieces based on GameConstants
     GameConstants.pieceStartPositions.forEach((playerColor, pieces) {
-      for (var pieceData in pieces) {
-        _board[pieceData['position']] = Piece(pieceData['type'], playerColor);
-      }
+      pieces.forEach((animalType, position) {
+        _board[position] = Piece(animalType, playerColor);
+      });
     });
   }
 
