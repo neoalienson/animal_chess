@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/animal_type.dart';
-import 'package:animal_chess/l10n/app_localizations.dart';
 import 'package:animal_chess/constants/ui_constants.dart';
 
 class PieceWidget extends StatelessWidget {
@@ -91,7 +90,10 @@ class PieceWidget extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: UIConstants.pieceShadowColor.withOpacity(0.2),
+                color: Color.alphaBlend(
+                  UIConstants.pieceShadowColor.withOpacity(0.2),
+                  Colors.transparent,
+                ),
                 blurRadius: UIConstants.pieceShadowBlurRadius,
                 offset: UIConstants.pieceShadowOffset,
               ),

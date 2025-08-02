@@ -5,12 +5,12 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:animal_chess/main.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
 import 'package:animal_chess/screens/main_menu_screen.dart';
-import 'package:flutter/material.dart';
 
 void main() {
   testWidgets('Animal Chess app smoke test', (WidgetTester tester) async {

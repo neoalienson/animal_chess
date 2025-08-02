@@ -1,8 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:animal_chess/game/game_controller.dart';
 import 'package:animal_chess/models/animal_type.dart';
-import 'package:animal_chess/models/game_board.dart';
-import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';

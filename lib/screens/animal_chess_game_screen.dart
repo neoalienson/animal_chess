@@ -4,7 +4,6 @@ import 'package:confetti/confetti.dart';
 import 'package:animal_chess/game/game_controller.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/player_color.dart';
-import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/widgets/game_board_widget.dart';
 import 'package:animal_chess/widgets/pieces_rank_list_widget.dart';
 import 'package:animal_chess/widgets/game_rules_dialog_widget.dart';
