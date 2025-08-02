@@ -49,5 +49,8 @@
   "variantDogEnterRiver": "Dog can enter the river",
   "variantDogCaptureFromRiver": "Only the Dog can capture pieces on the shore from within the river",
   "piecesRank": "Pieces Rank",
-  "piecesRankListTitle": "Pieces Rank"
+  "piecesRankListTitle": "Pieces Rank",
+  "debugMenuTitle": "Debug Menu",
+  "forceGreenWin": "Force Green Win",
+  "forceRedWin": "Force Red Win"
 }

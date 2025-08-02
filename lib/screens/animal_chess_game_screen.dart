@@ -7,11 +7,10 @@ import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/widgets/game_board_widget.dart';
 import 'package:animal_chess/widgets/pieces_rank_list_widget.dart';
 import 'package:animal_chess/widgets/game_rules_dialog_widget.dart';
-import 'package:animal_chess/widgets/variants_dialog_widget.dart';
+import 'package:animal_chess/widgets/debug_menu_widget.dart';
 import 'package:animal_chess/widgets/player_indicator_widget.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
 import 'package:animal_chess/constants/ui_constants.dart';
-import 'package:logging/logging.dart';
 
 import 'package:animal_chess/core/service_locator.dart';
 
@@ -292,29 +291,12 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Debug Menu'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                title: const Text('Force Green Win'),
-                onTap: () {
-                  Navigator.pop(context);
-                  _gameController.forceWin(PlayerColor.green);
-                  _showVictoryDialog();
-                },
-              ),
-              ListTile(
-                title: const Text('Force Red Win'),
-                onTap: () {
-                  Navigator.pop(context);
-                  _gameController.forceWin(PlayerColor.red);
-                  _showVictoryDialog();
-                },
-              ),
-            ],
-          ),
+        return DebugMenuWidget(
+          gameController: _gameController,
+          onClose: () {
+            Navigator.pop(context);
+            _showVictoryDialog();
+          },
         );
       },
     );

@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:animal_chess/game/game_controller.dart';
 import 'package:animal_chess/models/animal_type.dart';
-import 'package:animal_chess/models/game_board.dart';
 import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/player_color.dart';
@@ -29,7 +28,8 @@ void main() {
         locator.unregister<GameConfig>();
         locator.registerLazySingleton<GameConfig>(() => config);
         GameController gameController = locator<GameController>();
-        gameController.board.clearBoard(); // Clear the board before setting up custom pieces
+        gameController.board
+            .clearBoard(); // Clear the board before setting up custom pieces
         gameController.resetGame();
 
         // Test Setup:
@@ -83,7 +83,8 @@ void main() {
         locator.unregister<GameConfig>();
         locator.registerLazySingleton<GameConfig>(() => config);
         GameController gameController = locator<GameController>();
-        gameController.board.clearBoard(); // Clear the board before setting up custom pieces
+        gameController.board
+            .clearBoard(); // Clear the board before setting up custom pieces
         gameController.resetGame();
 
         // Leopard at (0,4), river at (1,4) and (2,4), target (3,4)
