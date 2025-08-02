@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:animal_chess/models/game_board.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
@@ -22,6 +23,9 @@ class GameController {
   final GameRules gameRules;
   final GameActions gameActions;
 
+  // Callback for when the game state changes
+  VoidCallback? onGameStateChanged;
+
   GameController({
     required this.board,
     required this.gameRules,
@@ -30,13 +34,17 @@ class GameController {
   }) : currentPlayer = PlayerColor.red;
 
   bool movePiece(Position toPosition) {
-    if (selectedPosition == null) return false;
-    bool moved = gameActions.movePiece(selectedPosition!, toPosition);
-    if (moved) {
-      selectedPosition = null;
-      currentPlayer = gameActions.currentPlayer;
-      gameEnded = gameActions.gameEnded;
-      winner = gameActions.winner;
+    bool moved = false;
+    if (selectedPosition != null) {
+      moved = gameActions.movePiece(selectedPosition!, toPosition);
+      if (moved) {
+        selectedPosition = null;
+        currentPlayer = gameActions.currentPlayer;
+        gameEnded = gameActions.gameEnded;
+        winner = gameActions.winner;
+        // Notify that game state has changed
+        onGameStateChanged?.call();
+      }
     }
     return moved;
   }
@@ -82,6 +90,9 @@ class GameController {
     gameEnded = gameActions.gameEnded;
     winner = gameActions.winner;
     capturedPieces = gameActions.capturedPieces;
+
+    // Notify that game state has changed
+    onGameStateChanged?.call();
   }
 
   /// Select a piece to move

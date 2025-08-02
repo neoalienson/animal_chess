@@ -37,6 +37,17 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
   void initState() {
     super.initState();
     _gameController = locator<GameController>();
+    // Set up callback for game state changes
+    _gameController.onGameStateChanged = () {
+      // Use a delayed execution to allow UI to update
+      Future.delayed(const Duration(milliseconds: 100), () {
+        if (mounted) {
+          setState(() {
+            // This will trigger a rebuild of the UI
+          });
+        }
+      });
+    };
     _confettiController = ConfettiController(
       duration: const Duration(seconds: 3),
     );
@@ -45,7 +56,7 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
 
     // Check if AI should make the first move
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _gameController.executeAIMoveIfNecessary();
+      _checkAndExecuteAIMove();
     });
   }
 
@@ -263,9 +274,6 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
       // If game is over, ignore taps
       if (_gameController.gameEnded) return;
 
-      // Check if next player is AI
-      _gameController.executeAIMoveIfNecessary();
-
       // If a piece is already selected, try to move it
       if (_gameController.selectedPosition != null) {
         bool moved = _gameController.movePiece(position);
@@ -273,6 +281,9 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
           _validMoves = [];
           if (_gameController.gameEnded && !_hasShownVictoryDialog) {
             _showVictoryDialog();
+          } else {
+            // Check if next player is AI after a short delay to allow UI update
+            _checkAndExecuteAIMove();
           }
         } else {
           // If move failed, check if we're selecting a different piece
@@ -306,7 +317,7 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
 
       // Check if AI should make the first move in the new game
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _gameController.executeAIMoveIfNecessary();
+        _checkAndExecuteAIMove();
       });
     });
   }
@@ -338,6 +349,17 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
               _displayFormat = config.pieceDisplayFormat;
               // Get the new game controller with updated config
               _gameController = locator<GameController>();
+              // Set up callback for game state changes
+              _gameController.onGameStateChanged = () {
+                // Use a delayed execution to allow UI to update
+                Future.delayed(const Duration(milliseconds: 100), () {
+                  if (mounted) {
+                    setState(() {
+                      // This will trigger a rebuild of the UI
+                    });
+                  }
+                });
+              };
               // Reset the entire game to ensure AI settings take effect
               _resetGame();
             });
@@ -371,6 +393,16 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
         );
       },
     );
+  }
+
+  /// Check and execute AI move after a short delay
+  void _checkAndExecuteAIMove() {
+    // Use a delayed execution to allow UI to update
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (!_gameController.gameEnded) {
+        _gameController.executeAIMoveIfNecessary();
+      }
+    });
   }
 
   /// Show victory dialog with confetti
