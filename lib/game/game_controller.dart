@@ -42,8 +42,6 @@ class GameController {
         currentPlayer = gameActions.currentPlayer;
         gameEnded = gameActions.gameEnded;
         winner = gameActions.winner;
-        // Check if next player is AI and needs to move
-        executeAIMoveIfNecessary();
         // Notify that game state has changed
         onGameStateChanged?.call();
       }
@@ -58,24 +56,67 @@ class GameController {
       "aiGreen=${gameConfig.aiGreen}, aiRed=${gameConfig.aiRed}",
     );
 
-    // Check if current player is AI
-    if ((currentPlayer == PlayerColor.green && gameConfig.aiGreen) ||
-        (currentPlayer == PlayerColor.red && gameConfig.aiRed)) {
-      _logger.info("Executing AI move for $currentPlayer");
-      _executeAIMove();
+    // Safety counter to prevent infinite loops
+    int safetyCounter = 0;
+    const maxMoves = 50; // Maximum number of AI moves in a chain
+
+    // Continue executing AI moves as long as it's an AI player's turn
+    while (((currentPlayer == PlayerColor.green && gameConfig.aiGreen) ||
+            (currentPlayer == PlayerColor.red && gameConfig.aiRed)) &&
+        !gameEnded &&
+        safetyCounter < maxMoves) {
+      _logger.info(
+        "Executing AI move for $currentPlayer (chain: ${safetyCounter + 1})",
+      );
+      _executeSingleAIMove();
+      safetyCounter++;
+
+      // Notify that game state has changed after each AI move
+      onGameStateChanged?.call();
+
+      // Add a 1-second delay between AI moves (except for the last move)
+      if (((currentPlayer == PlayerColor.green && gameConfig.aiGreen) ||
+              (currentPlayer == PlayerColor.red && gameConfig.aiRed)) &&
+          !gameEnded &&
+          safetyCounter < maxMoves) {
+        // Wait for 1 second before continuing with the next move
+        Future.delayed(const Duration(seconds: 1), () {
+          // Continue with the next move after the delay
+          _logger.fine("Continuing with next AI move after delay");
+          // We need to check the conditions again after the delay
+          if (((currentPlayer == PlayerColor.green && gameConfig.aiGreen) ||
+                  (currentPlayer == PlayerColor.red && gameConfig.aiRed)) &&
+              !gameEnded) {
+            // Continue the loop logic by calling the method again
+            executeAIMoveIfNecessary();
+          }
+        });
+        // Break the current loop to allow the delay to take effect
+        break;
+      }
+    }
+
+    if (safetyCounter >= maxMoves) {
+      _logger.warning("AI move chain limit reached ($maxMoves moves)");
     } else {
-      _logger.fine("No AI move needed");
+      _logger.fine("AI move execution completed. Total moves: $safetyCounter");
     }
   }
 
-  /// Execute the best move for the AI player
-  void _executeAIMove() {
+  /// Execute a single AI move
+  void _executeSingleAIMove() {
     final ai = AIStrategy(gameConfig);
     final bestMove = ai.calculateBestMove(board, currentPlayer, gameActions);
     if (bestMove != null) {
       // Set the selected position first
       selectedPosition = bestMove.from;
-      movePiece(bestMove.to);
+      // Execute the move
+      gameActions.movePiece(bestMove.from, bestMove.to);
+      // Update controller state
+      selectedPosition = null;
+      currentPlayer = gameActions.currentPlayer;
+      gameEnded = gameActions.gameEnded;
+      winner = gameActions.winner;
     }
   }
 
