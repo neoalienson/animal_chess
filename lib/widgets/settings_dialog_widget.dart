@@ -263,7 +263,10 @@ class _SettingsDialogWidgetState extends State<SettingsDialogWidget> {
               children: [
                 _buildBulletPoint(context, localizations.variantDogEnterRiver),
                 const SizedBox(height: 4),
-                _buildBulletPoint(context, localizations.variantDogCaptureFromRiver),
+                _buildBulletPoint(
+                  context,
+                  localizations.variantDogCaptureFromRiver,
+                ),
               ],
             ),
           ),
@@ -336,7 +339,7 @@ class _SettingsDialogWidgetState extends State<SettingsDialogWidget> {
         ),
         RadioListTile<PieceDisplayFormat>(
           title: Text(localizations.displayFormatEmoji),
-          value: value,
+          value: PieceDisplayFormat.emoji,
           groupValue: value,
           onChanged: (PieceDisplayFormat? newValue) {
             if (newValue != null) {
