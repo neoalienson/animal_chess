@@ -53,10 +53,6 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
                   value: 'rules',
                   child: Text(localizations.gameRules),
                 ),
-                PopupMenuItem<String>(
-                  value: 'variants',
-                  child: Text(localizations.gameVariants),
-                ),
               ];
             },
           ),
@@ -249,18 +245,8 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
 
   /// Handle menu selections
   void _handleMenuSelection(String value) {
-    switch (value) {
-      case 'rules':
-        _showRulesDialog();
-        break;
-      case 'variants':
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return VariantsDialogWidget();
-          },
-        );
-        break;
+    if (value == 'rules') {
+      _showRulesDialog();
     }
   }
 
