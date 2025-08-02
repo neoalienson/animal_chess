@@ -72,4 +72,11 @@ class GameController {
   bool isValidMove(Position from, Position to) {
     return gameRules.isValidMove(from, to, currentPlayer);
   }
+
+  /// Force a player to win (for debugging/testing)
+  void forceWin(PlayerColor player) {
+    gameEnded = true;
+    winner = player;
+    currentPlayer = player;
+  }
 }

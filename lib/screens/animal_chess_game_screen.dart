@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import 'package:animal_chess/game/game_controller.dart';
@@ -11,6 +12,7 @@ import 'package:animal_chess/widgets/variants_dialog_widget.dart';
 import 'package:animal_chess/widgets/player_indicator_widget.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
 import 'package:animal_chess/constants/ui_constants.dart';
+import 'package:logging/logging.dart';
 
 import 'package:animal_chess/core/service_locator.dart';
 
@@ -65,6 +67,11 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
                   value: 'rules',
                   child: Text(localizations.gameRules),
                 ),
+                if (kDebugMode)
+                  PopupMenuItem<String>(
+                    value: 'debug',
+                    child: const Text('Debug Menu'),
+                  ),
               ];
             },
           ),
@@ -266,6 +273,8 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
   void _handleMenuSelection(String value) {
     if (value == 'rules') {
       _showRulesDialog();
+    } else if (value == 'debug') {
+      _showDebugMenu();
     }
   }
 
@@ -275,6 +284,39 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
       context: context,
       builder: (BuildContext context) {
         return const GameRulesDialogWidget();
+      },
+    );
+  }
+
+  /// Show debug menu with testing options
+  void _showDebugMenu() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Debug Menu'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: const Text('Force Green Win'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _gameController.forceWin(PlayerColor.green);
+                  _showVictoryDialog();
+                },
+              ),
+              ListTile(
+                title: const Text('Force Red Win'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _gameController.forceWin(PlayerColor.red);
+                  _showVictoryDialog();
+                },
+              ),
+            ],
+          ),
+        );
       },
     );
   }
