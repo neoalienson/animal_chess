@@ -131,7 +131,16 @@ flutter build windows
 lib/
 ├── main.dart                 # Entry point of the application
 ├── game/
-│   └── game_controller.dart  # Game logic and state management
+│   ├── game_controller.dart  # Game logic and state management
+│   └── rules/                # Game rules and variants
+│       ├── game_rule_variant.dart          # Base interface for game rule variants
+│       ├── standard_game_rule_variant.dart # Standard game rules implementation
+│       ├── game_rule_factory.dart          # Factory for creating rule variants
+│       └── variants/                       # Individual game variant implementations
+│           ├── dog_river_variant.dart      # Dog river variant implementation
+│           ├── rat_capture_variant.dart    # Rat capture variant implementation
+│           ├── extended_jump_variant.dart  # Extended jump variant implementation
+│           └── example_new_variant.dart    # Example for adding new variants
 ├── models/
 │   ├── animal_type.dart      # Animal types and their properties
 │   ├── game_board.dart       # Game board representation
@@ -145,6 +154,18 @@ lib/
     ├── piece_widget.dart      # Individual piece UI
     └── pieces_rank_list_widget.dart # Pieces rank list UI
 ```
+
+## Extending Game Rules
+
+The game now supports a pluggable variant system that makes it easy to add new rule variants. To add a new variant:
+
+1. Create a new variant class that implements `GameRuleVariant`
+2. Implement the required methods (`canEnterRiver`, `canCapture`, `canJumpOverRiver`, `canMoveToDen`)
+3. Use the decorator pattern by accepting a base variant in the constructor
+4. Delegate to the base variant for any rules not modified by your variant
+5. Add your variant to the `GameRuleFactory`
+
+See `lib/game/rules/variants/example_new_variant.dart` for a complete example.
 
 ## Testing
 
