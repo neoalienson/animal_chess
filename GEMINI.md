@@ -1,16 +1,16 @@
-# Animal Chess (鬥獸棋)
+# Animal Chess (鬥獸棋) - Application Design Document
 
 A Flutter implementation of the classic Chinese board game Animal Chess (Dou Shou Qi).
 
-## Game Overview
+## 1. Game Overview
 
 Animal Chess is a strategic board game for two players where each player commands a group of animals with different ranks. The objective is to be the first to move any of your pieces into the opponent's den (cave) or to capture all of your opponent's pieces.
 
-## Game Rules
+### 1.1 Game Rules
 
 - 2 players, green and red. The game begins with red's turn
 
-### Board Layout
+#### Board Layout
 - The game board is portrait orientation
 - 7 columns × 9 rows board
 - Green player on top, red player on bottom
@@ -18,7 +18,7 @@ Animal Chess is a strategic board game for two players where each player command
 - Six traps - three for each player, adjacent to their den
 - Two rivers - each river is 2 columns by 3 rows
 
-### Pieces and Hierarchy
+#### Pieces and Hierarchy
 Each player has 8 pieces ranked from strongest to weakest:
 1. Elephant (象)
 2. Lion (獅)
@@ -29,19 +29,19 @@ Each player has 8 pieces ranked from strongest to weakest:
 7. Cat (貓)
 8. Rat (鼠)
 
-### Movement Rules
+#### Movement Rules
 - Pieces move one space orthogonally (up, down, left, or right)
 - Pieces cannot move into their own den
 - Only the Rat can enter the river
 - The Lion and Tiger can jump over the river both horizontally and vertically, but cannot jump if a Rat is in the river
 - Pieces in traps can be captured by any opponent piece
 
-### Capture Rules
+#### Capture Rules
 - A piece can capture an opponent's piece if it is of equal or lower rank
 - Exception: The Rat can capture the Elephant, and the Elephant can capture the Rat
 - Any piece can capture an opponent's piece in a trap
 
-## Game Variants
+### 1.2 Game Variants
 
 The game includes several optional rule variants:
 
@@ -55,7 +55,7 @@ The game includes several optional rule variants:
    - Only the Dog can capture pieces on the shore from within the river
 4. **Rat cannot capture Elephant**
 
-## Game Features
+### 1.3 Game Features
 
 - **Timed Gameplay**: Configurable time limit for each player move.
 - **Force Pass**: When time expires, play automatically passes to the other player
@@ -63,104 +63,11 @@ The game includes several optional rule variants:
 - **Game Instructions**: In-game rules reference available at any time
 - **Responsive Design**: Works on both mobile and desktop platforms
 
-## Code Structure Analysis
+## 2. System Architecture
 
-The project follows a well-organized Flutter architecture with a clear separation of concerns:
+The application follows a clean architecture pattern with clear separation of concerns between different layers.
 
-### Key Components
-
-1. **Game Logic Layer** (`lib/game/`):
-   - `GameController`: Coordinates the overall game state and interactions between components
-   - `GameActions`: Implements game actions like moving pieces and switching players
-   - `GameRules`: Validates moves according to game rules (now using pluggable variant system)
-
-2. **Model Layer** (`lib/models/`):
-   - Data classes representing core game concepts (Piece, Board, Position, etc.)
-   - Game configuration options for variants
-
-3. **UI Layer** (`lib/screens/` and `lib/widgets/`):
-   - Screens for different app views (main menu, game screen)
-   - Reusable widgets for game components (board, pieces, dialogs)
-
-### Code Quality Assessment
-
-The codebase demonstrates several good practices:
-- Clear separation of concerns between game logic, data models, and UI
-- Comprehensive test coverage with unit tests for game rules and variants
-- Internationalization support with multiple languages
-- Responsive design that works on different screen sizes
-- Well-documented code with comments explaining complex logic
-
-## Possible Improvements
-
-### 1. Game Logic Enhancements
-- **Game History**: Implement move history to allow undo/redo functionality
-- **AI Opponent**: Add a computer player with different difficulty levels
-
-### 2. UI/UX Improvements
-- **Animations**: Add smooth animations for piece movements and captures
-- **Accessibility**: Improve accessibility with better contrast and screen reader support
-- **Customization**: Allow users to customize the board and piece appearance
-
-### 3. Performance Optimizations
-- **Board Rendering**: Optimize the game board rendering for better performance with large boards
-- **Memory Management**: Implement better memory management for long gameplay sessions
-
-### 4. Testing and Quality
-- **Integration Tests**: Add integration tests for the complete game flow
-- **UI Tests**: Implement widget tests for all UI components
-- **Code Coverage**: Increase test coverage for edge cases and error conditions
-
-### 5. Documentation
-- **API Documentation**: Add comprehensive API documentation for all public methods
-- **Architecture Diagram**: Create visual diagrams showing the app architecture and data flow
-- **Contributing Guide**: Expand the contributing guidelines with coding standards and practices
-
-### 6. DevOps and Deployment
-- **CI/CD Pipeline**: Enhance the GitHub Actions workflow with automated testing and deployment
-- **Release Management**: Implement a release management strategy with versioning and changelogs
-- **Analytics**: Add analytics to track user engagement and game statistics
-
-### 7. Code Structure Improvements
-- **Error Handling**: Implement more robust error handling throughout the application
-
-## Architecture Diagram
-
-This section elaborates on the interaction flow between the layers and lists additional significant UI components.
-
-### Interaction Flow:
-
-1.  **UI Layer (`lib/screens/` and `lib/widgets/`)**:
-    *   Users interact with the `AnimalChessGameScreen` and `MainMenuScreen`.
-    *   Widgets like `GameBoardWidget`, `PieceWidget`, `SettingsDialogWidget`, etc., render the game state and capture user input.
-    *   User actions (e.g., moving a piece, changing settings) are typically passed to the `GameController` in the Game Logic Layer.
-
-2.  **Game Logic Layer (`lib/game/`)**:
-    *   The `GameController` receives user input from the UI.
-    *   It orchestrates game actions by calling methods in `GameActions` (e.g., `movePiece`, `switchPlayer`).
-    *   `GameRules` is used by `GameActions` and `GameController` to validate moves and enforce game rules based on the current `GameBoard` state.
-    *   The `GameController` updates the `GameBoard` and `Piece` models in the Model Layer, which in turn triggers UI updates.
-
-3.  **Model Layer (`lib/models/`)**:
-    *   Contains the data structures representing the game state (`GameBoard`, `Piece`, `Position`, `AnimalType`, `GameConfig`, `PlayerColor`).
-    *   These models are manipulated by the Game Logic Layer.
-    *   Changes in the Model Layer are observed by the UI Layer to reflect the updated game state.
-
-### Additional UI Components (`lib/widgets/`):
-
-Based on the provided file list, the `lib/widgets/` directory contains:
-*   `about_dialog_widget.dart`
-*   `game_board_widget.dart`
-*   `game_rules_dialog_widget.dart`
-*   `piece_widget.dart`
-*   `pieces_rank_list_widget.dart`
-*   `player_indicator_widget.dart`
-*   `settings_dialog_widget.dart`
-*   `variants_dialog_widget.dart`
-
-All of these were already explicitly mentioned in the `GEMINI.md` under "Other UI components". There are no other significant UI components to add from the provided directory listing.
-
-### Architecture Diagram:                                                                                            │
+### 2.1 High-Level Architecture
 
 ```mermaid
 graph TD
@@ -183,7 +90,156 @@ graph TD
     end
 ```
 
-### Project Structure Diagram:
+### 2.2 Layered Architecture
+
+#### 2.2.1 UI Layer (`lib/screens/` and `lib/widgets/`)
+- **Purpose**: Presents the game to the user and captures input
+- **Screens**: 
+  - `AnimalChessGameScreen`: Main game screen
+  - `MainMenuScreen`: Application entry point
+- **Widgets**:
+  - `GameBoardWidget`: Renders the game board
+  - `PieceWidget`: Renders individual pieces
+  - Dialog widgets for settings, rules, about, victory, and variants
+  - `PlayerIndicatorWidget`: Shows current player
+  - `PiecesRankListWidget`: Displays piece rankings
+- **Responsibilities**:
+  - Render game state visually
+  - Capture user interactions
+  - Dispatch actions to Game Logic Layer
+
+#### 2.2.2 Game Logic Layer (`lib/game/`)
+- **Purpose**: Implements game rules, state management, and business logic
+- **Components**:
+  - `GameController`: Central orchestrator that coordinates game flow
+  - `GameActions`: Implements specific game operations (move piece, switch player, etc.)
+  - `GameRules`: Validates moves and enforces game rules (using pluggable variant system)
+- **Responsibilities**:
+  - Process user input from UI
+  - Validate moves according to game rules
+  - Update game state
+  - Manage game flow and transitions
+
+#### 2.2.3 Model Layer (`lib/models/`)
+- **Purpose**: Defines data structures representing game entities and state
+- **Components**:
+  - `GameBoard`: Represents the current layout of pieces
+  - `Piece`: Represents an individual animal piece
+  - `Position`: Represents coordinates on the board
+  - `AnimalType`, `PlayerColor`: Enums for game constants
+  - `GameConfig`: Configuration options for game variants
+- **Responsibilities**:
+  - Store and manage game state
+  - Provide data access methods
+  - Notify observers of state changes
+
+#### 2.2.4 Core Layer (`lib/core/`)
+- **Purpose**: Provides infrastructure services and dependency injection
+- **Components**:
+  - `service_locator.dart`: Dependency injection container using GetIt
+- **Responsibilities**:
+  - Manage object lifecycle
+  - Provide singletons and factories
+  - Decouple components
+
+#### 2.2.5 Constants Layer (`lib/constants/`)
+- **Purpose**: Define application-wide constants
+- **Components**:
+  - `board_constants.dart`: Board dimensions and layout
+  - `game_constants.dart`: Game-specific constants
+  - `ui_constants.dart`: UI-related constants
+- **Responsibilities**:
+  - Centralize configuration values
+  - Ensure consistency across the application
+
+## 3. Detailed Component Design
+
+### 3.1 Game Rules System (Pluggable Variants)
+
+The game rules system has been refactored to support a pluggable variant architecture using the Decorator pattern.
+
+#### 3.1.1 Architecture Components
+
+1. **GameRuleVariant Interface** (`lib/game/rules/game_rule_variant.dart`):
+   - Defines the contract for all rule variants
+   - Methods for checking river entry, capture rules, river jumps, and den movement
+
+2. **StandardGameRuleVariant** (`lib/game/rules/standard_game_rule_variant.dart`):
+   - Implements the core game rules without any variants
+   - Serves as the base for all other variants
+
+3. **Individual Variant Implementations** (`lib/game/rules/variants/`):
+   - `DogRiverVariant`: Dogs can enter rivers
+   - `RatCaptureVariant`: Rats cannot capture elephants
+   - `ExtendedJumpVariant`: Extended lion/tiger jumps and leopard river crossing
+   - `ExampleNewVariant`: Example implementation for adding new variants
+
+4. **GameRuleFactory** (`lib/game/rules/game_rule_factory.dart`):
+   - Creates composed rule variants based on game configuration
+   - Uses the decorator pattern to stack variants
+
+5. **Updated GameRules** (`lib/game/game_rules.dart`):
+   - Now delegates to the pluggable variant system
+   - Maintains backward compatibility
+
+#### 3.1.2 Benefits of the New System
+
+- **Extensibility**: New variants can be easily added by implementing the GameRuleVariant interface
+- **Composability**: Multiple variants can be combined seamlessly
+- **Maintainability**: Each variant is isolated in its own class
+- **Testability**: Variants can be tested independently
+- **Backward Compatibility**: Existing code continues to work without changes
+
+#### 3.1.3 How to Add New Variants
+
+1. Create a new class that implements GameRuleVariant
+2. Implement the required methods, delegating to the base variant for unchanged rules
+3. Add the new variant to the GameRuleFactory
+4. The new variant is now automatically available when enabled through GameConfig
+
+### 3.2 Game Flow
+
+1. **Initialization**:
+   - Application starts with `main.dart`
+   - Dependency injection is set up via `service_locator.dart`
+   - `MainMenuScreen` is displayed
+
+2. **Game Setup**:
+   - User selects game options in settings
+   - `GameController` is instantiated with selected configuration
+   - Game board is initialized with pieces in starting positions
+
+3. **Game Play**:
+   - Players take turns moving pieces
+   - `GameController` handles piece selection and movement
+   - `GameRules` validates each move
+   - `GameActions` executes valid moves and updates state
+   - UI updates to reflect new game state
+
+4. **Game End**:
+   - Game ends when a player wins (enters opponent's den or captures all pieces)
+   - Victory dialog is displayed
+   - Players can choose to restart or return to main menu
+
+### 3.3 Data Flow
+
+1. **User Input**:
+   - User interacts with UI components (taps on pieces, selects options)
+   - UI components dispatch events to `GameController`
+
+2. **Processing**:
+   - `GameController` processes events and updates game state
+   - `GameRules` validates moves
+   - `GameActions` executes game logic
+
+3. **State Update**:
+   - Model objects are updated with new state
+   - Observers (UI components) are notified of changes
+
+4. **Rendering**:
+   - UI components re-render to reflect updated state
+
+## 4. Project Structure
 
 ```mermaid
 directory
@@ -234,81 +290,106 @@ lib
 │   └── main_menu_screen.dart
 └── widgets
     ├── about_dialog_widget.dart
+    ├── debug_menu_widget.dart
     ├── game_board_widget.dart
     ├── game_rules_dialog_widget.dart
     ├── piece_widget.dart
     ├── pieces_rank_list_widget.dart
     ├── player_indicator_widget.dart
     ├── settings_dialog_widget.dart
-    └── variants_dialog_widget.dart
+    ├── variants_dialog_widget.dart
+    └── victory_dialog_widget.dart
 ```
 
-Key Components and Interaction:
+## 5. Design Patterns Used
 
-1.  **UI Layer** (`lib/screens/` and `lib/widgets/`):
-    *   Presents the game to the user and captures input.
-    *   Screens (e.g., `AnimalChessGameScreen`, `MainMenuScreen`) serve as top-level views.
-    *   Widgets (e.g., `GameBoardWidget`, `PieceWidget`, various dialogs) are reusable UI components that display game elements and handle specific interactions.
-    *   User actions are dispatched to the Game Logic Layer.
+### 5.1 Observer Pattern
+- Used for UI updates when game state changes
+- Model objects notify UI components of changes
 
-2.  **Game Logic Layer** (`lib/game/`):
-    *   `GameController`: The central orchestrator. It receives user input from the UI, processes game events, and updates the game state. It acts as the bridge between the UI and the core game rules/actions.
-    *   `GameActions`: Implements the specific operations that change the game state (e.g., `movePiece`, `capture`, `switchTurns`). These actions are invoked by the `GameController`.
-    *   `GameRules`: Encapsulates all the rules of Animal Chess. `GameActions` and `GameController` query `GameRules` to validate moves, check for win conditions, and ensure adherence to game mechanics.
+### 5.2 Factory Pattern
+- `GameRuleFactory` creates composed rule variants
+- `service_locator.dart` provides object creation
 
-3.  **Model Layer** (`lib/models/`):
-    *   Defines the data structures that represent the game's state and entities.
-    *   `GameBoard`: Represents the current layout of pieces on the board.
-    *   `Piece`: Represents an individual animal piece with its type, rank, and owner.
-    *   `Position`: Represents coordinates on the game board.
-    *   `AnimalType`, `PlayerColor`, `GameConfig`: Enums and data classes defining game constants and configurable options.
-    *   The Game Logic Layer modifies these models, and the UI Layer observes these changes to re-render the game.
+### 5.3 Decorator Pattern
+- Used in the pluggable variant system
+- Allows stacking of multiple variants
 
-This structure ensures a clear separation of concerns, making the codebase modular, testable, and maintainable.
+### 5.4 Singleton Pattern
+- Used for dependency injection via GetIt
+- Ensures single instances of key services
 
-## Refactor and Redesign Changes
+### 5.5 State Pattern
+- Game state is managed through model objects
+- Different game states (playing, ended) are handled explicitly
 
-### Pluggable Game Rule Variants System
+## 6. Testing Strategy
 
-The game rules system has been refactored to support a pluggable variant architecture using the Decorator pattern. This makes it much easier to add new variants without modifying existing code.
+### 6.1 Unit Tests
+- Game rules validation
+- Variant implementations
+- Model object behavior
+- Located in `test/` directory
 
-#### New Architecture Components:
+### 6.2 Widget Tests
+- UI component rendering
+- User interaction handling
+- Dialog behavior
 
-1. **GameRuleVariant Interface** (`lib/game/rules/game_rule_variant.dart`):
-   - Defines the contract for all rule variants
-   - Methods for checking river entry, capture rules, river jumps, and den movement
+### 6.3 Integration Tests
+- Complete game flow
+- Interaction between layers
 
-2. **StandardGameRuleVariant** (`lib/game/rules/standard_game_rule_variant.dart`):
-   - Implements the core game rules without any variants
-   - Serves as the base for all other variants
+## 7. Internationalization
 
-3. **Individual Variant Implementations** (`lib/game/rules/variants/`):
-   - `DogRiverVariant`: Dogs can enter rivers
-   - `RatCaptureVariant`: Rats cannot capture elephants
-   - `ExtendedJumpVariant`: Extended lion/tiger jumps and leopard river crossing
-   - `ExampleNewVariant`: Example implementation for adding new variants
+The application supports multiple languages through Flutter's internationalization system:
+- English, Chinese, Spanish, French, Japanese, Korean, Portuguese, Thai, and Traditional Chinese
+- ARB files in `lib/l10n/` directory
+- Generated code in `lib/generated/` directory
 
-4. **GameRuleFactory** (`lib/game/rules/game_rule_factory.dart`):
-   - Creates composed rule variants based on game configuration
-   - Uses the decorator pattern to stack variants
+## 8. Performance Considerations
 
-5. **Updated GameRules** (`lib/game/game_rules.dart`):
-   - Now delegates to the pluggable variant system
-   - Maintains backward compatibility
+### 8.1 UI Performance
+- Efficient widget rebuilding using Flutter's widget system
+- Minimal rebuilds through proper state management
 
-#### Benefits of the New System:
+### 8.2 Memory Management
+- Proper disposal of resources
+- Efficient data structures for game state
 
-- **Extensibility**: New variants can be easily added by implementing the GameRuleVariant interface
-- **Composability**: Multiple variants can be combined seamlessly
-- **Maintainability**: Each variant is isolated in its own class
-- **Testability**: Variants can be tested independently
-- **Backward Compatibility**: Existing code continues to work without changes
+### 8.3 Game Logic Performance
+- Optimized move validation algorithms
+- Efficient board representation
 
-#### How to Add New Variants:
+## 9. Possible Improvements
 
-1. Create a new class that implements GameRuleVariant
-2. Implement the required methods, delegating to the base variant for unchanged rules
-3. Add the new variant to the GameRuleFactory
-4. The new variant is now automatically available when enabled through GameConfig
+### 9.1 Game Logic Enhancements
+- **Game History**: Implement move history to allow undo/redo functionality
+- **AI Opponent**: Add a computer player with different difficulty levels
 
-This refactor significantly improves the codebase's flexibility for adding new game variants while maintaining clean separation of concerns.
+### 9.2 UI/UX Improvements
+- **Animations**: Add smooth animations for piece movements and captures
+- **Accessibility**: Improve accessibility with better contrast and screen reader support
+- **Customization**: Allow users to customize the board and piece appearance
+
+### 9.3 Performance Optimizations
+- **Board Rendering**: Optimize the game board rendering for better performance with large boards
+- **Memory Management**: Implement better memory management for long gameplay sessions
+
+### 9.4 Testing and Quality
+- **Integration Tests**: Add integration tests for the complete game flow
+- **UI Tests**: Implement widget tests for all UI components
+- **Code Coverage**: Increase test coverage for edge cases and error conditions
+
+### 9.5 Documentation
+- **API Documentation**: Add comprehensive API documentation for all public methods
+- **Architecture Diagram**: Create visual diagrams showing the app architecture and data flow
+- **Contributing Guide**: Expand the contributing guidelines with coding standards and practices
+
+### 9.6 DevOps and Deployment
+- **CI/CD Pipeline**: Enhance the GitHub Actions workflow with automated testing and deployment
+- **Release Management**: Implement a release management strategy with versioning and changelogs
+- **Analytics**: Add analytics to track user engagement and game statistics
+
+### 9.7 Code Structure Improvements
+- **Error Handling**: Implement more robust error handling throughout the application
