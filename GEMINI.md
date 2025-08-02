@@ -72,7 +72,7 @@ The project follows a well-organized Flutter architecture with a clear separatio
 1. **Game Logic Layer** (`lib/game/`):
    - `GameController`: Coordinates the overall game state and interactions between components
    - `GameActions`: Implements game actions like moving pieces and switching players
-   - `GameRules`: Validates moves according to game rules
+   - `GameRules`: Validates moves according to game rules (now using pluggable variant system)
 
 2. **Model Layer** (`lib/models/`):
    - Data classes representing core game concepts (Piece, Board, Position, etc.)
@@ -198,7 +198,16 @@ lib
 ├── game
 │   ├── game_actions.dart
 │   ├── game_controller.dart
-│   └── game_rules.dart
+│   ├── game_rules.dart
+│   └── rules
+│       ├── game_rule_variant.dart
+│       ├── standard_game_rule_variant.dart
+│       ├── game_rule_factory.dart
+│       └── variants
+│           ├── dog_river_variant.dart
+│           ├── rat_capture_variant.dart
+│           ├── extended_jump_variant.dart
+│           └── example_new_variant.dart
 ├── generated
 │   ├── l10n.dart
 │   └── intl
@@ -256,3 +265,50 @@ Key Components and Interaction:
     *   The Game Logic Layer modifies these models, and the UI Layer observes these changes to re-render the game.
 
 This structure ensures a clear separation of concerns, making the codebase modular, testable, and maintainable.
+
+## Refactor and Redesign Changes
+
+### Pluggable Game Rule Variants System
+
+The game rules system has been refactored to support a pluggable variant architecture using the Decorator pattern. This makes it much easier to add new variants without modifying existing code.
+
+#### New Architecture Components:
+
+1. **GameRuleVariant Interface** (`lib/game/rules/game_rule_variant.dart`):
+   - Defines the contract for all rule variants
+   - Methods for checking river entry, capture rules, river jumps, and den movement
+
+2. **StandardGameRuleVariant** (`lib/game/rules/standard_game_rule_variant.dart`):
+   - Implements the core game rules without any variants
+   - Serves as the base for all other variants
+
+3. **Individual Variant Implementations** (`lib/game/rules/variants/`):
+   - `DogRiverVariant`: Dogs can enter rivers
+   - `RatCaptureVariant`: Rats cannot capture elephants
+   - `ExtendedJumpVariant`: Extended lion/tiger jumps and leopard river crossing
+   - `ExampleNewVariant`: Example implementation for adding new variants
+
+4. **GameRuleFactory** (`lib/game/rules/game_rule_factory.dart`):
+   - Creates composed rule variants based on game configuration
+   - Uses the decorator pattern to stack variants
+
+5. **Updated GameRules** (`lib/game/game_rules.dart`):
+   - Now delegates to the pluggable variant system
+   - Maintains backward compatibility
+
+#### Benefits of the New System:
+
+- **Extensibility**: New variants can be easily added by implementing the GameRuleVariant interface
+- **Composability**: Multiple variants can be combined seamlessly
+- **Maintainability**: Each variant is isolated in its own class
+- **Testability**: Variants can be tested independently
+- **Backward Compatibility**: Existing code continues to work without changes
+
+#### How to Add New Variants:
+
+1. Create a new class that implements GameRuleVariant
+2. Implement the required methods, delegating to the base variant for unchanged rules
+3. Add the new variant to the GameRuleFactory
+4. The new variant is now automatically available when enabled through GameConfig
+
+This refactor significantly improves the codebase's flexibility for adding new game variants while maintaining clean separation of concerns.
