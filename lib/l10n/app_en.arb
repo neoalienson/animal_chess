@@ -52,5 +52,6 @@
   "piecesRankListTitle": "Pieces Rank",
   "debugMenuTitle": "Debug Menu",
   "forceGreenWin": "Force Green Win",
-  "forceRedWin": "Force Red Win"
+  "forceRedWin": "Force Red Win",
+  "save": "Save"
 }

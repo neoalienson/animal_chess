@@ -1,10 +1,8 @@
-import 'package:animal_chess/models/animal_type.dart';
 import 'package:animal_chess/models/game_board.dart';
 import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/game_config.dart';
-import 'package:animal_chess/constants/game_constants.dart';
 import 'package:animal_chess/game/rules/game_rule_variant.dart';
 import 'package:animal_chess/game/rules/game_rule_factory.dart';
 import 'package:logging/logging.dart';

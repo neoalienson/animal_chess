@@ -49,5 +49,6 @@
   "variantDogEnterRiver": "狗可以进入河流。",
   "variantDogCaptureFromRiver": "只有狗可以在河中捕获岸上的棋子",
   "piecesRank": "棋子等级",
-  "piecesRankListTitle": "棋子等级"
+  "piecesRankListTitle": "棋子等级",
+  "save": "保存"
 }

@@ -1,4 +1,3 @@
-import 'package:animal_chess/models/animal_type.dart';
 import 'package:animal_chess/models/game_board.dart';
 import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/player_color.dart';

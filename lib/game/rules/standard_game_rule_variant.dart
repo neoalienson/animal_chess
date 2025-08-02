@@ -10,8 +10,6 @@ import 'package:logging/logging.dart';
 
 /// Standard implementation of game rules (core rules without any variants)
 class StandardGameRuleVariant implements GameRuleVariant {
-  final Logger _logger = Logger('StandardGameRuleVariant');
-
   @override
   bool canEnterRiver(
     Piece piece,

@@ -7,10 +7,7 @@ import 'package:animal_chess/core/service_locator.dart';
 class SettingsDialogWidget extends StatefulWidget {
   final Function(GameConfig) onConfigChanged;
 
-  const SettingsDialogWidget({
-    super.key,
-    required this.onConfigChanged,
-  });
+  const SettingsDialogWidget({super.key, required this.onConfigChanged});
 
   @override
   State<SettingsDialogWidget> createState() => _SettingsDialogWidgetState();
@@ -30,7 +27,7 @@ class _SettingsDialogWidgetState extends State<SettingsDialogWidget> {
     return StatefulBuilder(
       builder: (context, setState) {
         final localizations = AppLocalizations.of(context);
-        
+
         return AlertDialog(
           title: Text(localizations.settings),
           content: Column(
@@ -89,6 +86,24 @@ class _SettingsDialogWidgetState extends State<SettingsDialogWidget> {
               },
               child: Text(localizations.cancel),
             ),
+            TextButton(
+              onPressed: () {
+                // Update the singleton GameConfig instance
+                final currentConfig = locator<GameConfig>();
+                currentConfig.ratOnlyDenEntry = _gameConfig.ratOnlyDenEntry;
+                currentConfig.extendedLionTigerJumps =
+                    _gameConfig.extendedLionTigerJumps;
+                currentConfig.dogRiverVariant = _gameConfig.dogRiverVariant;
+                currentConfig.ratCannotCaptureElephant =
+                    _gameConfig.ratCannotCaptureElephant;
+
+                // Notify listeners of the change
+                widget.onConfigChanged(_gameConfig);
+
+                Navigator.of(context).pop();
+              },
+              child: Text(localizations.save),
+            ),
           ],
         );
       },
@@ -101,11 +116,7 @@ class _SettingsDialogWidgetState extends State<SettingsDialogWidget> {
     ValueChanged<bool> onChanged,
   ) {
     return SwitchListTile(
-      title: Text(
-        title,
-        overflow: TextOverflow.ellipsis,
-        maxLines: 2,
-      ),
+      title: Text(title, overflow: TextOverflow.ellipsis, maxLines: 2),
       value: value,
       onChanged: onChanged,
     );
