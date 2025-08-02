@@ -48,6 +48,18 @@
   "variantDogRiver": "Variante del río Perro:",
   "variantDogEnterRiver": "El Perro puede entrar al río.",
   "variantDogCaptureFromRiver": "Solo el Perro puede capturar piezas en la orilla desde dentro del río",
+  "variantRatCannotCaptureElephant": "En las reglas estándar, la Rata puede capturar al Elefante. Active esta variante para eliminar esta excepción.",
+  "variantRatOnlyDenEntryDescriptionEnabled": "Con esta variante activada, solo la Rata puede entrar en la guarida del oponente para ganar el juego. En las reglas estándar, cualquier pieza puede entrar en la guarida.",
+  "variantRatOnlyDenEntryDescriptionDisabled": "En las reglas estándar, cualquier pieza puede entrar en la guarida del oponente para ganar el juego. Active esta variante para restringir la entrada a la guarida solo a la Rata.",
+  "variantExtendedLionTigerJumpsDescriptionEnabled": "Esta variante extiende las habilidades de salto del León, Tigre y Leopardo más allá de las reglas estándar.",
+  "variantExtendedLionTigerJumpsDescriptionDisabled": "En las reglas estándar, el León y el Tigre pueden saltar sobre ríos. Esta variante añade capacidades de salto adicionales cuando se activa.",
+  "variantLionJumpStandard": "El León puede saltar sobre un solo río (regla estándar)",
+  "variantTigerJumpStandard": "El Tigre puede saltar sobre un solo río (regla estándar)",
+  "variantLeopardCrossRiversStandard": "El Leopardo no puede cruzar ríos (regla estándar)",
+  "variantDogRiverDescriptionEnabled": "Esta variante otorga al Perro habilidades especiales en el río que no están disponibles en las reglas estándar.",
+  "variantDogRiverDescriptionDisabled": "En las reglas estándar, solo la Rata puede entrar al río. Esta variante otorga al Perro habilidades especiales en el río cuando se activa.",
+  "variantRatCannotCaptureElephantDescriptionEnabled": "Con esta variante activada, la Rata no puede capturar al Elefante. En las reglas estándar, la Rata puede capturar al Elefante (excepción a la jerarquía normal de rangos).",
+  "variantRatCannotCaptureElephantDescriptionDisabled": "En las reglas estándar, la Rata puede capturar al Elefante (excepción a la jerarquía normal de rangos). Active esta variante para eliminar esta excepción.",
   "piecesRank": "Rango de Piezas",
   "piecesRankListTitle": "Rango de Piezas"
 }

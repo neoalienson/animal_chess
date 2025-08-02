@@ -29,104 +29,292 @@ class _SettingsDialogWidgetState extends State<SettingsDialogWidget> {
       builder: (context, setState) {
         final localizations = AppLocalizations.of(context);
 
-        return AlertDialog(
-          title: Text(localizations.settings),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildVariantToggle(
-                localizations.ratOnlyDenEntry,
-                _gameConfig.ratOnlyDenEntry,
-                (bool value) {
-                  setState(() {
-                    _gameConfig = _gameConfig.copyWith(ratOnlyDenEntry: value);
-                  });
-                  widget.onConfigChanged(_gameConfig);
-                },
-              ),
-              _buildVariantToggle(
-                localizations.extendedLionTigerJumps,
-                _gameConfig.extendedLionTigerJumps,
-                (bool value) {
-                  setState(() {
-                    _gameConfig = _gameConfig.copyWith(
-                      extendedLionTigerJumps: value,
-                    );
-                  });
-                  widget.onConfigChanged(_gameConfig);
-                },
-              ),
-              _buildVariantToggle(
-                localizations.dogRiverVariant,
-                _gameConfig.dogRiverVariant,
-                (bool value) {
-                  setState(() {
-                    _gameConfig = _gameConfig.copyWith(dogRiverVariant: value);
-                  });
-                  widget.onConfigChanged(_gameConfig);
-                },
-              ),
-              _buildVariantToggle(
-                localizations.ratCannotCaptureElephant,
-                _gameConfig.ratCannotCaptureElephant,
-                (bool value) {
-                  setState(() {
-                    _gameConfig = _gameConfig.copyWith(
-                      ratCannotCaptureElephant: value,
-                    );
-                  });
-                  widget.onConfigChanged(_gameConfig);
-                },
-              ),
-              _buildDisplayFormatSelector(
-                localizations.pieceDisplayFormat,
-                _gameConfig.pieceDisplayFormat,
-                (PieceDisplayFormat value) {
-                  setState(() {
-                    _gameConfig = _gameConfig.copyWith(
-                      pieceDisplayFormat: value,
-                    );
-                  });
-                  widget.onConfigChanged(_gameConfig);
-                },
-              ),
-            ],
+        return Dialog(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppBar(
+                  title: Text(localizations.settings),
+                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildRatOnlyDenEntryVariant(context, localizations),
+                        _buildExtendedLionTigerJumpsVariant(
+                          context,
+                          localizations,
+                        ),
+                        _buildDogRiverVariant(context, localizations),
+                        _buildRatCannotCaptureElephantVariant(
+                          context,
+                          localizations,
+                        ),
+                        _buildDisplayFormatSelector(
+                          localizations.pieceDisplayFormat,
+                          _gameConfig.pieceDisplayFormat,
+                          (PieceDisplayFormat value) {
+                            setState(() {
+                              _gameConfig = _gameConfig.copyWith(
+                                pieceDisplayFormat: value,
+                              );
+                            });
+                            widget.onConfigChanged(_gameConfig);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(localizations.cancel),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          // Replace the singleton GameConfig instance
+                          locator.unregister<GameConfig>();
+                          locator.registerSingleton<GameConfig>(
+                            _gameConfig.copyWith(),
+                          );
+
+                          // Notify listeners of the change
+                          widget.onConfigChanged(_gameConfig);
+
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(localizations.save),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(localizations.cancel),
-            ),
-            TextButton(
-              onPressed: () {
-                // Replace the singleton GameConfig instance
-                locator.unregister<GameConfig>();
-                locator.registerSingleton<GameConfig>(_gameConfig.copyWith());
-
-                // Notify listeners of the change
-                widget.onConfigChanged(_gameConfig);
-
-                Navigator.of(context).pop();
-              },
-              child: Text(localizations.save),
-            ),
-          ],
         );
       },
     );
   }
 
-  Widget _buildVariantToggle(
-    String title,
-    bool value,
-    ValueChanged<bool> onChanged,
+  Widget _buildBulletPoint(BuildContext context, String text) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('• ', style: Theme.of(context).textTheme.bodySmall),
+        Expanded(
+          child: Text(text, style: Theme.of(context).textTheme.bodySmall),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRatOnlyDenEntryVariant(
+    BuildContext context,
+    AppLocalizations localizations,
   ) {
-    return SwitchListTile(
-      title: Text(title, overflow: TextOverflow.ellipsis, maxLines: 2),
-      value: value,
-      onChanged: onChanged,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SwitchListTile(
+          title: Text(
+            localizations.ratOnlyDenEntry,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+          ),
+          value: _gameConfig.ratOnlyDenEntry,
+          onChanged: (bool value) {
+            setState(() {
+              _gameConfig = _gameConfig.copyWith(ratOnlyDenEntry: value);
+            });
+            widget.onConfigChanged(_gameConfig);
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
+          child: Container(
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceVariant,
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            child: Text(
+              _gameConfig.ratOnlyDenEntry
+                  ? localizations.variantRatOnlyDenEntryDescriptionEnabled
+                  : localizations.variantRatOnlyDenEntryDescriptionDisabled,
+              style: Theme.of(context).textTheme.bodySmall,
+              softWrap: true,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildExtendedLionTigerJumpsVariant(
+    BuildContext context,
+    AppLocalizations localizations,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SwitchListTile(
+          title: Text(
+            localizations.extendedLionTigerJumps,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+          ),
+          value: _gameConfig.extendedLionTigerJumps,
+          onChanged: (bool value) {
+            setState(() {
+              _gameConfig = _gameConfig.copyWith(extendedLionTigerJumps: value);
+            });
+            widget.onConfigChanged(_gameConfig);
+          },
+        ),
+        if (_gameConfig.extendedLionTigerJumps) ...[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildBulletPoint(
+                  context,
+                  localizations.variantLionJumpBothRivers,
+                ),
+                const SizedBox(height: 4),
+                _buildBulletPoint(
+                  context,
+                  localizations.variantTigerJumpSingleRiver,
+                ),
+                const SizedBox(height: 4),
+                _buildBulletPoint(
+                  context,
+                  localizations.variantLeopardCrossRivers,
+                ),
+              ],
+            ),
+          ),
+        ] else ...[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildBulletPoint(
+                  context,
+                  localizations.variantLionJumpStandard,
+                ),
+                const SizedBox(height: 4),
+                _buildBulletPoint(
+                  context,
+                  localizations.variantTigerJumpStandard,
+                ),
+                const SizedBox(height: 4),
+                _buildBulletPoint(
+                  context,
+                  localizations.variantLeopardCrossRiversStandard,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildDogRiverVariant(
+    BuildContext context,
+    AppLocalizations localizations,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SwitchListTile(
+          title: Text(
+            localizations.dogRiverVariant,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+          ),
+          value: _gameConfig.dogRiverVariant,
+          onChanged: (bool value) {
+            setState(() {
+              _gameConfig = _gameConfig.copyWith(dogRiverVariant: value);
+            });
+            widget.onConfigChanged(_gameConfig);
+          },
+        ),
+        if (_gameConfig.dogRiverVariant) ...[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildBulletPoint(context, localizations.variantDogEnterRiver),
+                const SizedBox(height: 4),
+                _buildBulletPoint(context, localizations.variantDogCaptureFromRiver),
+              ],
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildRatCannotCaptureElephantVariant(
+    BuildContext context,
+    AppLocalizations localizations,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SwitchListTile(
+          title: Text(
+            localizations.ratCannotCaptureElephant,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+          ),
+          value: _gameConfig.ratCannotCaptureElephant,
+          onChanged: (bool value) {
+            setState(() {
+              _gameConfig = _gameConfig.copyWith(
+                ratCannotCaptureElephant: value,
+              );
+            });
+            widget.onConfigChanged(_gameConfig);
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
+          child: Container(
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceVariant,
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            child: Text(
+              _gameConfig.ratCannotCaptureElephant
+                  ? localizations
+                        .variantRatCannotCaptureElephantDescriptionEnabled
+                  : localizations
+                        .variantRatCannotCaptureElephantDescriptionDisabled,
+              style: Theme.of(context).textTheme.bodySmall,
+              softWrap: true,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -148,7 +336,7 @@ class _SettingsDialogWidgetState extends State<SettingsDialogWidget> {
         ),
         RadioListTile<PieceDisplayFormat>(
           title: Text(localizations.displayFormatEmoji),
-          value: PieceDisplayFormat.emoji,
+          value: value,
           groupValue: value,
           onChanged: (PieceDisplayFormat? newValue) {
             if (newValue != null) {

@@ -46,63 +46,213 @@ class GameInfoDialogWidget extends StatelessWidget {
   }
 
   Widget _buildGameVariantsTab(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
-
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ListView(
-        children: [
-          _buildVariantItem(
-            context,
-            localizations.ratOnlyDenEntry,
-            gameConfig.ratOnlyDenEntry,
-          ),
-          const Divider(),
-          _buildVariantItem(
-            context,
-            localizations.extendedLionTigerJumps,
-            gameConfig.extendedLionTigerJumps,
-          ),
-          const Divider(),
-          _buildVariantItem(
-            context,
-            localizations.dogRiverVariant,
-            gameConfig.dogRiverVariant,
-          ),
-          const Divider(),
-          _buildVariantItem(
-            context,
-            localizations.ratCannotCaptureElephant,
-            gameConfig.ratCannotCaptureElephant,
-          ),
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildRatOnlyDenEntryVariant(context),
+            const SizedBox(height: 24),
+            _buildExtendedLionTigerJumpsVariant(context),
+            const SizedBox(height: 24),
+            _buildDogRiverVariant(context),
+            const SizedBox(height: 24),
+            _buildRatCannotCaptureElephantVariant(context),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildVariantItem(BuildContext context, String title, bool isEnabled) {
+  Widget _buildRatOnlyDenEntryVariant(BuildContext context) {
     final localizations = AppLocalizations.of(context);
 
-    return ListTile(
-      title: Text(title),
-      trailing: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        decoration: BoxDecoration(
-          color: isEnabled
-              ? Theme.of(context).colorScheme.primaryContainer
-              : Theme.of(context).colorScheme.errorContainer,
-          borderRadius: BorderRadius.circular(16),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildVariantHeader(
+          context,
+          localizations.ratOnlyDenEntry,
+          gameConfig.ratOnlyDenEntry,
         ),
-        child: Text(
-          isEnabled ? localizations.enabled : localizations.disabled,
-          style: TextStyle(
-            color: isEnabled
-                ? Theme.of(context).colorScheme.onPrimaryContainer
-                : Theme.of(context).colorScheme.onErrorContainer,
-            fontWeight: FontWeight.bold,
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceVariant,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            gameConfig.ratOnlyDenEntry
+                ? localizations.variantRatOnlyDenEntryDescriptionEnabled
+                : localizations.variantRatOnlyDenEntryDescriptionDisabled,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
-      ),
+      ],
+    );
+  }
+
+  Widget _buildExtendedLionTigerJumpsVariant(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildVariantHeader(
+          context,
+          localizations.extendedLionTigerJumps,
+          gameConfig.extendedLionTigerJumps,
+        ),
+        const SizedBox(height: 8),
+        if (gameConfig.extendedLionTigerJumps) ...[
+          _buildBulletPoint(context, localizations.variantLionJumpBothRivers),
+          const SizedBox(height: 4),
+          _buildBulletPoint(context, localizations.variantTigerJumpSingleRiver),
+          const SizedBox(height: 4),
+          _buildBulletPoint(context, localizations.variantLeopardCrossRivers),
+        ] else ...[
+          _buildBulletPoint(context, localizations.variantLionJumpStandard),
+          const SizedBox(height: 4),
+          _buildBulletPoint(context, localizations.variantTigerJumpStandard),
+          const SizedBox(height: 4),
+          _buildBulletPoint(
+            context,
+            localizations.variantLeopardCrossRiversStandard,
+          ),
+        ],
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceVariant,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            gameConfig.extendedLionTigerJumps
+                ? localizations.variantExtendedLionTigerJumpsDescriptionEnabled
+                : localizations
+                      .variantExtendedLionTigerJumpsDescriptionDisabled,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDogRiverVariant(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildVariantHeader(
+          context,
+          localizations.dogRiverVariant,
+          gameConfig.dogRiverVariant,
+        ),
+        const SizedBox(height: 8),
+        _buildBulletPoint(context, localizations.variantDogEnterRiver),
+        const SizedBox(height: 4),
+        _buildBulletPoint(context, localizations.variantDogCaptureFromRiver),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceVariant,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            gameConfig.dogRiverVariant
+                ? localizations.variantDogRiverDescriptionEnabled
+                : localizations.variantDogRiverDescriptionDisabled,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRatCannotCaptureElephantVariant(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildVariantHeader(
+          context,
+          localizations.ratCannotCaptureElephant,
+          gameConfig.ratCannotCaptureElephant,
+        ),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceVariant,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            gameConfig.ratCannotCaptureElephant
+                ? localizations
+                      .variantRatCannotCaptureElephantDescriptionEnabled
+                : localizations
+                      .variantRatCannotCaptureElephantDescriptionDisabled,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildVariantHeader(
+    BuildContext context,
+    String title,
+    bool isEnabled,
+  ) {
+    final localizations = AppLocalizations.of(context);
+
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            title,
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          decoration: BoxDecoration(
+            color: isEnabled
+                ? Theme.of(context).colorScheme.primaryContainer
+                : Theme.of(context).colorScheme.errorContainer,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Text(
+            isEnabled ? localizations.enabled : localizations.disabled,
+            style: TextStyle(
+              color: isEnabled
+                  ? Theme.of(context).colorScheme.onPrimaryContainer
+                  : Theme.of(context).colorScheme.onErrorContainer,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBulletPoint(BuildContext context, String text) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('• ', style: Theme.of(context).textTheme.bodySmall),
+        Expanded(
+          child: Text(text, style: Theme.of(context).textTheme.bodySmall),
+        ),
+      ],
     );
   }
 }

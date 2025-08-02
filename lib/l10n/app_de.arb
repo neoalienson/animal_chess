@@ -48,6 +48,18 @@
   "variantDogRiver": "Hund-Fluss-Variante:",
   "variantDogEnterRiver": "Hund kann den Fluss betreten.",
   "variantDogCaptureFromRiver": "Nur der Hund kann Figuren am Ufer vom Fluss aus schlagen",
+  "variantRatCannotCaptureElephant": "In den Standardregeln kann die Ratte den Elefanten schlagen. Aktivieren Sie diese Variante, um diese Ausnahme zu entfernen.",
+  "variantRatOnlyDenEntryDescriptionEnabled": "Wenn diese Variante aktiviert ist, darf nur die Ratte den Bau des Gegners betreten, um zu gewinnen. In den Standardregeln darf jede Figur den Bau betreten.",
+  "variantRatOnlyDenEntryDescriptionDisabled": "In den Standardregeln darf jede Figur den Bau des Gegners betreten, um zu gewinnen. Aktivieren Sie diese Variante, um den Bau-Eintritt auf die Ratte zu beschränken.",
+  "variantExtendedLionTigerJumpsDescriptionEnabled": "Diese Variante erweitert die Sprungfähigkeiten von Löwe, Tiger und Leopard über die Standardregeln hinaus.",
+  "variantExtendedLionTigerJumpsDescriptionDisabled": "In den Standardregeln können Löwe und Tiger über Flüsse springen. Diese Variante fügt zusätzliche Sprungfähigkeiten hinzu, wenn sie aktiviert ist.",
+  "variantLionJumpStandard": "Löwe kann über einen einzelnen Fluss springen (Standardregel)",
+  "variantTigerJumpStandard": "Tiger kann über einen einzelnen Fluss springen (Standardregel)",
+  "variantLeopardCrossRiversStandard": "Leopard kann keine Flüsse überqueren (Standardregel)",
+  "variantDogRiverDescriptionEnabled": "Diese Variante verleiht dem Hund besondere Flussfähigkeiten, die in den Standardregeln nicht verfügbar sind.",
+  "variantDogRiverDescriptionDisabled": "In den Standardregeln darf nur die Ratte den Fluss betreten. Diese Variante verleiht dem Hund besondere Flussfähigkeiten, wenn sie aktiviert ist.",
+  "variantRatCannotCaptureElephantDescriptionEnabled": "Wenn diese Variante aktiviert ist, kann die Ratte den Elefanten nicht schlagen. In den Standardregeln kann die Ratte den Elefanten schlagen (Ausnahme in der normalen Rangfolge).",
+  "variantRatCannotCaptureElephantDescriptionDisabled": "In den Standardregeln kann die Ratte den Elefanten schlagen (Ausnahme in der normalen Rangfolge). Aktivieren Sie diese Variante, um diese Ausnahme zu entfernen.",
   "piecesRank": "Figurenrang",
   "piecesRankListTitle": "Figurenrang"
 }
