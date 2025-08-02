@@ -24,25 +24,41 @@ class PiecesRankListWidget extends StatelessWidget {
 
     return ListView.builder(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       itemCount: animalTypes.length,
       itemBuilder: (context, index) {
         final animalType = animalTypes[index];
-        return ListTile(
-          leading: PieceWidget(
-            piece: Piece(
-              animalType,
-              PlayerColor.red,
-            ), // Show red pieces as example
-            isSelected: false,
-            size: 30,
-            isRankDisplay: true,
-            displayFormat: displayFormat,
-            animalName: _getLocalizedAnimalName(localizations, animalType),
-          ),
-          title: Text(
-            _getLocalizedAnimalName(localizations, animalType),
-            style: const TextStyle(fontSize: 12),
+        return Container(
+          height: 60,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 60,
+                height: 60,
+                child: PieceWidget(
+                  piece: Piece(
+                    animalType,
+                    PlayerColor.red,
+                  ), // Color will be override by isRankDisplay: true,
+                  isSelected: false,
+                  size: 40, // Directly set the piece size to 80
+                  isRankDisplay: true,
+                  displayFormat: displayFormat,
+                  animalName: _getLocalizedAnimalName(
+                    localizations,
+                    animalType,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  _getLocalizedAnimalName(localizations, animalType),
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+            ],
           ),
         );
       },
