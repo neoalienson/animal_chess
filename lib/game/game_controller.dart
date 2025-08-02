@@ -42,6 +42,8 @@ class GameController {
         currentPlayer = gameActions.currentPlayer;
         gameEnded = gameActions.gameEnded;
         winner = gameActions.winner;
+        // Check if next player is AI and needs to move
+        executeAIMoveIfNecessary();
         // Notify that game state has changed
         onGameStateChanged?.call();
       }
