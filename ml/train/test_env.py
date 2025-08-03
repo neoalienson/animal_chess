@@ -1,6 +1,11 @@
-from ml.train.animal_chess_env import AnimalChessEnv, RED_PLAYER, GREEN_PLAYER, RAT
+from ml.train.animal_chess_env import AnimalChessEnv
+from ml.train.board_scenarios import BOARD_SCENARIOS, get_scenario_board
+from ml.train.constants import RED_PLAYER, GREEN_PLAYER, RAT
+import random
+import numpy as np
 
 def test_game_flow():
+    print("\n--- Testing with Standard Start Board ---")
     env = AnimalChessEnv()
     env.render()
 
@@ -48,6 +53,12 @@ def test_game_flow():
     env.render()
     print(f"Reward: {reward}, Done: {done}, Info: {info}")
     assert done == True and env.winner == RED_PLAYER
+
+    print("\n--- Testing with Random Scenario ---")
+    random_scenario = random.choice(BOARD_SCENARIOS)
+    print(f"Selected scenario: {random_scenario['name']}")
+    env_scenario = AnimalChessEnv(initial_scenario=random_scenario)
+    env_scenario.render()
 
     print("\n--- Test complete ---")
 

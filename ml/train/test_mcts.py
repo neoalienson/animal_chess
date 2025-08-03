@@ -1,9 +1,10 @@
 import numpy as np
 from ml.train.mcts import MCTS, MCTSNode
-from ml.train.animal_chess_env import AnimalChessEnv, RED_PLAYER, GREEN_PLAYER
-from ml.train.neural_network import create_animal_chess_model, BOARD_ROWS, BOARD_COLS
+from ml.train.animal_chess_env import AnimalChessEnv
+from ml.train.neural_network import create_animal_chess_model
 from ml.train.self_play import run_self_play
-from ml.train.utils import get_num_actions
+from ml.train.utils import get_num_actions, int_to_move
+from ml.train.constants import BOARD_ROWS, BOARD_COLS
 
 def test_mcts():
     print("Initializing AnimalChessEnv...")
@@ -26,7 +27,6 @@ def test_mcts():
     print("MCTS Policy:")
     for move_int, prob in policy.items():
         # Convert move_int back to (from_pos, to_pos) for readability
-        from ml.train.utils import int_to_move
         move_tuple = int_to_move(move_int)
         print(f"  Move {move_tuple}: {prob:.4f}")
 

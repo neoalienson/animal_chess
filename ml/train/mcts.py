@@ -1,7 +1,8 @@
 import numpy as np
 import math
-from ml.train.animal_chess_env import AnimalChessEnv, RED_PLAYER, GREEN_PLAYER
+from ml.train.animal_chess_env import AnimalChessEnv
 from ml.train.utils import move_to_int, int_to_move, get_num_actions
+from ml.train.constants import RED_PLAYER, GREEN_PLAYER
 
 class MCTSNode:
     def __init__(self, state, parent=None, move=None, prior_p=0):

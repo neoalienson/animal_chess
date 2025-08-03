@@ -1,8 +1,11 @@
 import numpy as np
-from ml.train.animal_chess_env import AnimalChessEnv, RED_PLAYER, GREEN_PLAYER
+import random
+from ml.train.animal_chess_env import AnimalChessEnv
 from ml.train.mcts import MCTS
 from ml.train.neural_network import create_animal_chess_model
 from ml.train.utils import get_num_actions, int_to_move, move_to_int
+from ml.train.board_scenarios import BOARD_SCENARIOS
+from ml.train.constants import RED_PLAYER, GREEN_PLAYER
 
 def run_self_play(model, num_simulations=100, max_moves=200):
     """
@@ -16,7 +19,11 @@ def run_self_play(model, num_simulations=100, max_moves=200):
     Returns:
         list: A list of (board_state, mcts_policy, game_outcome) tuples.
     """
-    env = AnimalChessEnv()
+    # Randomly select an initial scenario
+    initial_scenario = random.choice(BOARD_SCENARIOS)
+    print(f"Starting self-play game with scenario: {initial_scenario['name']}")
+
+    env = AnimalChessEnv(initial_scenario=initial_scenario)
     mcts = MCTS(model, num_simulations=num_simulations)
     
     game_data = [] # Stores (board_state, mcts_policy, current_player)
@@ -83,4 +90,3 @@ if __name__ == '__main__':
         print(f"  Board State Shape: {data[0][0].shape}")
         print(f"  MCTS Policy Shape: {data[0][1].shape}")
         print(f"  Game Outcome: {data[0][2]}")
-

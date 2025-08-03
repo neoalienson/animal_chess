@@ -1,5 +1,4 @@
-BOARD_ROWS = 9
-BOARD_COLS = 7
+from ml.train.constants import BOARD_ROWS, BOARD_COLS
 
 def move_to_int(from_pos, to_pos):
     """

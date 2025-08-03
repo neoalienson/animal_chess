@@ -1,31 +1,9 @@
 from abc import ABC, abstractmethod
 import numpy as np
-
-# Assuming these constants are defined in animal_chess_env.py
-# and will be imported or passed around.
-# For now, redefine them for self-containment.
-BOARD_ROWS = 9
-BOARD_COLS = 7
-
-# Piece ranks (from weakest to strongest, 0-indexed for convenience)
-RAT = 1
-CAT = 2
-DOG = 3
-WOLF = 4
-LEOPARD = 5
-TIGER = 6
-LION = 7
-ELEPHANT = 8
-
-# Player colors
-RED_PLAYER = 1
-GREEN_PLAYER = -1
-
-# Special board cell types
-LAND = 0
-RIVER = 1
-DEN = 2
-TRAP = 3
+from ml.train.constants import (
+    BOARD_ROWS, BOARD_COLS, RAT, CAT, DOG, WOLF, LEOPARD, TIGER, LION, ELEPHANT,
+    RED_PLAYER, GREEN_PLAYER, LAND, RIVER, DEN, TRAP
+)
 
 class GameRuleVariant(ABC):
     def __init__(self, base_variant=None):

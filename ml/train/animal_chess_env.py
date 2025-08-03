@@ -1,24 +1,22 @@
 import numpy as np
-from ml.train.game_rules_variants import (
-    GameRuleFactory, RAT, CAT, DOG, WOLF, LEOPARD, TIGER, LION, ELEPHANT,
-    RED_PLAYER, GREEN_PLAYER, RIVER, DEN, TRAP
+from ml.train.game_rules_variants import GameRuleFactory
+from ml.train.board_scenarios import STANDARD_START_BOARD, get_scenario_board
+from ml.train.constants import (
+    RED_PLAYER, GREEN_PLAYER, RAT, CAT, DOG, WOLF, LEOPARD, TIGER, LION, ELEPHANT,
+    BOARD_ROWS, BOARD_COLS, RIVER, DEN, TRAP, LAND,
+    REWARD_WIN, REWARD_LOSS, REWARD_INVALID_MOVE, REWARD_MOVE_TOWARDS_DEN,
+    PIECE_VALUES, BONUS_RAT_CAPTURE_ELEPHANT, BONUS_LION_TIGER_JUMP, BONUS_LEOPARD_RIVER_CROSS
 )
 
-# Define constants for board dimensions and piece ranks
-BOARD_ROWS = 9
-BOARD_COLS = 7
-
-# Special board cell types
-LAND = 0
-
 class AnimalChessEnv:
-    def __init__(self, game_config=None):
+    def __init__(self, game_config=None, initial_scenario=None):
         self.board = np.zeros((BOARD_ROWS, BOARD_COLS), dtype=int)
         self.current_player = RED_PLAYER  # Red starts
         self.game_over = False
         self.winner = None  # None, RED_PLAYER, or GREEN_PLAYER
         self.game_config = game_config if game_config is not None else {}
         self.rule_variant = GameRuleFactory.create_rule_variant(self.game_config)
+        self.initial_scenario = initial_scenario # Store the initial scenario
 
         # Define special cells
         self.special_cells = np.full((BOARD_ROWS, BOARD_COLS), LAND, dtype=int)
@@ -48,59 +46,100 @@ class AnimalChessEnv:
     def reset(self):
         self.board.fill(0)  # Clear the board
         self._initial_board_setup()
-        self.current_player = RED_PLAYER
         self.game_over = False
         self.winner = None
         return self._get_observation()
 
     def _initial_board_setup(self):
-        # Green pieces (top of the board)
-        self.board[0, 0] = GREEN_PLAYER * LION
-        self.board[0, 6] = GREEN_PLAYER * TIGER
-        self.board[1, 1] = GREEN_PLAYER * DOG
-        self.board[1, 5] = GREEN_PLAYER * CAT
-        self.board[2, 0] = GREEN_PLAYER * RAT
-        self.board[2, 2] = GREEN_PLAYER * LEOPARD
-        self.board[2, 4] = GREEN_PLAYER * WOLF
-        self.board[2, 6] = GREEN_PLAYER * ELEPHANT
+        if self.initial_scenario:
+            # Use the provided scenario
+            self.board = get_scenario_board(self.initial_scenario['board'])
+            self.current_player = self.initial_scenario['player']
+        else:
+            # Default initial board setup
+            self.board = get_scenario_board(STANDARD_START_BOARD)
+            self.current_player = RED_PLAYER
 
-        # Red pieces (bottom of the board)
-        self.board[8, 0] = RED_PLAYER * TIGER
-        self.board[8, 6] = RED_PLAYER * LION
-        self.board[7, 1] = RED_PLAYER * CAT
-        self.board[7, 5] = RED_PLAYER * DOG
-        self.board[6, 0] = RED_PLAYER * ELEPHANT
-        self.board[6, 2] = RED_PLAYER * WOLF
-        self.board[6, 4] = RED_PLAYER * LEOPARD
-        self.board[6, 6] = RED_PLAYER * RAT
+    def _get_den_position(self, player_color):
+        if player_color == RED_PLAYER:
+            return (0, 3) # Green's den is Red's target
+        else:
+            return (8, 3) # Red's den is Green's target
+
+    def _manhattan_distance(self, pos1, pos2):
+        return abs(pos1[0] - pos2[0]) + abs(pos1[1] - pos2[1])
 
     def step(self, action):
         # action is a tuple: ((from_row, from_col), (to_row, to_col))
         from_pos, to_pos = action
         reward = 0
 
+        # Store original board state to check for piece loss
+        original_board = np.copy(self.board)
+
         if not self._is_valid_move(from_pos, to_pos):
             # Invalid move, penalize or handle as an error
-            return self._get_observation(), -10, True, {"message": "Invalid move"}
+            return self._get_observation(), REWARD_INVALID_MOVE, True, {"message": "Invalid move"}
 
-        # Capture logic before moving
-        target_piece = self.board[to_pos[0], to_pos[1]]
-        if target_piece != 0: # If there's a piece at the target, it's a capture
-            self.board[to_pos[0], to_pos[1]] = 0 # Remove captured piece
+        # Calculate distance to opponent's den before move
+        opponent_den_pos = self._get_den_position(self.current_player)
+        dist_before = self._manhattan_distance(from_pos, opponent_den_pos)
 
+        # Check for capture before applying move
+        target_piece_val = self.board[to_pos[0], to_pos[1]]
+        is_capture = (target_piece_val != 0)
+        captured_piece_rank = abs(target_piece_val)
+
+        # Check for special move types before applying move
+        piece_val_moving = self.board[from_pos[0], from_pos[1]]
+        piece_rank_moving = abs(piece_val_moving)
+        is_river_cell_from = self.special_cells[from_pos[0], from_pos[1]] == RIVER
+        is_river_cell_to = self.special_cells[to_pos[0], to_pos[1]] == RIVER
+
+        # Apply the move (this also handles removing captured piece)
         self._apply_move(from_pos, to_pos)
+
+        # Calculate distance to opponent's den after move
+        dist_after = self._manhattan_distance(to_pos, opponent_den_pos)
+
+        # Reward for moving towards the opponent's den
+        if dist_after < dist_before:
+            reward += REWARD_MOVE_TOWARDS_DEN
+
+        # Reward for capturing a piece based on its value
+        if is_capture:
+            reward += PIECE_VALUES.get(captured_piece_rank, 0) # Add value of captured piece
+            # Bonus for Rat capturing Elephant
+            if piece_rank_moving == RAT and captured_piece_rank == ELEPHANT:
+                reward += BONUS_RAT_CAPTURE_ELEPHANT
+
+        # Penalty for losing a piece (if current player's piece was captured on this turn)
+        # This logic needs to be careful as it's from the perspective of the *next* player
+        # For now, we assume rewards are for the player who just moved.
+        # The value function will learn the penalty of losing a piece over time.
+
+        # Bonus for Lion/Tiger jumps
+        if piece_rank_moving in [LION, TIGER] and \
+           self.rule_variant.can_jump_over_river(from_pos, to_pos, piece_rank_moving, original_board, self.special_cells, self.game_config):
+            # Check if it was actually a jump over river (not just a normal move that happens to be a jump)
+            if abs(from_pos[0] - to_pos[0]) > 1 or abs(from_pos[1] - to_pos[1]) > 1:
+                reward += BONUS_LION_TIGER_JUMP
+
+        # Bonus for Leopard river crossing
+        if piece_rank_moving == LEOPARD and (is_river_cell_from != is_river_cell_to):
+            reward += BONUS_LEOPARD_RIVER_CROSS
 
         # Check for game over conditions
         self.game_over, self.winner = self._check_game_over()
         if self.game_over:
             if self.winner == self.current_player:
-                reward = 100  # Win reward
+                reward = REWARD_WIN  # Win reward
             else:
-                reward = -100 # Loss penalty
+                reward = REWARD_LOSS # Loss penalty
         else:
             # Switch player
             self.current_player *= -1
-            reward = 0 # Small negative reward for each step to encourage faster games
+            # No additional step penalty here, as we have move-specific rewards
 
         return self._get_observation(), reward, self.game_over, {}
 
@@ -129,7 +168,7 @@ class AnimalChessEnv:
 
         piece_val = self.board[from_row, from_col]
         piece_rank = abs(piece_val)
-        target_piece_val = self.board[to_row, to_col]
+        target_piece_val = self.board[to_pos[0], to_pos[1]]
         target_piece_rank = abs(target_piece_val)
 
         # 2. Check if it's current player's piece

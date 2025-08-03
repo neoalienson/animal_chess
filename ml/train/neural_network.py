@@ -1,14 +1,11 @@
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
-
-# Define constants for board dimensions
-BOARD_ROWS = 9
-BOARD_COLS = 7
+from ml.train.constants import BOARD_ROWS, BOARD_COLS
 
 def create_animal_chess_model(num_actions):
     """
-    Creates a Keras model for Animal Chess.
+    Creates a Keras model for Animal Chess using convolutional layers.
 
     Args:
         num_actions (int): The total number of possible moves (policy head output size).
@@ -18,13 +15,25 @@ def create_animal_chess_model(num_actions):
     # Channel 1: Opponent's pieces (0-7 for Elephant-Rat, 8 for empty)
     input_board = keras.Input(shape=(BOARD_ROWS, BOARD_COLS, 2), name='board_input')
 
-    # --- Common Layers ---
-    # Flatten the input for a simple dense network
-    x = layers.Flatten()(input_board)
+    # --- Convolutional Layers ---
+    # First convolutional block
+    x = layers.Conv2D(32, (3, 3), padding='same', activation='relu')(input_board)
+    x = layers.BatchNormalization()(x)
 
-    # Dense layers
+    # Second convolutional block
+    x = layers.Conv2D(64, (3, 3), padding='same', activation='relu')(x)
+    x = layers.BatchNormalization()(x)
+
+    # Third convolutional block (optional, can add more for deeper networks)
+    x = layers.Conv2D(128, (3, 3), padding='same', activation='relu')(x)
+    x = layers.BatchNormalization()(x)
+
+    # Flatten the output of the convolutional layers for the dense heads
+    x = layers.Flatten()(x)
+
+    # --- Common Dense Layer before heads ---
     x = layers.Dense(256, activation='relu')(x)
-    x = layers.Dense(128, activation='relu')(x)
+    x = layers.BatchNormalization()(x)
 
     # --- Policy Head ---
     # Outputs a probability distribution over all possible moves

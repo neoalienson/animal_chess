@@ -7,6 +7,24 @@ from ml.train.animal_chess_env import AnimalChessEnv
 from ml.train.neural_network import create_animal_chess_model
 from ml.train.self_play import run_self_play
 from ml.train.utils import get_num_actions
+from ml.train.constants import (
+    RED_PLAYER,
+    GREEN_PLAYER,
+    RAT,
+    CAT,
+    DOG,
+    WOLF,
+    LEOPARD,
+    TIGER,
+    LION,
+    ELEPHANT,
+    BOARD_ROWS,
+    BOARD_COLS,
+    RIVER,
+    DEN,
+    TRAP,
+    LAND
+)
 
 # --- Hyperparameters ---
 NUM_ITERATIONS = 10          # Number of training iterations
@@ -20,9 +38,30 @@ CHECKPOINT_DIR = 'ml/models'
 def train_model():
     print("Starting training process...")
 
-    # Create model and optimizer
-    num_actions = get_num_actions()
-    model = create_animal_chess_model(num_actions)
+    # Create checkpoint directory if it doesn't exist
+    os.makedirs(CHECKPOINT_DIR, exist_ok=True)
+
+    # Check for existing models to resume training
+    model = None
+    latest_checkpoint = None
+    model_files = [f for f in os.listdir(CHECKPOINT_DIR) if f.endswith('.h5')]
+    if model_files:
+        # Sort by modification time (newest first) to get the latest checkpoint
+        model_files.sort(key=lambda x: os.path.getmtime(os.path.join(CHECKPOINT_DIR, x)), reverse=True)
+        latest_checkpoint = os.path.join(CHECKPOINT_DIR, model_files[0])
+        try:
+            model = tf.keras.models.load_model(latest_checkpoint)
+            print(f"Resuming training from checkpoint: {latest_checkpoint}")
+        except Exception as e:
+            print(f"Could not load model from {latest_checkpoint}: {e}. Starting new model.")
+            model = None
+
+    if model is None:
+        # Create a new model if no checkpoint was loaded or loading failed
+        num_actions = get_num_actions()
+        model = create_animal_chess_model(num_actions)
+        print("Created a new model for training.")
+
     optimizer = keras.optimizers.Adam(learning_rate=LEARNING_RATE)
 
     model.compile(
@@ -36,9 +75,6 @@ def train_model():
             'value_output': ['mae']
         }
     )
-
-    # Create checkpoint directory if it doesn't exist
-    os.makedirs(CHECKPOINT_DIR, exist_ok=True)
 
     for i in range(NUM_ITERATIONS):
         print(f"\n--- Iteration {i+1}/{NUM_ITERATIONS} ---")

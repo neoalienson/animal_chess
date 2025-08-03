@@ -35,6 +35,7 @@ Run training:
 ```bash
 python -m ml.train.train
 ```
+(This script will automatically resume training from the latest checkpoint in `ml/models` if available.)
 
 Export model for mobile:
 ```bash
@@ -61,4 +62,9 @@ python -m ml.train.test_env
 To test the neural network model:
 ```bash
 python -m ml.train.test_neural_network
+```
+
+To evaluate the trained model:
+```bash
+python -m ml.train.evaluate_model
 ```
