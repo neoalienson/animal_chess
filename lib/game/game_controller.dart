@@ -6,7 +6,7 @@ import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/game/game_rules.dart';
 import 'package:animal_chess/game/game_actions.dart';
-import 'package:animal_chess/game/ai_strategy.dart';
+import 'package:animal_chess/ai/ai_strategy.dart';
 import 'package:logging/logging.dart';
 
 class GameController {
