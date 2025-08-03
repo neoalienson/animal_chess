@@ -54,3 +54,4 @@ ml/models/*
 
 *.tflite
 *.dll
+ml/build/.last_build_id
