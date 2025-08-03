@@ -28,5 +28,23 @@ void main() {
       expect(result, isA<BoardEvaluationResult>());
       expect(result.score, isA<double>());
     });
+
+    test('lion river jump score higher than horizontal moves', () {
+      // Set up a board with a lion that can make a river jump (closer to opponent's den)
+      final riverJumpBoard = GameBoard.empty()
+        ..setPiece(Position(3, 2), Piece(AnimalType.lion, PlayerColor.red));
+      
+      // Set up a board with a lion that makes a horizontal move (further from opponent's den)
+      final horizontalMoveBoard = GameBoard.empty()
+        ..setPiece(Position(3, 5), Piece(AnimalType.lion, PlayerColor.red));
+
+      final riverJumpResult = evaluator.evaluateBoardState(riverJumpBoard, PlayerColor.red);
+      final horizontalMoveResult = evaluator.evaluateBoardState(horizontalMoveBoard, PlayerColor.red);
+
+      print(riverJumpResult);
+      print(horizontalMoveResult);
+      // River jump should give higher score than horizontal move (closer to den)
+      expect(riverJumpResult.score, greaterThan(horizontalMoveResult.score));
+    });
   });
 }
