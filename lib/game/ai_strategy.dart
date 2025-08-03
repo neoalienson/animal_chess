@@ -1,6 +1,4 @@
-import 'package:animal_chess/models/animal_type.dart';
 import 'package:animal_chess/models/game_board.dart';
-import 'package:animal_chess/models/piece.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/game_config.dart';
@@ -20,13 +18,6 @@ class AIStrategy {
     : boardEvaluator =
           boardEvaluator ??
           BoardEvaluator(gameRules: gameActions.gameRules, config: config);
-
-  /// Check if a piece can capture a target piece
-  bool _canCapture(Piece attacker, Piece? target) {
-    if (target == null) return false;
-    if (target.playerColor == attacker.playerColor) return false;
-    return attacker.canCapture(target);
-  }
 
   /// Check if move would create a repeated position
   bool _isRepetition(GameBoard board, Move move) {

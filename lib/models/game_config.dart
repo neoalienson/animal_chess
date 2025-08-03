@@ -1,5 +1,4 @@
 import 'package:animal_chess/models/piece_display_format.dart';
-import 'package:animal_chess/models/player_color.dart';
 
 class GameConfig {
   bool ratOnlyDenEntry;

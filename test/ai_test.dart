@@ -5,6 +5,7 @@ import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/game/game_rules.dart';
+import 'package:logging/logging.dart';
 
 void main() {
   // Create a game board
@@ -16,6 +17,7 @@ void main() {
     gameConfig: config,
     gameRules: rules,
   );
+  final Logger logger = Logger('AI');
 
   // Create AI strategy
   final ai = AIStrategy(config, actions);
@@ -24,8 +26,8 @@ void main() {
   final bestMove = ai.calculateBestMove(board, PlayerColor.red, actions);
 
   if (bestMove != null) {
-    print('AI found a move: ${bestMove.from} -> ${bestMove.to}');
+    logger.fine('AI found a move: ${bestMove.from} -> ${bestMove.to}');
   } else {
-    print('AI could not find a move');
+    logger.fine('AI could not find a move');
   }
 }

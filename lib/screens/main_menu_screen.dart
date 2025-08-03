@@ -8,7 +8,7 @@ import 'package:animal_chess/screens/animal_chess_game_screen.dart';
 import 'package:animal_chess/widgets/piece_widget.dart';
 import 'package:animal_chess/widgets/game_rules_dialog_widget.dart';
 import 'package:animal_chess/widgets/about_dialog_widget.dart';
-import 'package:animal_chess/widgets/settings_dialog_widget.dart';
+import 'package:animal_chess/widgets/settings/settings_dialog_widget.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
 import 'dart:math';
 

@@ -6,7 +6,6 @@ import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/constants/game_constants.dart';
-import 'package:logging/logging.dart';
 
 /// Standard implementation of game rules (core rules without any variants)
 class StandardGameRuleVariant implements GameRuleVariant {

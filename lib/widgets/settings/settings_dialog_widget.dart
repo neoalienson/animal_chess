@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:animal_chess/models/game_config.dart';
-import 'package:animal_chess/models/piece_display_format.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
 
 import 'package:animal_chess/core/service_locator.dart';
-import 'package:animal_chess/widgets/ai_settings_tab.dart';
-import 'package:animal_chess/widgets/game_variants_tab.dart';
-import 'package:animal_chess/widgets/display_settings_tab.dart';
+import 'package:animal_chess/widgets/settings/ai_settings_tab.dart';
+import 'package:animal_chess/widgets/settings/game_variants_tab.dart';
+import 'package:animal_chess/widgets/settings/display_settings_tab.dart';
 
 class SettingsDialogWidget extends StatefulWidget {
   final Function(GameConfig) onConfigChanged;

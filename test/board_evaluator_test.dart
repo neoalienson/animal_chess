@@ -105,9 +105,15 @@ void main() {
 
       // Create new evaluator with the custom board
       final customRules = GameRules(board: customBoard, gameConfig: config);
-      final customEvaluator = BoardEvaluator(gameRules: customRules, config: config);
+      final customEvaluator = BoardEvaluator(
+        gameRules: customRules,
+        config: config,
+      );
 
-      final score = customEvaluator.evaluateBoardState(customBoard, PlayerColor.red);
+      final score = customEvaluator.evaluateBoardState(
+        customBoard,
+        PlayerColor.red,
+      );
       expect(score, lessThan(0)); // Should be negative due to threatened rat
     });
 
@@ -126,9 +132,15 @@ void main() {
 
       // Create new evaluator with the custom board
       final customRules = GameRules(board: customBoard, gameConfig: config);
-      final customEvaluator = BoardEvaluator(gameRules: customRules, config: config);
+      final customEvaluator = BoardEvaluator(
+        gameRules: customRules,
+        config: config,
+      );
 
-      final score = customEvaluator.evaluateBoardState(customBoard, PlayerColor.red);
+      final score = customEvaluator.evaluateBoardState(
+        customBoard,
+        PlayerColor.red,
+      );
       expect(
         score,
         greaterThan(0),

@@ -91,9 +91,4 @@ class GameRules {
     _logger.fine("Valid adjacent move");
     return true;
   }
-
-  /// Check if a piece can jump over a river
-  bool _canJumpOverRiver(Position from, Position to, Piece piece) {
-    return ruleVariant.canJumpOverRiver(from, to, piece, board, gameConfig);
-  }
 }
