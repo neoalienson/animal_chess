@@ -7,7 +7,7 @@ from ml.train.utils import get_num_actions, int_to_move, move_to_int
 from ml.train.board_scenarios import BOARD_SCENARIOS
 from ml.train.constants import RED_PLAYER, GREEN_PLAYER
 
-def run_self_play(model, num_simulations=100, max_moves=200):
+def run_self_play(model, num_simulations=100, max_moves=100):
     """
     Runs a single self-play game and collects training data.
 
