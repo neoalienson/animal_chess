@@ -136,7 +136,7 @@ class AIStrategy {
     if (validMoves.isEmpty) return null;
 
     Move bestMove = validMoves[0];
-    double bestScore = -double.infinity;
+    BoardEvaluationResult bestResult = BoardEvaluationResult();
 
     for (final move in validMoves) {
       // Skip moves that create repeated positions
@@ -170,13 +170,14 @@ class AIStrategy {
 
       // Use worst-case outcome as move score
       final moveResult = evaluator.evaluateBoardState(tempBoard, player);
-      final moveScore = worstOutcomeResult.score;
 
-      if (moveScore > bestScore) {
-        bestScore = moveScore;
+      if (moveResult > bestResult) {
+        bestResult = moveResult;
         bestMove = move;
       }
     }
+
+    print(bestResult);
 
     // Track board history
     _boardHistory.add(_boardHash(board));
