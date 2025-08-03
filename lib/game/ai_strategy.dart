@@ -5,6 +5,7 @@ import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/game/ai_move.dart';
 import 'package:animal_chess/game/game_actions.dart';
 import 'package:animal_chess/game/board_evaluator.dart';
+import 'package:animal_chess/game/board_evaluation_result.dart';
 import 'package:animal_chess/game/game_rules.dart';
 import 'dart:collection';
 
@@ -152,7 +153,8 @@ class AIStrategy {
           : PlayerColor.red;
       final opponentMoves = _getAllValidMoves(tempBoard, opponent, tempActions);
 
-      double worstOutcome = double.infinity;
+      BoardEvaluationResult worstOutcomeResult = BoardEvaluationResult();
+
       for (final oppMove in opponentMoves) {
         // Simulate opponent's move
         final oppBoard = tempBoard.copy();
@@ -160,16 +162,15 @@ class AIStrategy {
         oppActions.movePiece(oppMove.from, oppMove.to);
 
         // Evaluate resulting position
-        final outcomeScore = evaluator.evaluateBoardState(oppBoard, player);
-        if (outcomeScore < worstOutcome) {
-          worstOutcome = outcomeScore;
+        final outcomeResult = evaluator.evaluateBoardState(oppBoard, player);
+        if (outcomeResult < worstOutcomeResult) {
+          worstOutcomeResult = outcomeResult;
         }
       }
 
       // Use worst-case outcome as move score
-      final moveScore = worstOutcome == double.infinity
-          ? evaluator.evaluateBoardState(tempBoard, player)
-          : worstOutcome;
+      final moveResult = evaluator.evaluateBoardState(tempBoard, player);
+      final moveScore = worstOutcomeResult.score;
 
       if (moveScore > bestScore) {
         bestScore = moveScore;

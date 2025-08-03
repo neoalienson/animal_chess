@@ -4,6 +4,7 @@ import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/game/game_rules.dart';
+import 'board_evaluation_result.dart';
 
 class BoardEvaluator {
   final GameRules gameRules;
@@ -27,8 +28,12 @@ class BoardEvaluator {
   });
 
   /// Main evaluation function that scores the board state for a player
-  double evaluateBoardState(GameBoard board, PlayerColor player) {
-    double score = 0.0;
+  BoardEvaluationResult evaluateBoardState(GameBoard board, PlayerColor player) {
+    double safety = 0.0;
+    double pieceValue = 0.0;
+    double threats = 0.0;
+    double denProximity = 0.0;
+    double areaControl = 0.0;
 
     // Evaluate each piece on the board
     for (int col = 0; col < 7; col++) {
@@ -38,31 +43,39 @@ class BoardEvaluator {
 
         if (piece != null) {
           // Add or subtract based on piece value
-          final pieceValue = evaluatePieceValue(piece, pos, player);
-          score += pieceValue;
+          final pieceValueComponent = evaluatePieceValue(piece, pos, player);
+          pieceValue += pieceValueComponent;
 
           // Evaluate safety of the piece
-          final safety = evaluateSafety(board, pos, player);
-          score += safety * safetyWeight;
+          final safetyComponent = evaluateSafety(board, pos, player);
+          safety += safetyComponent * safetyWeight;
 
           // Evaluate threats this piece can make
-          final threats = evaluateThreats(board, pos, piece, player);
-          score += threats * threatWeight;
+          final threatsComponent = evaluateThreats(board, pos, piece, player);
+          threats += threatsComponent * threatWeight;
         }
       }
     }
 
     // Evaluate proximity to opponent's den
-    final denProximity = evaluateDenProximity(board, player);
-    score += denProximity * denProximityWeight;
+    final denProximityComponent = evaluateDenProximity(board, player);
+    denProximity += denProximityComponent * denProximityWeight;
 
-    // Evaluate area control (only if enabled)
-    if (areaControlWeight > 0) {
-      final areaControl = _calculateAreaControlScore(board, player);
-      score += areaControl * areaControlWeight;
-    }
+    // Evaluate area control 
+    final areaControlComponent = _calculateAreaControlScore(board, player);
+    areaControl += areaControlComponent * areaControlWeight;
 
-    return score;
+    // Calculate final score
+    final score = safety + pieceValue + threats + denProximity + areaControl;
+
+    return BoardEvaluationResult(
+      safety: safety,
+      pieceValue: pieceValue,
+      threats: threats,
+      denProximity: denProximity,
+      areaControl: areaControl,
+      score: score,
+    );
   }
 
   /// Evaluate the value of a piece based on its rank and position
