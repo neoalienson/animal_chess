@@ -2,10 +2,10 @@ import 'package:animal_chess/models/game_board.dart';
 import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/position.dart';
 import 'package:animal_chess/models/game_config.dart';
-import 'package:animal_chess/game/ai_move.dart';
+import 'package:animal_chess/ai/ai_move.dart';
 import 'package:animal_chess/game/game_actions.dart';
-import 'package:animal_chess/game/board_evaluator.dart';
-import 'package:animal_chess/game/board_evaluation_result.dart';
+import 'package:animal_chess/ai/board_evaluator.dart';
+import 'package:animal_chess/ai/board_evaluation_result.dart';
 import 'package:animal_chess/game/game_rules.dart';
 import 'dart:collection';
 
