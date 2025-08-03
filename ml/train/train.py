@@ -1,161 +1,137 @@
-#!/usr/bin/env python3
-"""
-Main training script for Animal Chess ML model
-"""
-
-import torch
-import torch.nn as nn
-import torch.optim as optim
-import torch.nn.functional as F
+import tensorflow as tf
 import numpy as np
-import os
-import argparse
+import random
+from collections import deque
 
-# Define the model architecture
-class AnimalChessNet(nn.Module):
+# Assuming model.py contains create_simple_animal_chess_model
+from model import create_simple_animal_chess_model
+
+# Placeholder for the Animal Chess game environment
+# This would need to be a Python implementation of the game rules
+# and board state.
+class AnimalChessEnv:
     def __init__(self):
-        super(AnimalChessNet, self).__init__()
-        
-        # Input: 7x9x2 tensor (board state + player perspective)
-        # Output: 7x9x4 moves + 1 value
-        
-        # Convolutional layers for feature extraction
-        self.conv1 = nn.Conv2d(2, 32, kernel_size=3, padding=1)
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
-        self.conv3 = nn.Conv2d(64, 128, kernel_size=3, padding=1)
-        
-        # Fully connected layers
-        self.fc1 = nn.Linear(128 * 7 * 9, 512)
-        self.fc2 = nn.Linear(512, 256)
-        
-        # Policy head (7x9x4 moves)
-        self.policy_head = nn.Linear(256, 7 * 9 * 4)
-        
-        # Value head (scalar win probability)
-        self.value_head = nn.Linear(256, 1)
-        
-    def forward(self, x):
-        # x shape: (batch_size, 2, 7, 9)
-        batch_size = x.size(0)
-        
-        # Convolutional feature extraction
-        x = F.relu(self.conv1(x))
-        x = F.relu(self.conv2(x))
-        x = F.relu(self.conv3(x))
-        
-        # Flatten for fully connected layers
-        x = x.view(batch_size, -1)
-        
-        # Shared fully connected layers
-        x = F.relu(self.fc1(x))
-        x = F.dropout(x, p=0.3)
-        x = F.relu(self.fc2(x))
-        x = F.dropout(x, p=0.3)
-        
-        # Policy output (7x9x4 moves)
-        policy = self.policy_head(x)
-        policy = policy.view(batch_size, 7, 9, 4)
-        
-        # Value output (win probability)
-        value = torch.tanh(self.value_head(x))
-        
-        return policy, value
+        # Initialize board, pieces, etc.
+        pass
 
-def train_model():
-    """Train the model"""
-    print("Starting training...")
-    
-    # Create model
-    model = AnimalChessNet()
-    
-    # Loss functions
-    policy_loss_fn = nn.KLDivLoss(reduction='batchmean')
-    value_loss_fn = nn.MSELoss()
-    
-    # Optimizer
-    optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
-    
-    # Sample training data (in a real implementation, this would come from game records)
-    train_data = []
-    for i in range(1000):
-        # Generate random board state (7x9x2)
-        board_state = np.random.rand(2, 7, 9).astype(np.float32)
-        
-        # Generate random move probabilities (7x9x4)
-        move_probs = np.random.rand(7, 9, 4).astype(np.float32)
-        move_probs = move_probs / np.sum(move_probs)  # Normalize
-        
-        # Generate random value (win probability)
-        value = np.random.rand().astype(np.float32)
-        
-        train_data.append((board_state, move_probs, value))
-    
-    # Training loop
-    num_epochs = 5
-    batch_size = 32
-    
-    for epoch in range(num_epochs):
-        print(f"Epoch {epoch+1}/{num_epochs}")
-        
-        # Shuffle data
-        np.random.shuffle(train_data)
-        
-        total_loss = 0.0
-        num_batches = 0
-        
-        for i in range(0, len(train_data), batch_size):
-            batch = train_data[i:i+batch_size]
-            
-            # Prepare batch
-            board_states = torch.tensor([item[0] for item in batch], dtype=torch.float32)
-            target_policies = torch.tensor([item[1] for item in batch], dtype=torch.float32)
-            target_values = torch.tensor([[item[2]] for item in batch], dtype=torch.float32)
-            
-            # Forward pass
-            optimizer.zero_grad()
-            predicted_policy, predicted_value = model(board_states)
-            
-            # Calculate losses
-            policy_loss = policy_loss_fn(
-                F.log_softmax(predicted_policy.view(-1, 4), dim=1),
-                F.softmax(target_policies.view(-1, 4), dim=1)
-            )
-            value_loss = value_loss_fn(predicted_value, target_values)
-            
-            # Combined loss
-            loss = policy_loss + value_loss
-            
-            # Backward pass
-            loss.backward()
-            optimizer.step()
-            
-            total_loss += loss.item()
-            num_batches += 1
-            
-        avg_loss = total_loss / num_batches
-        print(f"Average loss: {avg_loss:.4f}")
-    
-    # Save model
-    save_path = "ml/models/animal_chess_model.pth"
-    os.makedirs(os.path.dirname(save_path), exist_ok=True)
-    torch.save(model.state_dict(), save_path)
-    print(f"Model saved to {save_path}")
-    
-    return model
+    def reset(self):
+        # Reset game to initial state
+        return np.zeros((9, 7, 2)) # Placeholder board state
 
-def main():
-    parser = argparse.ArgumentParser(description='Train Animal Chess ML model')
-    parser.add_argument('--epochs', type=int, default=5, help='Number of training epochs')
-    parser.add_argument('--samples', type=int, default=1000, help='Number of training samples')
-    
-    args = parser.parse_args()
-    
-    print("Animal Chess ML Training")
-    print("=" * 30)
-    
-    model = train_model()
-    
-    print("\nTraining completed!")
+    def get_valid_moves(self):
+        # Return a list of valid moves from the current state
+        return [0, 1, 2, 3] # Placeholder
 
-if __name__ == "__main__":
-    main()
+    def make_move(self, move):
+        # Apply move to the board, return new state, reward, done
+        return np.zeros((9, 7, 2)), 0, False # Placeholder
+
+    def is_game_over(self):
+        # Check if game is over
+        return False
+
+    def get_current_player(self):
+        # Return current player (e.g., 0 or 1)
+        return 0
+
+# Placeholder for MCTS implementation
+# This would interact with the neural network for policy and value predictions
+class MCTS:
+    def __init__(self, model, env):
+        self.model = model
+        self.env = env
+        self.nodes = {} # Stores MCTS nodes
+
+    def run(self, initial_state, num_simulations):
+        # Run MCTS simulations and return policy
+        # This is a highly simplified placeholder
+        policy = np.zeros(9 * 7 * 4) # Placeholder for policy
+        valid_moves = self.env.get_valid_moves()
+        for move in valid_moves:
+            policy[move] = 1.0 / len(valid_moves) # Distribute evenly for now
+        return policy, 0 # Placeholder value
+
+# Main training loop
+def train(num_iterations=100, num_self_play_games=10, num_simulations_per_move=50, batch_size=32):
+    model = create_simple_animal_chess_model()
+    optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+
+    # Policy and Value loss functions
+    policy_loss_fn = tf.keras.losses.CategoricalCrossentropy()
+    value_loss_fn = tf.keras.losses.MeanSquaredError()
+
+    replay_buffer = deque(maxlen=10000) # Stores (state, mcts_policy, game_outcome)
+
+    for iteration in range(num_iterations):
+        print(f"Iteration {iteration + 1}/{num_iterations}")
+
+        # 1. Self-Play Data Generation
+        for game_num in range(num_self_play_games):
+            env = AnimalChessEnv() # New environment for each game
+            mcts = MCTS(model, env)
+            game_states = []
+            mcts_policies = []
+            
+            current_state = env.reset()
+            while not env.is_game_over():
+                # Run MCTS to get policy for current state
+                mcts_policy, _ = mcts.run(current_state, num_simulations_per_move)
+                
+                game_states.append(current_state)
+                mcts_policies.append(mcts_policy)
+
+                # Choose move based on MCTS policy (e.g., sample or argmax)
+                # For simplicity, let's pick a random valid move for now
+                valid_moves = env.get_valid_moves()
+                chosen_move = random.choice(valid_moves)
+                
+                current_state, reward, done = env.make_move(chosen_move)
+                
+                if done:
+                    # Determine game outcome (e.g., 1 for win, -1 for loss, 0 for draw)
+                    game_outcome = 1 # Placeholder: assume current player wins
+                    # Assign outcomes to all states in the game
+                    game_outcomes = [game_outcome] * len(game_states)
+                    break
+            else:
+                game_outcomes = [0] * len(game_states) # Draw or game not finished (shouldn't happen with is_game_over check)
+
+            # Add game data to replay buffer
+            for i in range(len(game_states)):
+                replay_buffer.append((game_states[i], mcts_policies[i], game_outcomes[i]))
+
+        # 2. Model Training
+        if len(replay_buffer) < batch_size:
+            print("Not enough data in replay buffer for training.")
+            continue
+
+        # Sample a batch from replay buffer
+        batch = random.sample(replay_buffer, batch_size)
+        states_batch = np.array([item[0] for item in batch])
+        policies_batch = np.array([item[1] for item in batch])
+        outcomes_batch = np.array([item[2] for item in batch])
+
+        with tf.GradientTape() as tape:
+            pred_policies, pred_values = model(states_batch)
+            
+            policy_loss = policy_loss_fn(policies_batch, pred_policies)
+            value_loss = value_loss_fn(outcomes_batch, pred_values)
+            
+            total_loss = policy_loss + value_loss # Combine losses
+
+        gradients = tape.gradient(total_loss, model.trainable_variables)
+        optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+
+        print(f"  Policy Loss: {policy_loss.numpy():.4f}, Value Loss: {value_loss.numpy():.4f}")
+
+        # Save model checkpoint periodically
+        if (iteration + 1) % 10 == 0:
+            model.save_weights(f"checkpoints/animal_chess_model_iter_{iteration + 1}.h5")
+            print(f"  Saved model checkpoint at iteration {iteration + 1}")
+
+if __name__ == '__main__':
+    # Create a directory for checkpoints if it doesn't exist
+    import os
+    if not os.path.exists('checkpoints'):
+        os.makedirs('checkpoints')
+    train()
