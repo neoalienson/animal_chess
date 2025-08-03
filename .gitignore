@@ -52,4 +52,4 @@ coverage/*
 
 ml/models/*
 
-.tflite
+*.tflite

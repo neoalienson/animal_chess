@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
 import 'package:animal_chess/ai/animal_chess_network.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AiSettingsTab extends StatelessWidget {
   final GameConfig gameConfig;
@@ -143,7 +144,7 @@ class AiSettingsTab extends StatelessWidget {
             title: Text(localizations.machineLearning),
             value: AIStrategyType.machineLearning,
             groupValue: gameConfig.aiGreenStrategy,
-            onChanged: gameConfig.animalChessNetwork?.isModelLoaded == true
+            onChanged: gameConfig.animalChessNetwork != null
                 ? (AIStrategyType? value) {
                     if (value != null) {
                       onConfigChanged(gameConfig.copyWith(aiGreenStrategy: value));
@@ -205,7 +206,7 @@ class AiSettingsTab extends StatelessWidget {
             title: Text(localizations.machineLearning),
             value: AIStrategyType.machineLearning,
             groupValue: gameConfig.aiRedStrategy,
-            onChanged: gameConfig.animalChessNetwork?.isModelLoaded == true
+            onChanged: gameConfig.animalChessNetwork != null
                 ? (AIStrategyType? value) {
                     if (value != null) {
                       onConfigChanged(gameConfig.copyWith(aiRedStrategy: value));
@@ -214,17 +215,18 @@ class AiSettingsTab extends StatelessWidget {
                 : null,
           ),
         ],
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
-          child: ElevatedButton(
-            onPressed: () {
-              // Simulate loading a model
-              final newNetwork = AnimalChessNetwork.fromTflite('placeholder_path');
-              onConfigChanged(gameConfig.copyWith(animalChessNetwork: newNetwork));
-            },
-            child: Text(localizations.loadMlModel),
+        if (!kIsWeb) // Only show ML model loading on non-web platforms
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
+            child: ElevatedButton(
+              onPressed: () async {
+                final newNetwork = AnimalChessNetwork();
+                await newNetwork.loadModel();
+                onConfigChanged(gameConfig.copyWith(animalChessNetwork: newNetwork));
+              },
+              child: Text(localizations.loadMlModel),
+            ),
           ),
-        ),
         Padding(
           padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
           child: Container(
