@@ -49,3 +49,5 @@ lib/l10n/app_localizations_*.dart
 lib/l10n/app_localizations.dart
 
 coverage/*
+
+ml/models/*
