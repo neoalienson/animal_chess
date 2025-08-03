@@ -26,11 +26,11 @@ class MctsNode {
     this.fromPosition,
     this.toPosition,
     this.parent,
-    this.children = const [],
+    List<MctsNode>? children, // Make it optional and nullable for default
     this.visits = 0,
     this.wins = 0.0,
     this.explorationConstant = 1.41, // sqrt(2)
-  });
+  }) : children = children ?? []; // Initialize with an empty growable list if not provided
 
   /// Check if this node represents a terminal state (game over)
   bool get isTerminal {
@@ -82,7 +82,16 @@ class MctsNode {
     
     // Find the child with maximum UCB1 value
     MctsNode bestChild = children.first;
-    double bestValue = ucb1(bestChild);
+    double bestValue = -1.0; // Initialize with a very small value
+
+    // If this is the root node, we don't use parent.visits for its children's UCB1 calculation directly.
+    // Instead, we just pick the child with the highest UCB1 value.
+    // The UCB1 formula for children already accounts for their parent's visits.
+    if (parent == null) {
+      bestValue = ucb1(bestChild);
+    } else {
+      bestValue = ucb1(bestChild);
+    }
     
     for (int i = 1; i < children.length; i++) {
       final child = children[i];
@@ -104,8 +113,9 @@ class MctsNode {
     
     // UCB1 formula: exploitation + exploration
     final exploitation = node.wins / node.visits;
+    // Ensure node.parent is not null before accessing its visits
     final exploration = explorationConstant * 
-        sqrt(log(parent!.visits) / node.visits);
+        sqrt(log(node.parent!.visits) / node.visits);
     
     return exploitation + exploration;
   }

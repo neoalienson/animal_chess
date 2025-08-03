@@ -53,3 +53,4 @@ coverage/*
 ml/models/*
 
 *.tflite
+*.dll
