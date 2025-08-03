@@ -64,7 +64,7 @@ To test the neural network model:
 python -m ml.train.test_neural_network
 ```
 
-To evaluate the trained model:
+To evaluate the performance of the trained model:
 ```bash
 python -m ml.train.evaluate_model
 ```
