@@ -42,6 +42,7 @@ class AIStrategy {
           denProximityWeight: 1.5,
           pieceValueWeight: 1.2,
           threatWeight: 1.0,
+          areaControlWeight: 1.5,
         );
       case AIStrategyType.balanced:
         return BoardEvaluator(
@@ -51,6 +52,7 @@ class AIStrategy {
           denProximityWeight: 1.2,
           pieceValueWeight: 0.9,
           threatWeight: 1.0,
+          areaControlWeight: 0.8,
         );
       case AIStrategyType.exploratory:
         return BoardEvaluator(
@@ -60,6 +62,7 @@ class AIStrategy {
           denProximityWeight: 2.0,
           pieceValueWeight: 0.9,
           threatWeight: 0.8,
+          areaControlWeight: 0.5,
         );
       default: // defensive
         return BoardEvaluator(
@@ -69,6 +72,7 @@ class AIStrategy {
           denProximityWeight: 1.2,
           pieceValueWeight: 0.9,
           threatWeight: 0.7,
+          areaControlWeight: 1.2,
         );
     }
   }

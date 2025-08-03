@@ -14,6 +14,7 @@ class BoardEvaluator {
   final double denProximityWeight;
   final double pieceValueWeight;
   final double threatWeight;
+  final double areaControlWeight;
 
   BoardEvaluator({
     required this.gameRules,
@@ -22,6 +23,7 @@ class BoardEvaluator {
     this.denProximityWeight = 1.2,
     this.pieceValueWeight = 0.9,
     this.threatWeight = 1.0,
+    this.areaControlWeight = 0.0,
   });
 
   /// Main evaluation function that scores the board state for a player
@@ -53,6 +55,12 @@ class BoardEvaluator {
     // Evaluate proximity to opponent's den
     final denProximity = evaluateDenProximity(board, player);
     score += denProximity * denProximityWeight;
+
+    // Evaluate area control (only if enabled)
+    if (areaControlWeight > 0) {
+      final areaControl = _calculateAreaControlScore(board, player);
+      score += areaControl * areaControlWeight;
+    }
 
     return score;
   }
@@ -175,5 +183,46 @@ class BoardEvaluator {
     return closestDistance == double.infinity
         ? 0.0
         : (10.0 - closestDistance) * totalProximity;
+  }
+
+  /// Calculate area control score for a player (pieces with clear paths to den)
+  double _calculateAreaControlScore(GameBoard board, PlayerColor player) {
+    final denPos = player == PlayerColor.red ? Position(3, 8) : Position(3, 0);
+    double score = 0.0;
+    
+    // Only evaluate pieces in the den column (column 3)
+    for (int row = 0; row < 9; row++) {
+      final pos = Position(3, row);
+      final piece = board.getPiece(pos);
+      
+      if (piece?.playerColor == player) {
+        // Check if the path to the den is clear of opponent pieces
+        final pathClear = _isPathClear(board, pos, denPos, player);
+        if (pathClear) {
+          // Higher score for pieces closer to the den
+          final distance = (pos.row - denPos.row).abs();
+          score += 1.0 / (distance + 1);
+        }
+      }
+    }
+    
+    return score;
+  }
+
+  /// Check if the path between a piece and the den is clear of opponent pieces
+  bool _isPathClear(GameBoard board, Position piecePos, Position denPos, PlayerColor player) {
+    final step = (denPos.row - piecePos.row).sign;
+    int currentRow = piecePos.row + step;
+    
+    // Check each position in the path towards the den
+    while (currentRow != denPos.row) {
+      final checkPos = Position(denPos.column, currentRow);
+      final piece = board.getPiece(checkPos);
+      if (piece != null && piece.playerColor != player) {
+        return false; // Opponent piece blocking the path
+      }
+      currentRow += step;
+    }
+    return true;
   }
 }

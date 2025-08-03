@@ -88,4 +88,62 @@ void main() {
       expect(bestMove, isNotNull);
     });
   });
+
+  // Test area control functionality
+  group('Area Control Tests', () {
+    test('Area control evaluator has default weight of 0.0', () {
+      final config = GameConfig();
+      final board = GameBoard();
+      final rules = GameRules(board: board, gameConfig: config);
+      final evaluator = BoardEvaluator(
+        gameRules: rules,
+        config: config,
+        safetyWeight: 1.0,
+        denProximityWeight: 1.2,
+        pieceValueWeight: 0.9,
+        threatWeight: 0.7,
+        // areaControlWeight should default to 0.0
+      );
+
+      expect(evaluator.areaControlWeight, equals(0.0));
+    });
+
+    test('Area control evaluation returns zero when disabled', () {
+      final config = GameConfig();
+      final board = GameBoard.empty(); // Empty board for clean test
+      final rules = GameRules(board: board, gameConfig: config);
+      final evaluator = BoardEvaluator(
+        gameRules: rules,
+        config: config,
+        safetyWeight: 1.0,
+        denProximityWeight: 1.2,
+        pieceValueWeight: 0.9,
+        threatWeight: 0.7,
+        areaControlWeight: 0.0, // Disabled
+      );
+
+      final score = evaluator.evaluateBoardState(board, PlayerColor.red);
+      // Should only evaluate other factors (should be 0.0 for empty board)
+      expect(score, equals(0.0));
+    });
+
+    test('Area control evaluation enabled with non-zero weight', () {
+      final config = GameConfig();
+      final board = GameBoard.empty(); // Empty board for clean test
+      final rules = GameRules(board: board, gameConfig: config);
+      final evaluator = BoardEvaluator(
+        gameRules: rules,
+        config: config,
+        safetyWeight: 1.0,
+        denProximityWeight: 1.2,
+        pieceValueWeight: 0.9,
+        threatWeight: 0.7,
+        areaControlWeight: 1.0, // Enabled
+      );
+
+      final score = evaluator.evaluateBoardState(board, PlayerColor.red);
+      // Should still be 0.0 for empty board but with area control enabled
+      expect(score, equals(0.0));
+    });
+  });
 }
