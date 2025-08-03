@@ -89,46 +89,106 @@ class AiSettingsTab extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
-        RadioListTile<AIStrategyType>(
-          title: Text(localizations.defensive),
-          value: AIStrategyType.defensive,
-          groupValue: gameConfig.aiStrategy,
-          onChanged: (AIStrategyType? value) {
-            if (value != null) {
-              onConfigChanged(gameConfig.copyWith(aiStrategy: value));
-            }
-          },
-        ),
-        RadioListTile<AIStrategyType>(
-          title: Text(localizations.offensive),
-          value: AIStrategyType.offensive,
-          groupValue: gameConfig.aiStrategy,
-          onChanged: (AIStrategyType? value) {
-            if (value != null) {
-              onConfigChanged(gameConfig.copyWith(aiStrategy: value));
-            }
-          },
-        ),
-        RadioListTile<AIStrategyType>(
-          title: Text(localizations.balanced),
-          value: AIStrategyType.balanced,
-          groupValue: gameConfig.aiStrategy,
-          onChanged: (AIStrategyType? value) {
-            if (value != null) {
-              onConfigChanged(gameConfig.copyWith(aiStrategy: value));
-            }
-          },
-        ),
-        RadioListTile<AIStrategyType>(
-          title: Text(localizations.exploratory),
-          value: AIStrategyType.exploratory,
-          groupValue: gameConfig.aiStrategy,
-          onChanged: (AIStrategyType? value) {
-            if (value != null) {
-              onConfigChanged(gameConfig.copyWith(aiStrategy: value));
-            }
-          },
-        ),
+        // Green AI Strategy
+        if (gameConfig.aiGreen) ...[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+            child: Text(
+              '${localizations.aiGreenPlayer} ${localizations.aiStrategy.toLowerCase()}',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          ),
+          RadioListTile<AIStrategyType>(
+            title: Text(localizations.defensive),
+            value: AIStrategyType.defensive,
+            groupValue: gameConfig.aiGreenStrategy,
+            onChanged: (AIStrategyType? value) {
+              if (value != null) {
+                onConfigChanged(gameConfig.copyWith(aiGreenStrategy: value));
+              }
+            },
+          ),
+          RadioListTile<AIStrategyType>(
+            title: Text(localizations.offensive),
+            value: AIStrategyType.offensive,
+            groupValue: gameConfig.aiGreenStrategy,
+            onChanged: (AIStrategyType? value) {
+              if (value != null) {
+                onConfigChanged(gameConfig.copyWith(aiGreenStrategy: value));
+              }
+            },
+          ),
+          RadioListTile<AIStrategyType>(
+            title: Text(localizations.balanced),
+            value: AIStrategyType.balanced,
+            groupValue: gameConfig.aiGreenStrategy,
+            onChanged: (AIStrategyType? value) {
+              if (value != null) {
+                onConfigChanged(gameConfig.copyWith(aiGreenStrategy: value));
+              }
+            },
+          ),
+          RadioListTile<AIStrategyType>(
+            title: Text(localizations.exploratory),
+            value: AIStrategyType.exploratory,
+            groupValue: gameConfig.aiGreenStrategy,
+            onChanged: (AIStrategyType? value) {
+              if (value != null) {
+                onConfigChanged(gameConfig.copyWith(aiGreenStrategy: value));
+              }
+            },
+          ),
+        ],
+        // Red AI Strategy
+        if (gameConfig.aiRed) ...[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+            child: Text(
+              '${localizations.aiRedPlayer} ${localizations.aiStrategy.toLowerCase()}',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          ),
+          RadioListTile<AIStrategyType>(
+            title: Text(localizations.defensive),
+            value: AIStrategyType.defensive,
+            groupValue: gameConfig.aiRedStrategy,
+            onChanged: (AIStrategyType? value) {
+              if (value != null) {
+                onConfigChanged(gameConfig.copyWith(aiRedStrategy: value));
+              }
+            },
+          ),
+          RadioListTile<AIStrategyType>(
+            title: Text(localizations.offensive),
+            value: AIStrategyType.offensive,
+            groupValue: gameConfig.aiRedStrategy,
+            onChanged: (AIStrategyType? value) {
+              if (value != null) {
+                onConfigChanged(gameConfig.copyWith(aiRedStrategy: value));
+              }
+            },
+          ),
+          RadioListTile<AIStrategyType>(
+            title: Text(localizations.balanced),
+            value: AIStrategyType.balanced,
+            groupValue: gameConfig.aiRedStrategy,
+            onChanged: (AIStrategyType? value) {
+              if (value != null) {
+                onConfigChanged(gameConfig.copyWith(aiRedStrategy: value));
+              }
+            },
+          ),
+          RadioListTile<AIStrategyType>(
+            title: Text(localizations.exploratory),
+            value: AIStrategyType.exploratory,
+            groupValue: gameConfig.aiRedStrategy,
+            onChanged: (AIStrategyType? value) {
+              if (value != null) {
+                onConfigChanged(gameConfig.copyWith(aiRedStrategy: value));
+              }
+            },
+          ),
+        ],
         Padding(
           padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
           child: Container(

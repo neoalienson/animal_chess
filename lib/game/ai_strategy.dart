@@ -17,19 +17,31 @@ class AIStrategy {
 
   AIStrategy(this.config, this.gameActions, [BoardEvaluator? boardEvaluator])
     : boardEvaluator =
-          boardEvaluator ?? _createEvaluator(config, gameActions.gameRules);
+          boardEvaluator ??
+          BoardEvaluator(
+            gameRules: gameActions.gameRules,
+            config: config,
+            safetyWeight: 1.0,
+            denProximityWeight: 1.2,
+            pieceValueWeight: 0.9,
+            threatWeight: 0.7,
+          );
 
   /// Create a BoardEvaluator with weights based on the AI strategy
-  static BoardEvaluator _createEvaluator(GameConfig config, GameRules rules) {
-    switch (config.aiStrategy) {
+  static BoardEvaluator _createEvaluator(
+    AIStrategyType strategy,
+    GameRules rules,
+    GameConfig config,
+  ) {
+    switch (strategy) {
       case AIStrategyType.offensive:
         return BoardEvaluator(
           gameRules: rules,
           config: config,
           safetyWeight: 0.3,
-          denProximityWeight: 1.0,
-          pieceValueWeight: 0.9,
-          threatWeight: 1.5,
+          denProximityWeight: 1.5,
+          pieceValueWeight: 1.2,
+          threatWeight: 1.0,
         );
       case AIStrategyType.balanced:
         return BoardEvaluator(
@@ -95,12 +107,26 @@ class AIStrategy {
     return moves;
   }
 
+  /// Get the AI strategy for a specific player
+  AIStrategyType _getStrategyForPlayer(PlayerColor player) {
+    switch (player) {
+      case PlayerColor.green:
+        return config.aiGreenStrategy;
+      case PlayerColor.red:
+        return config.aiRedStrategy;
+    }
+  }
+
   /// Calculate the best move with 2-ply lookahead
   Move? calculateBestMove(
     GameBoard board,
     PlayerColor player,
     GameActions gameActions,
   ) {
+    // Create evaluator based on player's strategy
+    final strategy = _getStrategyForPlayer(player);
+    final evaluator = _createEvaluator(strategy, gameActions.gameRules, config);
+
     final validMoves = _getAllValidMoves(board, player, gameActions);
     if (validMoves.isEmpty) return null;
 
@@ -130,10 +156,7 @@ class AIStrategy {
         oppActions.movePiece(oppMove.from, oppMove.to);
 
         // Evaluate resulting position
-        final outcomeScore = boardEvaluator.evaluateBoardState(
-          oppBoard,
-          player,
-        );
+        final outcomeScore = evaluator.evaluateBoardState(oppBoard, player);
         if (outcomeScore < worstOutcome) {
           worstOutcome = outcomeScore;
         }
@@ -141,7 +164,7 @@ class AIStrategy {
 
       // Use worst-case outcome as move score
       final moveScore = worstOutcome == double.infinity
-          ? boardEvaluator.evaluateBoardState(tempBoard, player)
+          ? evaluator.evaluateBoardState(tempBoard, player)
           : worstOutcome;
 
       if (moveScore > bestScore) {

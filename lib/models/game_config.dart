@@ -12,7 +12,8 @@ class GameConfig {
   // AI player configuration
   bool aiGreen;
   bool aiRed;
-  AIStrategyType aiStrategy;
+  AIStrategyType aiGreenStrategy;
+  AIStrategyType aiRedStrategy;
 
   GameConfig({
     this.ratOnlyDenEntry = false,
@@ -22,7 +23,8 @@ class GameConfig {
     this.pieceDisplayFormat = PieceDisplayFormat.traditionalChinese,
     this.aiGreen = false,
     this.aiRed = false,
-    this.aiStrategy = AIStrategyType.defensive,
+    this.aiGreenStrategy = AIStrategyType.offensive,
+    this.aiRedStrategy = AIStrategyType.offensive,
   });
 
   GameConfig copyWith({
@@ -33,7 +35,8 @@ class GameConfig {
     PieceDisplayFormat? pieceDisplayFormat,
     bool? aiGreen,
     bool? aiRed,
-    AIStrategyType? aiStrategy,
+    AIStrategyType? aiGreenStrategy,
+    AIStrategyType? aiRedStrategy,
   }) {
     return GameConfig(
       ratOnlyDenEntry: ratOnlyDenEntry ?? this.ratOnlyDenEntry,
@@ -45,7 +48,8 @@ class GameConfig {
       pieceDisplayFormat: pieceDisplayFormat ?? this.pieceDisplayFormat,
       aiGreen: aiGreen ?? this.aiGreen,
       aiRed: aiRed ?? this.aiRed,
-      aiStrategy: aiStrategy ?? this.aiStrategy,
+      aiGreenStrategy: aiGreenStrategy ?? this.aiGreenStrategy,
+      aiRedStrategy: aiRedStrategy ?? this.aiRedStrategy,
     );
   }
 
@@ -60,7 +64,8 @@ class GameConfig {
         other.pieceDisplayFormat == pieceDisplayFormat &&
         other.aiGreen == aiGreen &&
         other.aiRed == aiRed &&
-        other.aiStrategy == aiStrategy;
+        other.aiGreenStrategy == aiGreenStrategy &&
+        other.aiRedStrategy == aiRedStrategy;
   }
 
   @override
@@ -72,6 +77,7 @@ class GameConfig {
     pieceDisplayFormat,
     aiGreen,
     aiRed,
-    aiStrategy,
+    aiGreenStrategy,
+    aiRedStrategy,
   );
 }

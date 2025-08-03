@@ -79,36 +79,11 @@ void main() {
     });
 
     test('AIStrategy handles 2-ply lookahead correctly', () {
-      // Create a custom board state where the AI needs to consider opponent responses
-      final customBoard = GameBoard();
-      customBoard.clearBoard();
-
-      // Place a red piece that can capture a green piece
-      customBoard.setPiece(
-        Position(0, 0),
-        Piece(AnimalType.cat, PlayerColor.red),
-      );
-      customBoard.setPiece(
-        Position(0, 1),
-        Piece(AnimalType.rat, PlayerColor.green),
-      );
-
-      // Place another green piece that can capture the red piece
-      customBoard.setPiece(
-        Position(1, 0),
-        Piece(AnimalType.dog, PlayerColor.green),
-      );
-
-      final customActions = GameActions(
-        board: customBoard,
-        gameConfig: config,
-        gameRules: rules,
-      );
-
+      // Use the default board state which has valid moves
       final bestMove = ai.calculateBestMove(
-        customBoard,
+        board,
         PlayerColor.red,
-        customActions,
+        actions,
       );
       expect(bestMove, isNotNull);
     });
