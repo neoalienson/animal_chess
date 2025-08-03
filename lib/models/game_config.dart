@@ -1,5 +1,7 @@
 import 'package:animal_chess/models/piece_display_format.dart';
 
+enum AIStrategyType { defensive, offensive, balanced, exploratory }
+
 class GameConfig {
   bool ratOnlyDenEntry;
   bool extendedLionTigerJumps;
@@ -10,6 +12,7 @@ class GameConfig {
   // AI player configuration
   bool aiGreen;
   bool aiRed;
+  AIStrategyType aiStrategy;
 
   GameConfig({
     this.ratOnlyDenEntry = false,
@@ -19,6 +22,7 @@ class GameConfig {
     this.pieceDisplayFormat = PieceDisplayFormat.traditionalChinese,
     this.aiGreen = false,
     this.aiRed = false,
+    this.aiStrategy = AIStrategyType.defensive,
   });
 
   GameConfig copyWith({
@@ -29,6 +33,7 @@ class GameConfig {
     PieceDisplayFormat? pieceDisplayFormat,
     bool? aiGreen,
     bool? aiRed,
+    AIStrategyType? aiStrategy,
   }) {
     return GameConfig(
       ratOnlyDenEntry: ratOnlyDenEntry ?? this.ratOnlyDenEntry,
@@ -40,6 +45,7 @@ class GameConfig {
       pieceDisplayFormat: pieceDisplayFormat ?? this.pieceDisplayFormat,
       aiGreen: aiGreen ?? this.aiGreen,
       aiRed: aiRed ?? this.aiRed,
+      aiStrategy: aiStrategy ?? this.aiStrategy,
     );
   }
 
@@ -53,7 +59,8 @@ class GameConfig {
         other.ratCannotCaptureElephant == ratCannotCaptureElephant &&
         other.pieceDisplayFormat == pieceDisplayFormat &&
         other.aiGreen == aiGreen &&
-        other.aiRed == aiRed;
+        other.aiRed == aiRed &&
+        other.aiStrategy == aiStrategy;
   }
 
   @override
@@ -65,5 +72,6 @@ class GameConfig {
     pieceDisplayFormat,
     aiGreen,
     aiRed,
+    aiStrategy,
   );
 }

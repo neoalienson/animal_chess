@@ -5,6 +5,7 @@ import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/game/ai_move.dart';
 import 'package:animal_chess/game/game_actions.dart';
 import 'package:animal_chess/game/board_evaluator.dart';
+import 'package:animal_chess/game/game_rules.dart';
 import 'dart:collection';
 
 class AIStrategy {
@@ -16,8 +17,49 @@ class AIStrategy {
 
   AIStrategy(this.config, this.gameActions, [BoardEvaluator? boardEvaluator])
     : boardEvaluator =
-          boardEvaluator ??
-          BoardEvaluator(gameRules: gameActions.gameRules, config: config);
+          boardEvaluator ?? _createEvaluator(config, gameActions.gameRules);
+
+  /// Create a BoardEvaluator with weights based on the AI strategy
+  static BoardEvaluator _createEvaluator(GameConfig config, GameRules rules) {
+    switch (config.aiStrategy) {
+      case AIStrategyType.offensive:
+        return BoardEvaluator(
+          gameRules: rules,
+          config: config,
+          safetyWeight: 0.3,
+          denProximityWeight: 1.0,
+          pieceValueWeight: 0.9,
+          threatWeight: 1.5,
+        );
+      case AIStrategyType.balanced:
+        return BoardEvaluator(
+          gameRules: rules,
+          config: config,
+          safetyWeight: 0.7,
+          denProximityWeight: 1.2,
+          pieceValueWeight: 0.9,
+          threatWeight: 1.0,
+        );
+      case AIStrategyType.exploratory:
+        return BoardEvaluator(
+          gameRules: rules,
+          config: config,
+          safetyWeight: 0.5,
+          denProximityWeight: 2.0,
+          pieceValueWeight: 0.9,
+          threatWeight: 0.8,
+        );
+      default: // defensive
+        return BoardEvaluator(
+          gameRules: rules,
+          config: config,
+          safetyWeight: 1.0,
+          denProximityWeight: 1.2,
+          pieceValueWeight: 0.9,
+          threatWeight: 0.7,
+        );
+    }
+  }
 
   /// Check if move would create a repeated position
   bool _isRepetition(GameBoard board, Move move) {

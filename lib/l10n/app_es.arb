@@ -65,5 +65,11 @@
   "aiPlayers": "Jugadores IA",
   "aiGreenPlayer": "Jugador Verde IA",
   "aiRedPlayer": "Jugador Rojo IA",
-  "aiPlayersDescription": "Active jugadores IA para jugar contra la computadora. Puede tener a ambos jugadores controlados por IA para fines de demostración."
+  "aiPlayersDescription": "Active jugadores IA para jugar contra la computadora. Puede tener a ambos jugadores controlados por IA para fines de demostración.",
+  "aiStrategy": "Estrategia IA",
+  "defensive": "Defensiva",
+  "offensive": "Ofensiva",
+  "balanced": "Equilibrada",
+  "exploratory": "Exploratoria",
+  "aiStrategyDescription": "Seleccione la estrategia IA para los jugadores informáticos. Defensiva prioriza la seguridad, Ofensiva se enfoca en los ataques, Equilibrada proporciona una mezcla de ambos, y Exploratoria favorece enfoques agresivos hacia la guarida."
 }

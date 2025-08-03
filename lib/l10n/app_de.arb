@@ -65,5 +65,11 @@
   "aiPlayers": "KI-Spieler",
   "aiGreenPlayer": "KI Grün Spieler",
   "aiRedPlayer": "KI Rot Spieler",
-  "aiPlayersDescription": "Aktivieren Sie KI-Spieler, um gegen den Computer zu spielen. Sie können beide Spieler von der KI steuern lassen, um eine Demonstration zu sehen."
+  "aiPlayersDescription": "Aktivieren Sie KI-Spieler, um gegen den Computer zu spielen. Sie können beide Spieler von der KI steuern lassen, um eine Demonstration zu sehen.",
+  "aiStrategy": "KI-Strategie",
+  "defensive": "Defensiv",
+  "offensive": "Offensiv",
+  "balanced": "Ausgeglichen",
+  "exploratory": "Erkundend",
+  "aiStrategyDescription": "Wählen Sie die KI-Strategie für Computerspieler. Defensiv priorisiert Sicherheit, Offensiv konzentriert sich auf Angriffe, Ausgeglichen bietet eine Mischung aus beidem, und Erkundend bevorzugt aggressive Bau-Ansätze."
 }

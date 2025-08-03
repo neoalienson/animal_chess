@@ -72,5 +72,11 @@
   "aiPlayers": "AI玩家",
   "aiGreenPlayer": "AI綠方玩家",
   "aiRedPlayer": "AI紅方玩家",
-  "aiPlayersDescription": "啟用AI玩家與電腦對戰。您可以設置雙方都由AI控制以進行演示。"
+  "aiPlayersDescription": "啟用AI玩家與電腦對戰。您可以設置雙方都由AI控制以進行演示。",
+  "aiStrategy": "AI策略",
+  "defensive": "防守型",
+  "offensive": "進攻型",
+  "balanced": "平衡型",
+  "exploratory": "探索型",
+  "aiStrategyDescription": "為電腦玩家選擇AI策略。防守型優先考慮安全，進攻型專注於攻擊，平衡型提供兩者的混合，探索型傾向於積極的獸穴進攻。"
 }

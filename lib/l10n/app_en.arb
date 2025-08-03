@@ -75,5 +75,11 @@
   "aiPlayers": "AI Players",
   "aiGreenPlayer": "AI Green Player",
   "aiRedPlayer": "AI Red Player",
-  "aiPlayersDescription": "Enable AI players to play against the computer. You can have both players controlled by AI for demonstration purposes."
+  "aiPlayersDescription": "Enable AI players to play against the computer. You can have both players controlled by AI for demonstration purposes.",
+  "aiStrategy": "AI Strategy",
+  "defensive": "Defensive",
+  "offensive": "Offensive",
+  "balanced": "Balanced",
+  "exploratory": "Exploratory",
+  "aiStrategyDescription": "Select the AI strategy for computer players. Defensive prioritizes safety, Offensive focuses on attacks, Balanced provides a mix of both, and Exploratory favors aggressive den approaches."
 }

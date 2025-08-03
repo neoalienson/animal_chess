@@ -65,5 +65,11 @@
   "aiPlayers": "Joueurs IA",
   "aiGreenPlayer": "Joueur Vert IA",
   "aiRedPlayer": "Joueur Rouge IA",
-  "aiPlayersDescription": "Activez les joueurs IA pour jouer contre l'ordinateur. Vous pouvez avoir les deux joueurs contrôlés par l'IA à des fins de démonstration."
+  "aiPlayersDescription": "Activez les joueurs IA pour jouer contre l'ordinateur. Vous pouvez avoir les deux joueurs contrôlés par l'IA à des fins de démonstration.",
+  "aiStrategy": "Stratégie IA",
+  "defensive": "Défensive",
+  "offensive": "Offensive",
+  "balanced": "Équilibrée",
+  "exploratory": "Exploratoire",
+  "aiStrategyDescription": "Sélectionnez la stratégie IA pour les joueurs informatiques. Défensive privilégie la sécurité, Offensive se concentre sur les attaques, Équilibrée fournit un mélange des deux, et Exploratoire favorise les approches agressives de la tanière."
 }
