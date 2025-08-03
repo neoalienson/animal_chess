@@ -80,6 +80,8 @@
   "defensive": "Defensive",
   "offensive": "Offensive",
   "balanced": "Balanced",
-  "exploratory": "Exploratory",
-  "aiStrategyDescription": "Select the AI strategy for computer players. Defensive prioritizes safety, Offensive focuses on attacks, Balanced provides a mix of both, and Exploratory favors aggressive den approaches."
+    "exploratory": "Exploratory",
+    "machineLearning": "Machine Learning",
+    "loadMlModel": "Load ML Model",
+    "aiStrategyDescription": "Select the AI strategy for computer players. Defensive prioritizes safety, Offensive focuses on attacks, Balanced provides a mix of both, Exploratory favors aggressive den approaches, and Machine Learning uses neural networks for advanced decision making. Note: The Machine Learning option requires a trained model to be functional."
 }

@@ -1,6 +1,7 @@
 import 'package:animal_chess/models/piece_display_format.dart';
+import 'package:animal_chess/ai/animal_chess_network.dart';
 
-enum AIStrategyType { defensive, offensive, balanced, exploratory }
+enum AIStrategyType { defensive, offensive, balanced, exploratory, machineLearning }
 
 class GameConfig {
   bool ratOnlyDenEntry;
@@ -14,6 +15,7 @@ class GameConfig {
   bool aiRed;
   AIStrategyType aiGreenStrategy;
   AIStrategyType aiRedStrategy;
+  AnimalChessNetwork? animalChessNetwork;
 
   GameConfig({
     this.ratOnlyDenEntry = false,
@@ -25,6 +27,7 @@ class GameConfig {
     this.aiRed = false,
     this.aiGreenStrategy = AIStrategyType.offensive,
     this.aiRedStrategy = AIStrategyType.offensive,
+    this.animalChessNetwork,
   });
 
   GameConfig copyWith({
@@ -37,6 +40,7 @@ class GameConfig {
     bool? aiRed,
     AIStrategyType? aiGreenStrategy,
     AIStrategyType? aiRedStrategy,
+    AnimalChessNetwork? animalChessNetwork,
   }) {
     return GameConfig(
       ratOnlyDenEntry: ratOnlyDenEntry ?? this.ratOnlyDenEntry,
@@ -50,6 +54,7 @@ class GameConfig {
       aiRed: aiRed ?? this.aiRed,
       aiGreenStrategy: aiGreenStrategy ?? this.aiGreenStrategy,
       aiRedStrategy: aiRedStrategy ?? this.aiRedStrategy,
+      animalChessNetwork: animalChessNetwork ?? this.animalChessNetwork,
     );
   }
 
@@ -65,7 +70,8 @@ class GameConfig {
         other.aiGreen == aiGreen &&
         other.aiRed == aiRed &&
         other.aiGreenStrategy == aiGreenStrategy &&
-        other.aiRedStrategy == aiRedStrategy;
+        other.aiRedStrategy == aiRedStrategy &&
+        other.animalChessNetwork == animalChessNetwork;
   }
 
   @override
@@ -79,5 +85,6 @@ class GameConfig {
     aiRed,
     aiGreenStrategy,
     aiRedStrategy,
+    animalChessNetwork,
   );
 }
