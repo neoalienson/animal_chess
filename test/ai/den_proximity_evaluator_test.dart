@@ -40,6 +40,22 @@ void main() {
       expect(postScore, greaterThan(preScore));
     });
 
+    test('lion river jump score higher than horizontal moves', () {
+      // River jump: from row 6 to row 2 (distance 2 from den)
+      final riverJumpBoard = GameBoard.empty()
+        ..setPiece(Position(3, 2), Piece(AnimalType.lion, PlayerColor.red));
+      
+      // Horizontal move: from row 6 to row 5 (distance 5 from den) - same column
+      final horizontalMoveBoard = GameBoard.empty()
+        ..setPiece(Position(3, 5), Piece(AnimalType.lion, PlayerColor.red));
+
+      final riverJumpScore = evaluator.evaluateDenProximity(riverJumpBoard, PlayerColor.red);
+      final horizontalMoveScore = evaluator.evaluateDenProximity(horizontalMoveBoard, PlayerColor.red);
+
+      // River jump should give higher score than horizontal move (closer to den)
+      expect(riverJumpScore, greaterThan(horizontalMoveScore));
+    });
+
     test('multiple pieces near den give higher score', () {
       // Two pieces near the den (row 1 and row 2)
       final board = GameBoard.empty()
