@@ -121,7 +121,7 @@ class GameController {
         (currentPlayer == PlayerColor.red && !gameConfig.aiRed)) {
       return;
     }
-    final ai = AIStrategy(gameConfig);
+    final ai = AIStrategy(gameConfig, gameActions);
     final bestMove = ai.calculateBestMove(board, currentPlayer, gameActions);
     if (bestMove != null) {
       // Set the selected position first

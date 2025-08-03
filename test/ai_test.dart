@@ -18,7 +18,7 @@ void main() {
   );
 
   // Create AI strategy
-  final ai = AIStrategy(config);
+  final ai = AIStrategy(config, actions);
 
   // Test AI move calculation
   final bestMove = ai.calculateBestMove(board, PlayerColor.red, actions);

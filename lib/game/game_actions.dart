@@ -126,4 +126,18 @@ class GameActions {
     capturedPieces.clear();
     _logger.info("Game reset.");
   }
+
+  /// Create a copy of GameActions with a new board
+  GameActions copyWithBoard(GameBoard newBoard) {
+    return GameActions(
+        board: newBoard,
+        gameConfig: gameConfig,
+        gameRules: gameRules,
+      )
+      ..currentPlayer = currentPlayer
+      ..selectedPosition = selectedPosition
+      ..gameEnded = gameEnded
+      ..winner = winner
+      ..capturedPieces = List.from(capturedPieces);
+  }
 }

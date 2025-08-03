@@ -19,7 +19,7 @@ void main() {
   );
 
   // Create AI strategy
-  final ai = AIStrategy(config);
+  final ai = AIStrategy(config, actions);
 
   // Print the board state
   print('Board state:');
