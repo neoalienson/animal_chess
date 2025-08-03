@@ -33,12 +33,12 @@ pip install -r ml/requirements.txt
 
 Run training:
 ```bash
-python ml/train/train.py --epochs 10 --samples 5000
+python -m ml.train.train
 ```
 
 Export model for mobile:
 ```bash
-python ml/export/export_to_tflite.py
+python -m ml.export.export_to_tflite
 ```
 
 ## Model Architecture
@@ -50,3 +50,15 @@ The neural network takes a 7×9×2 tensor representing the board state (with pla
 ## Integration with Game
 
 The trained model is integrated into the game through the `AnimalChessNetwork` class, which loads and uses the TensorFlow Lite model for inference during gameplay.
+
+## Testing
+
+To test the Animal Chess environment:
+```bash
+python -m ml.train.test_env
+```
+
+To test the neural network model:
+```bash
+python -m ml.train.test_neural_network
+```

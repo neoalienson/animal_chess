@@ -40,6 +40,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   get_it: ^8.1.0
   logging: ^1.2.0
+  tflite_flutter: ^0.10.4 # Added for TensorFlow Lite model inference
 
 dev_dependencies:
   flutter_test:

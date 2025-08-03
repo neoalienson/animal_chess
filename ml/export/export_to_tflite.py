@@ -1,62 +1,51 @@
-#!/usr/bin/env python3
-"""
-Export trained PyTorch model to TensorFlow Lite format for mobile deployment
-"""
-
-import torch
-import torch.nn as nn
-import numpy as np
+import tensorflow as tf
 import os
+from ml.train.neural_network import create_animal_chess_model
+from ml.train.utils import get_num_actions
 
-# Simple model for demonstration
-class SimpleAnimalChessNet(nn.Module):
-    def __init__(self):
-        super(SimpleAnimalChessNet, self).__init__()
-        
-        # Simple architecture for demonstration
-        self.fc1 = nn.Linear(7 * 9 * 2, 256)  # 7x9x2 input
-        self.fc2 = nn.Linear(256, 128)
-        self.fc3 = nn.Linear(128, 7 * 9 * 4)  # 7x9x4 outputs for moves
-        self.fc4 = nn.Linear(128, 1)         # 1 output for value
-        
-    def forward(self, x):
-        x = x.view(x.size(0), -1)  # Flatten
-        x = torch.relu(self.fc1(x))
-        x = torch.relu(self.fc2(x))
-        
-        # Split into policy and value branches
-        policy_branch = self.fc3(x)
-        value_branch = self.fc4(x)
-        
-        # Reshape policy to 7x9x4
-        policy = policy_branch.view(-1, 7, 9, 4)
-        
-        return policy, value_branch
+MODEL_DIR = 'ml/models'
+EXPORT_DIR = 'ml/exported_models'
 
-def export_model():
-    """Export PyTorch model to TFLite format"""
-    
-    # Create and initialize model
-    model = SimpleAnimalChessNet()
-    
-    # Create sample input for tracing
-    sample_input = torch.randn(1, 7, 9, 2)  # Batch size 1, 7x9x2
-    
-    # Trace the model
-    traced_model = torch.jit.trace(model, sample_input)
-    
-    # Save as TorchScript
-    torch.jit.save(traced_model, "ml/models/animal_chess_model.pt")
-    print("Saved TorchScript model to ml/models/animal_chess_model.pt")
-    
-    # For actual TFLite conversion, you'd use:
-    # 1. Export to ONNX format first
-    # 2. Then convert ONNX to TFLite
-    
-    print("Model export completed!")
-    print("Next steps:")
-    print("1. Convert to ONNX: torch.onnx.export(model, sample_input, 'model.onnx')")
-    print("2. Convert ONNX to TFLite using TensorFlow tools")
+def export_to_tflite(model_path=None, output_name='animal_chess_model.tflite'):
+    """
+    Converts a trained Keras model to TensorFlow Lite format.
 
-if __name__ == "__main__":
-    export_model()
+    Args:
+        model_path (str, optional): Path to the trained Keras model (.h5 file).
+                                    If None, it tries to load the latest model from MODEL_DIR.
+        output_name (str, optional): Name of the output TFLite file.
+    """
+    if model_path is None:
+        # Find the latest model in the MODEL_DIR
+        model_files = [f for f in os.listdir(MODEL_DIR) if f.endswith('.h5')]
+        if not model_files:
+            print(f"No .h5 models found in {MODEL_DIR}. Please train a model first.")
+            return
+        # Sort by modification time (newest first)
+        model_files.sort(key=lambda x: os.path.getmtime(os.path.join(MODEL_DIR, x)), reverse=True)
+        latest_model_path = os.path.join(MODEL_DIR, model_files[0])
+        print(f"Loading latest model from: {latest_model_path}")
+        model = tf.keras.models.load_model(latest_model_path)
+    else:
+        print(f"Loading model from: {model_path}")
+        model = tf.keras.models.load_model(model_path)
+
+    # Create a converter
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+
+    # Convert the model
+    tflite_model = converter.convert()
+
+    # Create export directory if it doesn't exist
+    os.makedirs(EXPORT_DIR, exist_ok=True)
+
+    # Save the TFLite model
+    output_path = os.path.join(EXPORT_DIR, output_name)
+    with open(output_path, 'wb') as f:
+        f.write(tflite_model)
+
+    print(f"Model successfully converted to TFLite and saved to: {output_path}")
+
+if __name__ == '__main__':
+    # Example usage: export the latest trained model
+    export_to_tflite()
