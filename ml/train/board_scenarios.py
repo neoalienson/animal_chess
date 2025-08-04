@@ -258,6 +258,86 @@ FORCE_TRAP_SCENARIO = {
     (0, 6): RED_PLAYER * TIGER, # Red Tiger to block escape
 }
 
+# Scenario: River Blockage - Rat in river prevents Lion jump
+# Board Setup:
+# ---------------------
+# . . . D . . . 
+# . . . T . . . 
+# . . . . . . . 
+# . ~ ~ . ~ ~ . 
+# L ~ ~ r ~ ~ . 
+# . ~ ~ . ~ ~ . 
+# . . . . . . . 
+# . . . T . . . 
+# . . . D . . . 
+# ---------------------
+# Current Player: Red
+RIVER_BLOCKAGE_SCENARIO = {
+    (4, 0): RED_PLAYER * LION, # Red Lion
+    (4, 3): GREEN_PLAYER * RAT, # Green Rat in river, blocking jump
+    (0, 0): GREEN_PLAYER * LION,
+    (8, 6): RED_PLAYER * LION,
+}
+
+# Scenario: Den Defense - Elephant defending its den
+# Board Setup:
+# ---------------------
+# . . . D . . . 
+# . . . T . . . 
+# . . . . . . . 
+# . ~ ~ . ~ ~ . 
+# . ~ ~ . ~ ~ . 
+# . ~ ~ . ~ ~ . 
+# . . . . . . . 
+# . . . E . . . 
+# . . . D . . . 
+# ---------------------
+# Current Player: Green
+DEN_DEFENSE_SCENARIO = {
+    (7, 3): GREEN_PLAYER * ELEPHANT, # Green Elephant defending den
+    (1, 3): RED_PLAYER * RAT, # Red Rat trying to enter den
+}
+
+# Scenario: Trap Escape/Counter-Capture - Dog in trap can capture adjacent Cat
+# Board Setup:
+# ---------------------
+# . . T D T . . 
+# . . . T . . . 
+# . . . . . . . 
+# . ~ ~ . ~ ~ . 
+# . ~ ~ . ~ ~ . 
+# . ~ ~ . ~ ~ . 
+# . . . . . . . 
+# . c D T . . . 
+# . . T D T . . 
+# ---------------------
+# Current Player: Red
+TRAP_COUNTER_CAPTURE_SCENARIO = {
+    (7, 2): RED_PLAYER * DOG, # Red Dog in trap
+    (7, 1): GREEN_PLAYER * CAT, # Green Cat adjacent to trap
+}
+
+# Scenario: Multiple Capture Options - Red has multiple capture opportunities
+# Board Setup:
+# ---------------------
+# . . . D . . . 
+# . . . T . . . 
+# . . . . . . . 
+# . ~ ~ . ~ ~ . 
+# . ~ ~ . ~ ~ . 
+# . ~ ~ . ~ ~ . 
+# . . . . . . . 
+# . . . T . . . 
+# . . . D . . . 
+# ---------------------
+# Current Player: Red
+MULTIPLE_CAPTURE_SCENARIO = {
+    (6, 0): RED_PLAYER * LION, # Red Lion
+    (6, 1): GREEN_PLAYER * DOG, # Green Dog (capturable by Lion)
+    (7, 0): RED_PLAYER * TIGER, # Red Tiger
+    (7, 1): GREEN_PLAYER * CAT, # Green Cat (capturable by Tiger)
+}
+
 # List of all scenarios
 BOARD_SCENARIOS = [
     {"board": STANDARD_START_BOARD, "player": RED_PLAYER, "name": "Standard Start"},
@@ -270,6 +350,139 @@ BOARD_SCENARIOS = [
     {"board": PINCER_CAPTURE_SCENARIO, "player": RED_PLAYER, "name": "Pincer Capture"},
     {"board": FORCE_TRAP_SCENARIO, "player": RED_PLAYER, "name": "Force into Trap"},
 ]
+#     {"board": RIVER_BLOCKAGE_SCENARIO, "player": RED_PLAYER, "name": "River Blockage"},
+#     {"board": DEN_DEFENSE_SCENARIO, "player": GREEN_PLAYER, "name": "Den Defense"},
+#     {"board": TRAP_COUNTER_CAPTURE_SCENARIO, "player": RED_PLAYER, "name": "Trap Counter-Capture"},
+#     {"board": MULTIPLE_CAPTURE_SCENARIO, "player": RED_PLAYER, "name": "Multiple Capture Options"},
+#     {"board": DOUBLE_ATTACK_SCENARIO, "player": RED_PLAYER, "name": "Double Attack"},
+#     {"board": TRAPPED_PIECE_SCENARIO, "player": GREEN_PLAYER, "name": "Trapped Piece"},
+#     {"board": SACRIFICE_FOR_DEN_ENTRY_SCENARIO, "player": RED_PLAYER, "name": "Sacrifice for Den Entry"},
+#     {"board": PIECE_PROTECTION_SCENARIO, "player": RED_PLAYER, "name": "Piece Protection"},
+#     {"board": DEN_BLOCKADE_SCENARIO, "player": GREEN_PLAYER, "name": "Den Blockade"},
+#     {"board": COUNTER_ATTACK_OPPORTUNITY_SCENARIO, "player": RED_PLAYER, "name": "Counter-Attack Opportunity"},
+# ]
+
+# # Scenario: Double Attack - Red Lion threatens Green Dog and Cat
+# # Board Setup:
+# # ---------------------
+# # . . . D . . . 
+# # . . . T . . . 
+# # . . . . . . . 
+# # . ~ ~ . ~ ~ . 
+# # . ~ ~ . ~ ~ . 
+# # . ~ ~ . ~ ~ . 
+# # . . . . . . . 
+# # . d L c T . . 
+# # . . . D . . . 
+# # ---------------------
+# # Current Player: Red
+# DOUBLE_ATTACK_SCENARIO = {
+#     (7, 1): GREEN_PLAYER * DOG, # Green Dog
+#     (7, 3): RED_PLAYER * LION, # Red Lion
+#     (7, 5): GREEN_PLAYER * CAT, # Green Cat
+# }
+
+# # Scenario: Trapped Piece - Green Rat has no legal moves
+# # Board Setup:
+# # ---------------------
+# # . . . D . . . 
+# # . . . T . . . 
+# # . . . . . . . 
+# # . ~ ~ . ~ ~ . 
+# # . ~ ~ . ~ ~ . 
+# # . ~ ~ . ~ ~ . 
+# # . . . . . . . 
+# # . . . T . . . 
+# # . r T D T . . 
+# # ---------------------
+# # Current Player: Green
+# TRAPPED_PIECE_SCENARIO = {
+#     (8, 1): GREEN_PLAYER * RAT, # Green Rat
+#     (8, 0): RED_PLAYER * TIGER, # Red Tiger
+#     (8, 2): RED_PLAYER * TIGER, # Red Tiger
+#     (7, 1): RED_PLAYER * TIGER, # Red Tiger
+# }
+
+# # Scenario: Sacrifice for Den Entry - Red Dog sacrifices to clear path for Rat
+# # Board Setup:
+# # ---------------------
+# # . . . D . . . 
+# # . . . T . . . 
+# # . . . . . . . 
+# # . ~ ~ . ~ ~ . 
+# # . ~ ~ . ~ ~ . 
+# # . ~ ~ . ~ ~ . 
+# # . . . . . . . 
+# # . . . T . . . 
+# # . . . D . . . 
+# # ---------------------
+# # Current Player: Red
+# SACRIFICE_FOR_DEN_ENTRY_SCENARIO = {
+#     (1, 3): GREEN_PLAYER * DOG, # Green Dog blocking den
+#     (2, 3): RED_PLAYER * RAT, # Red Rat
+#     (3, 3): RED_PLAYER * LION, # Red Lion (to capture Dog)
+# }
+
+# # Scenario: Piece Protection - Red Elephant protected by Red Rat
+# # Board Setup:
+# # ---------------------
+# # . . . D . . . 
+# # . . . T . . . 
+# # . . . . . . . 
+# # . ~ ~ . ~ ~ . 
+# # . ~ ~ . ~ ~ . 
+# # . ~ ~ . ~ ~ . 
+# # . . . . . . . 
+# # . . . T . . . 
+# # . . . D . . . 
+# # ---------------------
+# # Current Player: Red
+# PIECE_PROTECTION_SCENARIO = {
+#     (6, 0): RED_PLAYER * ELEPHANT, # Red Elephant
+#     (7, 0): RED_PLAYER * RAT, # Red Rat protecting Elephant
+#     (6, 1): GREEN_PLAYER * LION, # Green Lion threatening Elephant
+# }
+
+# # Scenario: Den Blockade - Green pieces blocking their den
+# # Board Setup:
+# # ---------------------
+# # . . . D . . . 
+# # . . . T . . . 
+# # . . . . . . . 
+# # . ~ ~ . ~ ~ . 
+# # . ~ ~ . ~ ~ . 
+# # . ~ ~ . ~ ~ . 
+# # . . . . . . . 
+# # . . . T . . . 
+# # . . . D . . . 
+# # ---------------------
+# # Current Player: Green
+# DEN_BLOCKADE_SCENARIO = {
+#     (0, 2): GREEN_PLAYER * DOG, # Green Dog
+#     (0, 4): GREEN_PLAYER * CAT, # Green Cat
+#     (1, 3): GREEN_PLAYER * WOLF, # Green Wolf
+#     (7, 3): RED_PLAYER * RAT, # Red Rat trying to enter den
+# }
+
+# # Scenario: Counter-Attack Opportunity - Red has a strong counter-attack
+# # Board Setup:
+# # ---------------------
+# # . . . D . . . 
+# # . . . T . . . 
+# # . . . . . . . 
+# # . ~ ~ . ~ ~ . 
+# # . ~ ~ . ~ ~ . 
+# # . ~ ~ . ~ ~ . 
+# # . . . . . . . 
+# # . . . T . . . 
+# # . . . D . . . 
+# # ---------------------
+# # Current Player: Red
+# COUNTER_ATTACK_OPPORTUNITY_SCENARIO = {
+#     (4, 0): RED_PLAYER * LION, # Red Lion
+#     (4, 1): GREEN_PLAYER * TIGER, # Green Tiger (just moved here)
+#     (5, 0): RED_PLAYER * ELEPHANT, # Red Elephant
+# }
 
 def get_scenario_board(scenario_dict):
     board = np.zeros((BOARD_ROWS, BOARD_COLS), dtype=int)
