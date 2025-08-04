@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
+import 'package:animal_chess/ai/animal_chess_network.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AiSettingsTab extends StatelessWidget {
   final GameConfig gameConfig;
@@ -138,6 +140,18 @@ class AiSettingsTab extends StatelessWidget {
               }
             },
           ),
+          RadioListTile<AIStrategyType>(
+            title: Text(localizations.machineLearning),
+            value: AIStrategyType.machineLearning,
+            groupValue: gameConfig.aiGreenStrategy,
+            onChanged: gameConfig.animalChessNetwork != null
+                ? (AIStrategyType? value) {
+                    if (value != null) {
+                      onConfigChanged(gameConfig.copyWith(aiGreenStrategy: value));
+                    }
+                  }
+                : null,
+          ),
         ],
         // Red AI Strategy
         if (gameConfig.aiRed) ...[
@@ -188,7 +202,31 @@ class AiSettingsTab extends StatelessWidget {
               }
             },
           ),
+          RadioListTile<AIStrategyType>(
+            title: Text(localizations.machineLearning),
+            value: AIStrategyType.machineLearning,
+            groupValue: gameConfig.aiRedStrategy,
+            onChanged: gameConfig.animalChessNetwork != null
+                ? (AIStrategyType? value) {
+                    if (value != null) {
+                      onConfigChanged(gameConfig.copyWith(aiRedStrategy: value));
+                    }
+                  }
+                : null,
+          ),
         ],
+        if (!kIsWeb) // Only show ML model loading on non-web platforms
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
+            child: ElevatedButton(
+              onPressed: () async {
+                final newNetwork = AnimalChessNetwork();
+                await newNetwork.loadModel();
+                onConfigChanged(gameConfig.copyWith(animalChessNetwork: newNetwork));
+              },
+              child: Text(localizations.loadMlModel),
+            ),
+          ),
         Padding(
           padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
           child: Container(
@@ -198,7 +236,7 @@ class AiSettingsTab extends StatelessWidget {
               borderRadius: BorderRadius.circular(4.0),
             ),
             child: Text(
-              localizations.aiStrategyDescription,
+              '${localizations.aiStrategyDescription}\n\nNote: The Machine Learning option requires a trained model to be functional. Please see the ML directory for instructions on training and exporting a model.',
               style: Theme.of(context).textTheme.bodySmall,
               softWrap: true,
             ),

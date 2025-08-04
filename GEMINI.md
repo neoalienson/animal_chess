@@ -246,7 +246,43 @@ The AI uses a simple heuristic-based approach:
 - Useful for testing and demonstration purposes
 - Can be configured through game settings
 
-### 3.4 Game Flow
+### 3.6 Machine Learning Components
+
+This section details the machine learning components used in the Animal Chess game, including training scripts, model export utilities, and integration with the game.
+
+#### 3.6.1 Directory Structure
+
+```
+ml/
+├── train/              # Training scripts
+│   ├── train.py        # Main training script
+│   └── self_play.py    # Self-play generation
+├── export/             # Model export utilities
+│   └── export_to_tflite.py  # Export to TensorFlow Lite
+├── config/             # Training configurations
+│   └── training_config.yaml
+├── models/             # Trained models (will be created during training)
+├── requirements.txt    # Python dependencies
+└── README.md           # This file
+```
+
+#### 3.6.2 Training Process
+
+1. **Prepare Data**: Collect game records from human players or self-play
+2. **Train Model**: Run the training script
+3. **Export Model**: Convert the trained model to TensorFlow Lite format for mobile deployment
+
+#### 3.6.3 Model Architecture
+
+The neural network takes a 7×9×2 tensor representing the board state (with player perspective) and outputs:
+- **Policy Head**: 7×9×4 tensor representing move probabilities
+- **Value Head**: Scalar value representing win probability
+
+#### 3.6.4 Integration with Game
+
+The trained model is integrated into the game through the `AnimalChessNetwork` class, which loads and uses the TensorFlow Lite model for inference during gameplay.
+
+### 3.7 Game Flow
 
 1. **Initialization**:
    - Application starts with `main.dart`
@@ -270,7 +306,7 @@ The AI uses a simple heuristic-based approach:
    - Victory dialog is displayed
    - Players can choose to restart or return to main menu
 
-### 3.5 Data Flow
+### 3.8 Data Flow
 
 1. **User Input**:
    - User interacts with UI components (taps on pieces, selects options)
@@ -348,6 +384,17 @@ lib
     ├── settings_dialog_widget.dart
     ├── variants_dialog_widget.dart
     └── victory_dialog_widget.dart
+ml
+├── train
+│   ├── train.py
+│   └── self_play.py
+├── export
+│   └── export_to_tflite.py
+├── config
+│   └── training_config.yaml
+├── models
+├── requirements.txt
+└── README.md
 ```
 
 ## 5. Design Patterns Used

@@ -49,3 +49,9 @@ lib/l10n/app_localizations_*.dart
 lib/l10n/app_localizations.dart
 
 coverage/*
+
+ml/models/*
+
+ml/exported_models/*.tflite
+*.dll
+ml/build/.last_build_id

@@ -7,6 +7,9 @@ import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/game/game_rules.dart';
 import 'package:animal_chess/game/game_actions.dart';
 import 'package:animal_chess/ai/ai_strategy.dart';
+import 'package:animal_chess/ai/ml_strategy.dart';
+import 'package:animal_chess/ai/animal_chess_network.dart';
+import 'package:animal_chess/ai/ai_move.dart';
 import 'package:logging/logging.dart';
 
 class GameController {
@@ -121,8 +124,32 @@ class GameController {
         (currentPlayer == PlayerColor.red && !gameConfig.aiRed)) {
       return;
     }
-    final ai = AIStrategy(gameConfig, gameActions);
-    final bestMove = ai.calculateBestMove(board, currentPlayer, gameActions);
+    
+    Move? bestMove;
+    
+    // Check if ML strategy is selected
+    if (currentPlayer == PlayerColor.green && gameConfig.aiGreenStrategy == AIStrategyType.machineLearning) {
+      // Use ML strategy
+      final network = AnimalChessNetwork(); // Initialize the ML network
+      final mlStrategy = MlStrategy(
+        network: network,
+        rules: gameActions.gameRules,
+      );
+      bestMove = mlStrategy.selectMove(board, currentPlayer);
+    } else if (currentPlayer == PlayerColor.red && gameConfig.aiRedStrategy == AIStrategyType.machineLearning) {
+      // Use ML strategy
+      final network = AnimalChessNetwork(); // Initialize the ML network
+      final mlStrategy = MlStrategy(
+        network: network,
+        rules: gameActions.gameRules,
+      );
+      bestMove = mlStrategy.selectMove(board, currentPlayer);
+    } else {
+      // Use traditional AIStrategy
+      final ai = AIStrategy(gameConfig, gameActions);
+      bestMove = ai.calculateBestMove(board, currentPlayer, gameActions);
+    }
+    
     if (bestMove != null) {
       // Set the selected position first
       selectedPosition = bestMove.from;
