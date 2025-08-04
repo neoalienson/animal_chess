@@ -68,5 +68,15 @@
   "displayFormatSimplifiedChinese": "简体中文",
   "displayFormatTraditionalChinese": "繁体中文",
   "enabled": "已启用",
-  "disabled": "已禁用"
+  "disabled": "已禁用",
+  "aiPlayers": "AI玩家",
+  "aiGreenPlayer": "AI绿方玩家",
+  "aiRedPlayer": "AI红方玩家",
+  "aiPlayersDescription": "启用AI玩家与电脑对战。您可以设置双方都由AI控制以进行演示。",
+  "aiStrategy": "AI策略",
+  "defensive": "防守型",
+  "offensive": "进攻型",
+  "balanced": "平衡型",
+  "exploratory": "探索型",
+  "aiStrategyDescription": "为电脑玩家选择AI策略。防守型优先考虑安全，进攻型专注于攻击，平衡型提供两者的混合，探索型倾向于积极的兽穴进攻。"
 }

@@ -61,5 +61,15 @@
   "variantRatCannotCaptureElephantDescriptionEnabled": "Con esta variante activada, la Rata no puede capturar al Elefante. En las reglas estándar, la Rata puede capturar al Elefante (excepción a la jerarquía normal de rangos).",
   "variantRatCannotCaptureElephantDescriptionDisabled": "En las reglas estándar, la Rata puede capturar al Elefante (excepción a la jerarquía normal de rangos). Active esta variante para eliminar esta excepción.",
   "piecesRank": "Rango de Piezas",
-  "piecesRankListTitle": "Rango de Piezas"
+  "piecesRankListTitle": "Rango de Piezas",
+  "aiPlayers": "Jugadores IA",
+  "aiGreenPlayer": "Jugador Verde IA",
+  "aiRedPlayer": "Jugador Rojo IA",
+  "aiPlayersDescription": "Active jugadores IA para jugar contra la computadora. Puede tener a ambos jugadores controlados por IA para fines de demostración.",
+  "aiStrategy": "Estrategia IA",
+  "defensive": "Defensiva",
+  "offensive": "Ofensiva",
+  "balanced": "Equilibrada",
+  "exploratory": "Exploratoria",
+  "aiStrategyDescription": "Seleccione la estrategia IA para los jugadores informáticos. Defensiva prioriza la seguridad, Ofensiva se enfoca en los ataques, Equilibrada proporciona una mezcla de ambos, y Exploratoria favorece enfoques agresivos hacia la guarida."
 }

@@ -61,5 +61,15 @@
   "wolfName": "オオカミ",
   "dogName": "イヌ",
   "catName": "ネコ",
-  "ratName": "ネズミ"
+  "ratName": "ネズミ",
+  "aiPlayers": "AIプレイヤー",
+  "aiGreenPlayer": "AI 緑プレイヤー",
+  "aiRedPlayer": "AI 赤プレイヤー",
+  "aiPlayersDescription": "AIプレイヤーを有効にしてコンピュータと対戦します。デモンストレーション目的で両方のプレイヤーをAIに制御させることができます。",
+  "aiStrategy": "AI戦略",
+  "defensive": "防御的",
+  "offensive": "攻撃的",
+  "balanced": "バランス",
+  "exploratory": "探索的",
+  "aiStrategyDescription": "コンピュータプレイヤーのAI戦略を選択します。防御的は安全を優先し、攻撃的は攻撃に焦点を当て、バランスは両方の混合を提供し、探索的は積極的な巣穴アプローチを好みます。"
 }

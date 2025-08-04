@@ -35,3 +35,38 @@ void setupDependencies() {
     ),
   );
 }
+
+/// Recreate the game controller with the current configuration
+GameController recreateGameController() {
+  // Unregister existing instances
+  locator.unregister<GameRules>();
+  locator.unregister<GameActions>();
+  locator.unregister<GameController>();
+
+  // Re-register with current config
+  locator.registerFactory<GameRules>(
+    () => GameRules(
+      board: locator<GameBoard>(),
+      gameConfig: locator<GameConfig>(),
+    ),
+  );
+
+  locator.registerFactory<GameActions>(
+    () => GameActions(
+      board: locator<GameBoard>(),
+      gameConfig: locator<GameConfig>(),
+      gameRules: locator<GameRules>(),
+    ),
+  );
+
+  locator.registerFactory<GameController>(
+    () => GameController(
+      board: locator<GameBoard>(),
+      gameRules: locator<GameRules>(),
+      gameActions: locator<GameActions>(),
+      gameConfig: locator<GameConfig>(),
+    ),
+  );
+
+  return locator<GameController>();
+}

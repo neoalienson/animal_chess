@@ -21,5 +21,11 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{};
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    'aiPlayers': (args) => 'AI Players',
+    'aiGreenPlayer': (args) => 'AI Green Player',
+    'aiRedPlayer': (args) => 'AI Red Player',
+    'aiPlayersDescription': (args) =>
+        'Enable AI players to play against the computer. You can have both players controlled by AI for demonstration purposes.',
+  };
 }

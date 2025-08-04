@@ -61,5 +61,15 @@
   "wolfName": "늑대",
   "dogName": "개",
   "catName": "고양이",
-  "ratName": "쥐"
+  "ratName": "쥐",
+  "aiPlayers": "AI 플레이어",
+  "aiGreenPlayer": "AI 녹색 플레이어",
+  "aiRedPlayer": "AI 빨간색 플레이어",
+  "aiPlayersDescription": "AI 플레이어를 활성화하여 컴퓨터와 대결하세요. 시연 목적으로 두 플레이어 모두 AI에 의해 제어되도록 할 수 있습니다.",
+  "aiStrategy": "AI 전략",
+  "defensive": "방어적",
+  "offensive": "공격적",
+  "balanced": "균형",
+  "exploratory": "탐색적",
+  "aiStrategyDescription": "컴퓨터 플레이어의 AI 전략을 선택합니다. 방어적은 안전을 우선시하고, 공격적은 공격에 집중하며, 균형은 둘의 혼합을 제공하고, 탐색적은 적극적인 굴 접근을 선호합니다."
 }

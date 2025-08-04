@@ -8,12 +8,10 @@ import 'package:animal_chess/models/player_color.dart';
 import 'package:animal_chess/models/piece_display_format.dart';
 import 'package:animal_chess/models/game_config.dart';
 import 'package:animal_chess/widgets/game_board_widget.dart';
-import 'package:animal_chess/widgets/pieces_rank_list_widget.dart';
 import 'package:animal_chess/widgets/game_info_dialog_widget.dart';
 import 'package:animal_chess/widgets/game_rules_dialog_widget.dart';
 import 'package:animal_chess/widgets/debug_menu_widget.dart';
 import 'package:animal_chess/widgets/player_indicator_widget.dart';
-import 'package:animal_chess/widgets/settings_dialog_widget.dart';
 import 'package:animal_chess/l10n/app_localizations.dart';
 import 'package:animal_chess/constants/ui_constants.dart';
 
@@ -27,7 +25,7 @@ class AnimalChessGameScreen extends StatefulWidget {
 }
 
 class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
-  late final GameController _gameController;
+  late GameController _gameController;
   List<Position> _validMoves = [];
   late ConfettiController _confettiController;
   bool _hasShownVictoryDialog = false;
@@ -37,16 +35,39 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
   void initState() {
     super.initState();
     _gameController = locator<GameController>();
+    // Set up callback for game state changes
+    _gameController.onGameStateChanged = () {
+      // Use a delayed execution to allow UI to update
+      Future.delayed(const Duration(milliseconds: 100), () {
+        if (mounted) {
+          setState(() {
+            // This will trigger a rebuild of the UI
+          });
+        }
+      });
+    };
     _confettiController = ConfettiController(
       duration: const Duration(seconds: 3),
     );
     // Initialize display format from config
     _displayFormat = locator<GameConfig>().pieceDisplayFormat;
+
+    // Check if AI should make the first move
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAndExecuteAIMove();
+    });
   }
 
   @override
   void dispose() {
     _confettiController.dispose();
+    // Deactivate controller when screen is disposed
+    _gameController.isActive = false;
+    // Reset game state when returning to main menu
+    _gameController.resetGame();
+    // Clear UI state
+    _validMoves = [];
+    _hasShownVictoryDialog = false;
     super.dispose();
   }
 
@@ -72,10 +93,6 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
                 PopupMenuItem<String>(
                   value: 'rules',
                   child: Text(localizations.gameRules),
-                ),
-                PopupMenuItem<String>(
-                  value: 'settings',
-                  child: Text(localizations.settings),
                 ),
                 if (kDebugMode)
                   PopupMenuItem<String>(
@@ -265,6 +282,9 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
           _validMoves = [];
           if (_gameController.gameEnded && !_hasShownVictoryDialog) {
             _showVictoryDialog();
+          } else {
+            // Check if next player is AI after a short delay to allow UI update
+            _checkAndExecuteAIMove();
           }
         } else {
           // If move failed, check if we're selecting a different piece
@@ -295,6 +315,11 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
       _gameController.resetGame();
       _validMoves = [];
       _hasShownVictoryDialog = false;
+
+      // Check if AI should make the first move in the new game
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _checkAndExecuteAIMove();
+      });
     });
   }
 
@@ -302,32 +327,9 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
   void _handleMenuSelection(String value) {
     if (value == 'rules') {
       _showRulesDialog();
-    } else if (value == 'settings') {
-      _showSettingsDialog();
     } else if (value == 'debug') {
       _showDebugMenu();
     }
-  }
-
-  /// Show settings dialog
-  void _showSettingsDialog() {
-    final gameConfig = locator<GameConfig>();
-    setState(() {
-      _displayFormat = gameConfig.pieceDisplayFormat;
-    });
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return SettingsDialogWidget(
-          onConfigChanged: (GameConfig config) {
-            setState(() {
-              _displayFormat = config.pieceDisplayFormat;
-            });
-          },
-        );
-      },
-    );
   }
 
   /// Show rules dialog
@@ -354,6 +356,16 @@ class _AnimalChessGameScreenState extends State<AnimalChessGameScreen> {
         );
       },
     );
+  }
+
+  /// Check and execute AI move after a short delay
+  void _checkAndExecuteAIMove() {
+    // Use a delayed execution to allow UI to update
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (!_gameController.gameEnded) {
+        _gameController.executeAIMoveIfNecessary();
+      }
+    });
   }
 
   /// Show victory dialog with confetti

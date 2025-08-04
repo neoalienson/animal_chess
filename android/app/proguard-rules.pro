@@ -1,0 +1,16 @@
+-keep class org.tensorflow.lite.** { *; }
+-keep class org.tensorflow.lite.gpu.** { *; }
+-keep class org.tensorflow.lite.support.** { *; }
+-keep class org.tensorflow.lite.task.** { *; }
+-keep class org.tensorflow.lite.nnapi.** { *; }
+-keep class org.tensorflow.lite.flex.** { *; }
+-keep class org.tensorflow.lite.examples.** { *; }
+-keep class org.tensorflow.lite.acceleration.** { *; }
+-keep class org.tensorflow.lite.delegates.** { *; }
+-keep class org.tensorflow.lite.schema.** { *; }
+-keep class org.tensorflow.lite.tools.** { *; }
+-keep class org.tensorflow.lite.experimental.** { *; }
+-keep class org.tensorflow.lite.security.** { *; }
+-keep class org.tensorflow.lite.benchmark.** { *; }
+-keep class org.tensorflow.lite.micro.** { *; }
+-keep class org.tensorflow.lite.tflite_flutter.** { *; }

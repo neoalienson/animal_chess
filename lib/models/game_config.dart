@@ -1,4 +1,7 @@
 import 'package:animal_chess/models/piece_display_format.dart';
+import 'package:animal_chess/ai/animal_chess_network.dart';
+
+enum AIStrategyType { defensive, offensive, balanced, exploratory, machineLearning }
 
 class GameConfig {
   bool ratOnlyDenEntry;
@@ -7,12 +10,24 @@ class GameConfig {
   bool ratCannotCaptureElephant;
   PieceDisplayFormat pieceDisplayFormat;
 
+  // AI player configuration
+  bool aiGreen;
+  bool aiRed;
+  AIStrategyType aiGreenStrategy;
+  AIStrategyType aiRedStrategy;
+  AnimalChessNetwork? animalChessNetwork;
+
   GameConfig({
     this.ratOnlyDenEntry = false,
     this.extendedLionTigerJumps = false,
     this.dogRiverVariant = false,
     this.ratCannotCaptureElephant = false,
     this.pieceDisplayFormat = PieceDisplayFormat.traditionalChinese,
+    this.aiGreen = false,
+    this.aiRed = false,
+    this.aiGreenStrategy = AIStrategyType.offensive,
+    this.aiRedStrategy = AIStrategyType.offensive,
+    this.animalChessNetwork,
   });
 
   GameConfig copyWith({
@@ -21,6 +36,11 @@ class GameConfig {
     bool? dogRiverVariant,
     bool? ratCannotCaptureElephant,
     PieceDisplayFormat? pieceDisplayFormat,
+    bool? aiGreen,
+    bool? aiRed,
+    AIStrategyType? aiGreenStrategy,
+    AIStrategyType? aiRedStrategy,
+    AnimalChessNetwork? animalChessNetwork,
   }) {
     return GameConfig(
       ratOnlyDenEntry: ratOnlyDenEntry ?? this.ratOnlyDenEntry,
@@ -30,6 +50,11 @@ class GameConfig {
       ratCannotCaptureElephant:
           ratCannotCaptureElephant ?? this.ratCannotCaptureElephant,
       pieceDisplayFormat: pieceDisplayFormat ?? this.pieceDisplayFormat,
+      aiGreen: aiGreen ?? this.aiGreen,
+      aiRed: aiRed ?? this.aiRed,
+      aiGreenStrategy: aiGreenStrategy ?? this.aiGreenStrategy,
+      aiRedStrategy: aiRedStrategy ?? this.aiRedStrategy,
+      animalChessNetwork: animalChessNetwork ?? this.animalChessNetwork,
     );
   }
 
@@ -41,7 +66,12 @@ class GameConfig {
         other.extendedLionTigerJumps == extendedLionTigerJumps &&
         other.dogRiverVariant == dogRiverVariant &&
         other.ratCannotCaptureElephant == ratCannotCaptureElephant &&
-        other.pieceDisplayFormat == pieceDisplayFormat;
+        other.pieceDisplayFormat == pieceDisplayFormat &&
+        other.aiGreen == aiGreen &&
+        other.aiRed == aiRed &&
+        other.aiGreenStrategy == aiGreenStrategy &&
+        other.aiRedStrategy == aiRedStrategy &&
+        other.animalChessNetwork == animalChessNetwork;
   }
 
   @override
@@ -51,5 +81,10 @@ class GameConfig {
     dogRiverVariant,
     ratCannotCaptureElephant,
     pieceDisplayFormat,
+    aiGreen,
+    aiRed,
+    aiGreenStrategy,
+    aiRedStrategy,
+    animalChessNetwork,
   );
 }

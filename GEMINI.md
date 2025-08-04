@@ -62,6 +62,10 @@ The game includes several optional rule variants:
 - **Timer Reset**: Player timer resets when a move is completed
 - **Game Instructions**: In-game rules reference available at any time
 - **Responsive Design**: Works on both mobile and desktop platforms
+- **AI Opponent**: Computer players with configurable difficulty
+- **AI Move Visualization**: Visual indication of AI moves with configurable delays
+- **AI vs AI Mode**: Watch two AI players compete against each other
+- **Configurable AI Settings**: Choose which players are controlled by AI (green, red, or both)
 
 ## 2. System Architecture
 
@@ -197,7 +201,88 @@ The game rules system has been refactored to support a pluggable variant archite
 3. Add the new variant to the GameRuleFactory
 4. The new variant is now automatically available when enabled through GameConfig
 
-### 3.2 Game Flow
+### 3.3 AI Implementation
+
+The game includes a computer AI opponent with the following features:
+
+#### 3.3.1 Components
+
+1. **AIStrategy** (`lib/game/ai_strategy.dart`):
+   - Implements the decision-making logic for AI moves
+   - Evaluates possible moves and selects the best one based on a simple heuristic
+
+2. **AIMove** (`lib/game/ai_move.dart`):
+   - Represents a potential move with a from and to position
+   - Includes a score for evaluating move quality
+
+#### 3.3.2 AI Algorithm
+
+The AI uses a simple heuristic-based approach:
+- Evaluates all valid moves for the current player
+- Assigns scores to moves based on factors like:
+  - Capturing opponent pieces (higher-ranked pieces worth more)
+  - Moving toward the opponent's den
+  - Avoiding capture by opponent pieces
+- Selects the move with the highest score
+
+#### 3.3.3 AI Configuration
+
+- AI players can be enabled/disabled for each color (green/red)
+- Both players can be controlled by AI for AI vs AI gameplay
+- AI moves are executed with a configurable delay for better visualization
+- The delay between AI moves can be adjusted in the game controller
+
+#### 3.3.4 AI Execution Flow
+
+1. **AI Detection**: GameController checks if the current player is an AI
+2. **Move Calculation**: AIStrategy calculates the best move
+3. **Move Execution**: GameController executes the AI move
+4. **Delay**: A configurable delay is added between AI moves for visualization
+5. **State Update**: Game state is updated and UI is refreshed
+
+#### 3.3.5 AI vs AI Mode
+
+- Special mode where both players are controlled by AI
+- Useful for testing and demonstration purposes
+- Can be configured through game settings
+
+### 3.6 Machine Learning Components
+
+This section details the machine learning components used in the Animal Chess game, including training scripts, model export utilities, and integration with the game.
+
+#### 3.6.1 Directory Structure
+
+```
+ml/
+├── train/              # Training scripts
+│   ├── train.py        # Main training script
+│   └── self_play.py    # Self-play generation
+├── export/             # Model export utilities
+│   └── export_to_tflite.py  # Export to TensorFlow Lite
+├── config/             # Training configurations
+│   └── training_config.yaml
+├── models/             # Trained models (will be created during training)
+├── requirements.txt    # Python dependencies
+└── README.md           # This file
+```
+
+#### 3.6.2 Training Process
+
+1. **Prepare Data**: Collect game records from human players or self-play
+2. **Train Model**: Run the training script
+3. **Export Model**: Convert the trained model to TensorFlow Lite format for mobile deployment
+
+#### 3.6.3 Model Architecture
+
+The neural network takes a 7×9×2 tensor representing the board state (with player perspective) and outputs:
+- **Policy Head**: 7×9×4 tensor representing move probabilities
+- **Value Head**: Scalar value representing win probability
+
+#### 3.6.4 Integration with Game
+
+The trained model is integrated into the game through the `AnimalChessNetwork` class, which loads and uses the TensorFlow Lite model for inference during gameplay.
+
+### 3.7 Game Flow
 
 1. **Initialization**:
    - Application starts with `main.dart`
@@ -221,7 +306,7 @@ The game rules system has been refactored to support a pluggable variant archite
    - Victory dialog is displayed
    - Players can choose to restart or return to main menu
 
-### 3.3 Data Flow
+### 3.8 Data Flow
 
 1. **User Input**:
    - User interacts with UI components (taps on pieces, selects options)
@@ -299,6 +384,17 @@ lib
     ├── settings_dialog_widget.dart
     ├── variants_dialog_widget.dart
     └── victory_dialog_widget.dart
+ml
+├── train
+│   ├── train.py
+│   └── self_play.py
+├── export
+│   └── export_to_tflite.py
+├── config
+│   └── training_config.yaml
+├── models
+├── requirements.txt
+└── README.md
 ```
 
 ## 5. Design Patterns Used
