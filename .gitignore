@@ -52,6 +52,6 @@ coverage/*
 
 ml/models/*
 
-*.tflite
+ml/exported_models/*.tflite
 *.dll
 ml/build/.last_build_id
