@@ -41,7 +41,7 @@ class UIConstants {
   static const double pieceBorderWidthSelected = 3.0;
   static const double validMoveIndicatorSizeFactor = 0.3;
   static const double pieceSizeFactor = 0.9;
-  static const double pieceFontSizeFactor = 0.475; // Reduced by 5% from 0.5
+  static const double pieceFontSizeFactor = 0.450; // Reduced by 5% from 0.5
   static const double pieceTapPadding =
       12.0; // Padding for better touch targets
 

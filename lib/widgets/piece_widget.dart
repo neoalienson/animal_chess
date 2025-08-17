@@ -160,15 +160,19 @@ class PieceWidget extends StatelessWidget {
             ],
           ),
           child: Center(
-            child: Text(
-              _getAnimalSymbol(piece.animalType),
-              style: TextStyle(
-                color: textColor,
-                fontSize:
-                    pieceSize *
-                    UIConstants
-                        .pieceFontSizeFactor, // Adjust font size proportionally
-                fontWeight: FontWeight.bold,
+            child: Transform.translate(
+              offset: const Offset(0, -2), // Move up by 5 pixels
+              child: Text(
+                _getAnimalSymbol(piece.animalType),
+                style: TextStyle(
+                  color: textColor,
+                  fontSize:
+                      pieceSize *
+                      UIConstants
+                          .pieceFontSizeFactor, // Adjust font size proportionally
+                  fontWeight: FontWeight.bold,
+                  height: 1.0, // Ensures proper vertical centering
+                ),
               ),
             ),
           ),
