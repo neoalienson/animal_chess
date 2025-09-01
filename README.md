@@ -6,6 +6,10 @@ A Flutter implementation of the classic Chinese board game Animal Chess (Dou Sho
 
 Animal Chess is a strategic board game for two players where each player commands a group of animals with different ranks. The objective is to be the first to move any of your pieces into the opponent's den (cave) or to capture all of your opponent's pieces.
 
+|Traditional Chinese chess pieces|Emoji chess pieces|
+|---|---|
+|![Traditional Chinese](images/board1.png)|![Emoji version](images/board2.png)|
+
 ## Game Rules
 
 - 2 players, green and red. The game begins with red's turn
